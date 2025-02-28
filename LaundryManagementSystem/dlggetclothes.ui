@@ -1,0 +1,801 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>dlgGetClothes</class>
+ <widget class="QDialog" name="dlgGetClothes">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1620</width>
+    <height>935</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1620</width>
+    <height>935</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1620</width>
+    <height>935</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>收衣</string>
+  </property>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>8</x>
+     <y>376</y>
+     <width>1200</width>
+     <height>565</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>1200</width>
+     <height>565</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>1200</width>
+     <height>565</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+    </font>
+   </property>
+   <widget class="QStackedWidget" name="SW">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>1188</width>
+      <height>540</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>1200</width>
+      <height>540</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑</family>
+     </font>
+    </property>
+    <property name="currentIndex">
+     <number>-1</number>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="widget_2" native="true">
+   <property name="geometry">
+    <rect>
+     <x>8</x>
+     <y>52</y>
+     <width>1600</width>
+     <height>320</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>1600</width>
+     <height>320</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>1600</width>
+     <height>320</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+    </font>
+   </property>
+   <widget class="QTableWidget" name="TWClothes">
+    <property name="geometry">
+     <rect>
+      <x>6</x>
+      <y>6</y>
+      <width>1580</width>
+      <height>300</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>1580</width>
+      <height>300</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>1580</width>
+      <height>320</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <family>微软雅黑</family>
+     </font>
+    </property>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>200</number>
+    </attribute>
+    <row>
+     <property name="text">
+      <string>第1件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第2件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第3件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第4件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第5件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第6件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第7件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第8件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第9件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第10件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第11件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第12件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第13件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第14件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第15件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第一件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第17件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第18件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第19件</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第20件</string>
+     </property>
+    </row>
+    <column>
+     <property name="text">
+      <string>衣服名称</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>衣服颜色</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>瑕疵</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>品牌</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>特殊处理</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>洗后效果</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>建议价格</string>
+     </property>
+    </column>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="widget_3" native="true">
+   <property name="geometry">
+    <rect>
+     <x>1214</x>
+     <y>376</y>
+     <width>395</width>
+     <height>560</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>395</width>
+     <height>560</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>395</width>
+     <height>560</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+    </font>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTableWidget" name="TWCal">
+      <property name="minimumSize">
+       <size>
+        <width>370</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>370</width>
+        <height>179</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <attribute name="horizontalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>350</number>
+      </attribute>
+      <attribute name="verticalHeaderDefaultSectionSize">
+       <number>35</number>
+      </attribute>
+      <row>
+       <property name="text">
+        <string>总金额</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>折扣率</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>折后价</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>总件数</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>卡上金额</string>
+       </property>
+      </row>
+      <column>
+       <property name="text">
+        <string>0</string>
+       </property>
+      </column>
+      <item row="0" column="0">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </item>
+      <item row="1" column="0">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </item>
+      <item row="2" column="0">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </item>
+      <item row="3" column="0">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </item>
+      <item row="4" column="0">
+       <property name="text">
+        <string>0</string>
+       </property>
+      </item>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QWidget" name="widget_4" native="true">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_6">
+       <item row="3" column="0">
+        <widget class="QWidget" name="widget_6" native="true">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>135</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+          </font>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
+           <widget class="QPushButton" name="BtnEnter">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>55</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>确定</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="BtnCancel">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>55</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>取消</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="2">
+           <widget class="QPushButton" name="BtnGetMoney">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>收银</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="LBOrderNumber">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>流水号：</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QWidget" name="widget_5" native="true">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+          </font>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_5">
+          <item row="1" column="0">
+           <widget class="QLabel" name="LaGetCloDate">
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>取衣日期：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QDateEdit" name="Time">
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+             </font>
+            </property>
+            <property name="maximumTime">
+             <time>
+              <hour>23</hour>
+              <minute>59</minute>
+              <second>59</second>
+             </time>
+            </property>
+            <property name="displayFormat">
+             <string>yyyy/M/d/dddd</string>
+            </property>
+            <property name="timeSpec">
+             <enum>Qt::LocalTime</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QTableWidget" name="TWMoney">
+         <property name="maximumSize">
+          <size>
+           <width>370</width>
+           <height>75</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+          </font>
+         </property>
+         <attribute name="horizontalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>385</number>
+         </attribute>
+         <attribute name="verticalHeaderDefaultSectionSize">
+          <number>35</number>
+         </attribute>
+         <row>
+          <property name="text">
+           <string>收进</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>找零</string>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>0</string>
+          </property>
+         </column>
+         <item row="0" column="0">
+          <property name="text">
+           <string>0</string>
+          </property>
+         </item>
+         <item row="1" column="0">
+          <property name="text">
+           <string>0</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="widget_7" native="true">
+   <property name="geometry">
+    <rect>
+     <x>8</x>
+     <y>6</y>
+     <width>1600</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>1600</width>
+     <height>50</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>1600</width>
+     <height>16777215</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+    </font>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_7">
+    <item row="0" column="3">
+     <widget class="QLineEdit" name="LePhone">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="5">
+     <widget class="QLineEdit" name="LeCount">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="7">
+     <widget class="QLineEdit" name="LeCost">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="11">
+     <widget class="QPushButton" name="BtnCustomerTemp">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>切换成普通临时客户</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="9">
+     <widget class="QLineEdit" name="LeCardID">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="10">
+     <widget class="QPushButton" name="BtnChoseCustomer">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>选择会员客户</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="LeName">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="maximumSize">
+       <size>
+        <width>130</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>姓名</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="4">
+     <widget class="QLabel" name="label_3">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>次数</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="8">
+     <widget class="QLabel" name="label_5">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>消费卡</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="6">
+     <widget class="QLabel" name="label_4">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>消费额</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="label_2">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <property name="text">
+       <string>电话</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>LeName</tabstop>
+  <tabstop>LePhone</tabstop>
+  <tabstop>LeCount</tabstop>
+  <tabstop>LeCost</tabstop>
+  <tabstop>LeCardID</tabstop>
+  <tabstop>TWClothes</tabstop>
+  <tabstop>TWCal</tabstop>
+  <tabstop>Time</tabstop>
+  <tabstop>BtnEnter</tabstop>
+  <tabstop>BtnCancel</tabstop>
+  <tabstop>BtnGetMoney</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

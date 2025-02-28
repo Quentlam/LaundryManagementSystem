@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Login.jpg</file>
+        <file>lifu.png</file>
+        <file>maoyi.png</file>
+        <file>mianyi.png</file>
+        <file>yurong.png</file>
+        <file>piyi.png</file>
+        <file>Cover.jpg</file>
+        <file>LoginCover.jpg</file>
+        <file>../psd/LoginCover.png</file>
+        <file>../psd/MainWindow.png</file>
+    </qresource>
+</RCC>
