@@ -1,0 +1,3 @@
+[submodule "thirdParty/include/zint"]
+	path = thirdParty/include/zint
+	url = https://github.com/zint/zint.git
