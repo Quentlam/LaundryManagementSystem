@@ -8,7 +8,7 @@ class code128Generator
 public:
     code128Generator(QString OrderID);
     char calculateChecksum(const QString &data);
-    void GenerateCode128();
+    std::unique_ptr<QImage> GenerateCode128();
     QString OrderID;
 };
 

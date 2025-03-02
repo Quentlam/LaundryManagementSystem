@@ -40,11 +40,6 @@ void dlgCustomerGetClothes::keyPressEvent(QKeyEvent *event)
             QMessageBox::information(nullptr,"警告","请输入正常的订单号！");
             return;
         }
-
-        if(text.contains('*'))
-        {
-            text.remove('*');
-        }
         ui->LEOrderID->setText(text);
         search(text);
     }
@@ -54,10 +49,6 @@ void dlgCustomerGetClothes::keyPressEvent(QKeyEvent *event)
 void dlgCustomerGetClothes::search(QString OrderID)
 {
     QString scannedData = OrderID; // 获取输入的文本
-    if(OrderID.contains('*'))
-    {
-        OrderID.remove('*');
-    }
     ui->LEOrderID->setText(OrderID);
     qDebug() << "Scanned Data:" << OrderID; // 打印扫描的数据
     auto sqlPtr = pulic::getInstance()->sql;
@@ -154,6 +145,8 @@ void dlgCustomerGetClothes::on_BtnCusotmerGetClothes_clicked()
             }
         }
         int Successcount = 0;
+        auto db = pulic::getInstance()->getDB();
+        db.transaction();
         for(int i = 0 ; i < checkedShelfs.size() ; i ++ )
         {
              auto ShelfOccupy = sqlPtr->exec(QString("update Shelf%1 set ShelfStatus = '空' where ShelfID = '%2'; ").arg(checkedShelfs[i].at(4)).arg(checkedShelfs[i]));
@@ -161,6 +154,7 @@ void dlgCustomerGetClothes::on_BtnCusotmerGetClothes_clicked()
              if(false == ShelfOccupy || false == updateOrderStatus)
              {
                  qDebug() << sqlPtr->lastError().text();
+                 db.rollback();
                  return;
              }
              else
@@ -168,6 +162,17 @@ void dlgCustomerGetClothes::on_BtnCusotmerGetClothes_clicked()
                 Successcount++;
              }
         }
+        if(checkedShelfs.size() == Successcount)//如果全部取完，就要把留下一个A或者B
+        {
+            auto getAllClothes = sqlPtr->exec(QString("update OrderStatus set ShelfID = '%1' where OrderID = '%2'").arg(checkedShelvesString.right(1)).arg(ui->LEOrderID->text()));
+            if(false == getAllClothes)
+            {
+                qDebug() << sqlPtr->lastError().text();
+                db.rollback();
+                return;
+            }
+        }
+        db.commit();
         QMessageBox::information(nullptr,"信息",QString("成功下架并取衣,架号数量为：%1！").arg(Successcount));
         operate.target = QString("客户已经取走衣服的架号为：%1").arg(checkedShelvesString);
         LaundryManagementLogger::record(operate);

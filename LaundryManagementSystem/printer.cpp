@@ -1,28 +1,111 @@
 ﻿#include "printer.h"
 #include <QApplication>
-#include <QPrinter>
 #include <QPainter>
-#include <QTextDocument>
 #include <QSizeF>
 #include "pulic.h"
 #include <QDate>
 #include <QDebug>
 #include <QPrintDialog>
+#include <QTextCursor>
 #include "shopdata.h"
 #include <QSqlError>
 #include "QZXing.h"
-
-
+#include <QPrinterInfo>
+#include <QFont>
+#include <QTextCodec>
+#include <QThread>
+#include "printpreviewwidget.h"
 Printer::Printer()
 {
-
+    mPrinter.setPrinterName("Zonerich AB-88H");
 }
 
 void Printer::printCustomerCurrentOrder(OrderInfo order)
 {
+    QTextDocument tittleDocument;
+    makeCurrentOrderTittleDocument(tittleDocument,order);//先创建标题的Document
+
+    QTextDocument textDocument;//再创建正文的Document
+    makeCusotmerCurrentOrderDocument(textDocument,order);
+
+    set80mmPaperPrinter(tittleDocument.size(),textDocument.size());//这是设置纸张大小
+
+
+    CodeGenerator = new code128Generator(order.orderID);///////////////生成条纹码
+    std::unique_ptr<QImage> beforImg = CodeGenerator->GenerateCode128();
+    QImage img = beforImg->scaled(420,40, Qt::IgnoreAspectRatio);
+////////////////////////////////////////////////////////////////////////////////////////////以下是绘画逻辑
+    QPainter painter(&mPrinter); // 构造函数自动激活设备
+    painter.setRenderHint(QPainter::HighQualityAntialiasing,  true); // 启用抗锯齿
+
+    painter.save();
+    tittleDocument.drawContents(&painter);//这个是先写标头
+    painter.restore(); // 恢复状态
+
+    QRect docBoundingRect = getDocumentBoundingRect(tittleDocument);
+    int docWidth = docBoundingRect.width();
+    int docHeight = docBoundingRect.height();
+
+
+    painter.save(); // 保存当前状态
+    int imageX = 10 + (docWidth - img.width()) / 2;
+    int imageY = 10 + docHeight; // 图像放在文档下方
+    painter.drawImage(QPoint(imageX, imageY),  img);//然后再画流水号的条纹码
+    painter.restore(); // 恢复状态
+
+    // 绘制第二个 QTextDocument
+    painter.save(); // 保存当前状态
+    painter.translate(10, 10 + docHeight + img.height() + 10); // 计算第二个文档的起始位置
+    textDocument.drawContents(&painter);
+    painter.restore(); // 恢复状态
+
+    painter.end();  // 显式结束绘制（非必须但推荐）
+}
+
+
+
+
+void Printer::printSelectedOrder(QList<OrderInfo> order)
+{
+
+}
+
+void Printer::printUserCurrentOrder(OrderInfo order)
+{
+    QTextDocument tittleDocument;
+    makeCurrentOrderTittleDocument(tittleDocument,order);//先创建标题的Document
+
+    QTextDocument textDocument;//再创建正文的Document
+    makeUserCurrentOrderDocument(textDocument,order);
+
+    set80mmPaperPrinter(tittleDocument.size(),textDocument.size());//这是设置纸张大小
+////////////////////////////////////////////////////////////////////////////////////////////以下是绘画逻辑
+    QPainter painter(&mPrinter); // 构造函数自动激活设备
+    painter.setRenderHint(QPainter::HighQualityAntialiasing,  true); // 启用抗锯齿
+    // 定义绘制位置
+    int margin = 20;  // 边距
+    qreal doc1Height = tittleDocument.size().height();
+    qreal doc2Height = tittleDocument.size().height();
+    qreal totalHeight = doc1Height + doc2Height + 3 * margin; // 包含边距
+
+    painter.save();
+    tittleDocument.drawContents(&painter);//这个是先写标头
+    painter.restore(); // 恢复状态
+
+
+    painter.save();
+    painter.translate(margin, doc1Height + 2 * margin); // 设置绘制位置
+    textDocument.drawContents(&painter);
+    painter.restore(); // 恢复状态
+
+    painter.end();  // 显式结束绘制（非必须但推荐）
+}
+
+void Printer::makeUserCurrentOrderDocument(QTextDocument& textDocument,OrderInfo order)
+{
+    // 另起一页
+    //mPrinter.newPage(); // 这行代码会将当前页面结束并开始新的一页
     QString text;
-    CodeGenerator = new code128Generator(order.orderID);
-    CodeGenerator->GenerateCode128();
     auto sqlPtr = pulic::getInstance()->sql;
     sqlPtr->exec("select * from ShopData");
     ShopData shopData;
@@ -35,20 +118,11 @@ void Printer::printCustomerCurrentOrder(OrderInfo order)
         shopData.ComplaintsPhone = sqlPtr->value(4).toString();
         shopData.AdvertiseMent   = sqlPtr->value(5).toString();
     }
-
-    QString tittle = "    " + *pulic::getInstance()->currentAddress + "服务点（洗衣单）";
-    tittle += "\n          客户联";
-    //////////////////////////这里生成流水号的Code128码
-    tittle += QString("\n打印日期：%1 %2").arg(QDate::currentDate().toString()).arg(QTime::currentTime().toString());
-
-
-
-    text += tittle;
-    text += "\n---------------------------------\n";
-
-    QString type = "编号  名称  颜色  品牌  价格";
+    text += QString("\n打印日期：%1 %2").arg(QDate::currentDate().toString()).arg(QTime::currentTime().toString());
+    text += "\n---------------------------------------\n";
+    QString type = "编号   名称   颜色   品牌   价格";
     text += type;
-    text += "\n---------------------------------\n";
+    text += "\n---------------------------------------\n";
     QString ShelfsOccupied;
     ShelfsOccupied      += order.ShelfID + " ";//首先记录一下当前已经选择好的格架
     for(int i = 0 ; i < order.clothesTemp.size(); i ++)
@@ -69,153 +143,174 @@ void Printer::printCustomerCurrentOrder(OrderInfo order)
          QString ClothesColor = order.clothesTemp[i].Color;
          QString ClothesBrand = order.clothesTemp[i].Brand;
          QString ClothesPrice = order.clothesTemp[i].Price;
-         if(order.clothesTemp[i].Name.isNull())
+         if(order.clothesTemp[i].Name.isNull() || order.clothesTemp[i].Name.size() < 1)
          {
-             ClothesName = " ";
+             ClothesName = "---- ";
          }
-         if(order.clothesTemp[i].Color.isNull())
+         if(order.clothesTemp[i].Color.isNull()|| order.clothesTemp[i].Color.size() < 1)
          {
-             ClothesColor = " ";
+             ClothesColor = "---- ";
          }
-         if(order.clothesTemp[i].Brand.isNull())
+         if(order.clothesTemp[i].Brand.isNull()|| order.clothesTemp[i].Brand.size() < 1)
          {
-             ClothesBrand = " ";
+             ClothesBrand = "---- ";
          }
-         if(order.clothesTemp[i].Price.isNull())
+         if(order.clothesTemp[i].Price.isNull()|| order.clothesTemp[i].Price.size() < 1)
          {
-             ClothesPrice = " ";
+             ClothesPrice = "---- ";
          }
          text += ShelfNum + " " + ClothesName + " " + ClothesColor + " " + ClothesBrand + " " + ClothesPrice + '\n';
     }
 
     recordShelves(order.orderID,ShelfsOccupied);//修改一下订单里一共有多少个架号被占用了
-    text += "\n----------------------------------\n";
-    text += QString("合计；          衣物%1件\n").arg(order.clothesTemp.size());
-    text += QString("付款方式：%1").arg(order.PayWay);
-    text += QString(" 总金额：%1元\n").arg(order.MoneyCount);
-    text += QString("折扣率：%1").arg(order.Discount);
-    text += QString(" 应收金额：%1元\n").arg(order.AfterDiscountMoneyCount);
-    text += QString("充值卡号：%1\n").arg(order.customerCardID);
-    text += QString("卡余额：%1元\n").arg(order.CustomerCardMoney);
-    text += QString("实收金额：%1元\n").arg(order.InputMoney);
-    text += QString("找零：%1元\n").arg(order.OutputMoney);
-    text += "\n----------------------------------\n";
+    text += "\n---------------------------------------\n";
+    text += QString("合计；    衣物%1件\n").arg(order.clothesTemp.size());
+    text += QString("付款方式：%1\n")      .arg(order.PayWay);
+    text += QString("总金额：%1元")   .arg(order.MoneyCount);
+    text += QString(" 折扣率：%1\n")        .arg(order.Discount);
+    text += QString("应收金额：%1元\n") .arg(order.AfterDiscountMoneyCount);
+    text += QString("充值卡号：%1\n")    .arg(order.customerCardID);
+    text += QString("卡余额：%1元\n")    .arg(order.CustomerCardMoney);
+    text += QString("实收金额：%1元\n")   .arg(order.InputMoney);
+    text += QString("找零：%1元")      .arg(order.OutputMoney);
+    if(!order.HaveNotPaid.contains("未欠缴"))
+    text += QString("客户已经欠缴：%1元").arg(order.HaveNotPaid);
+    text += "\n---------------------------------------\n";
 
 
-    text += QString("客户代号：%1\n").arg(order.customerID);
-    text += QString("店员姓名：%1\n").arg(pulic::getInstance()->currentUser->userInformation.Name);
+    text += QString("客户代号：%1").arg(order.customerID);
+    text += QString(" 店员姓名：%1\n").arg(pulic::getInstance()->currentUser->userInformation.Name);
+    text += QString("客户姓名：%1\n").arg(order.customerName);
+    text += QString("取衣日期：%1\n").arg(order.GetClothesDate);
+    text += "\n---------------------------------------\n";
+
+    textDocument.setTextWidth(mPrinter.pageRect().width()); // 减去一定的边距
+    QFont font("SimHei",10);  // 获取默认字体
+    font.setStyleStrategy(QFont::PreferAntialias);  // 优先使用抗锯齿
+    font.setHintingPreference(QFont::PreferFullHinting);  // 优先使用全提示
+    textDocument.setDefaultFont(font);  // 更新默认字体
+    textDocument.setPlainText(text);
+}
+
+void Printer::makeCusotmerCurrentOrderDocument(QTextDocument& textDocument,OrderInfo order)
+{
+    QString text;
+    auto sqlPtr = pulic::getInstance()->sql;
+    sqlPtr->exec("select * from ShopData");
+    ShopData shopData;
+    while(sqlPtr->next())
+    {
+        shopData.ShopID          = sqlPtr->value(0).toString();
+        shopData.ShopName        = sqlPtr->value(1).toString();
+        shopData.ShopAddress     = sqlPtr->value(2).toString();
+        shopData.SearchPhone     = sqlPtr->value(3).toString();
+        shopData.ComplaintsPhone = sqlPtr->value(4).toString();
+        shopData.AdvertiseMent   = sqlPtr->value(5).toString();
+    }
+    text += QString("\n打印日期：%1 %2").arg(QDate::currentDate().toString()).arg(QTime::currentTime().toString());
+    text += "\n---------------------------------------\n";
+    QString type = "编号   名称   颜色   品牌   价格";
+    text += type;
+    text += "\n---------------------------------------\n";
+    QString ShelfsOccupied;
+    ShelfsOccupied      += order.ShelfID + " ";//首先记录一下当前已经选择好的格架
+    for(int i = 0 ; i < order.clothesTemp.size(); i ++)
+    {
+         if(i % pulic::getInstance()->shelfCount == 0 && i >= pulic::getInstance()->shelfCount - 1)//如果超过了最大格架数，那么就要换到下一个格架去了
+         {
+            order.ShelfID = incrementPrefix(order.ShelfID);
+            bool occupySuccess = shelfOccupy(order.ShelfID);
+            while(!occupySuccess)//如果每次都不成功，就继续增加架子号
+            {
+                order.ShelfID = incrementPrefix(order.ShelfID);
+                occupySuccess = shelfOccupy(order.ShelfID);
+            }
+            ShelfsOccupied   += order.ShelfID + " ";//然后再记录一下之后选择好的格架
+         }
+         QString ShelfNum     = order.ShelfID + QString("-%1").arg(i,2,10,QLatin1Char('0'));
+         QString ClothesName  = order.clothesTemp[i].Name;
+         QString ClothesColor = order.clothesTemp[i].Color;
+         QString ClothesBrand = order.clothesTemp[i].Brand;
+         QString ClothesPrice = order.clothesTemp[i].Price;
+         if(order.clothesTemp[i].Name.isNull() || order.clothesTemp[i].Name.size() < 1)
+         {
+             ClothesName = "---- ";
+         }
+         if(order.clothesTemp[i].Color.isNull()|| order.clothesTemp[i].Color.size() < 1)
+         {
+             ClothesColor = "---- ";
+         }
+         if(order.clothesTemp[i].Brand.isNull()|| order.clothesTemp[i].Brand.size() < 1)
+         {
+             ClothesBrand = "---- ";
+         }
+         if(order.clothesTemp[i].Price.isNull()|| order.clothesTemp[i].Price.size() < 1)
+         {
+             ClothesPrice = "---- ";
+         }
+         text += ShelfNum + " " + ClothesName + " " + ClothesColor + " " + ClothesBrand + " " + ClothesPrice + '\n';
+    }
+
+    recordShelves(order.orderID,ShelfsOccupied);//修改一下订单里一共有多少个架号被占用了
+
+    text += "\n---------------------------------------\n";
+    text += QString("合计；    衣物%1件\n").arg(order.clothesTemp.size());
+    text += QString("付款方式：%1\n")      .arg(order.PayWay);
+    text += QString("总金额：%1元")   .arg(order.MoneyCount);
+    text += QString(" 折扣率：%1\n")        .arg(order.Discount);
+    text += QString("应收金额：%1元\n") .arg(order.AfterDiscountMoneyCount);
+    text += QString("充值卡号：%1\n")    .arg(order.customerCardID);
+    text += QString("卡余额：%1元\n")    .arg(order.CustomerCardMoney);
+    text += QString("实收金额：%1元\n")   .arg(order.InputMoney);
+    text += QString("找零：%1元")      .arg(order.OutputMoney);
+    if(!order.HaveNotPaid.contains("未欠缴"))
+    text += QString("客户已经欠缴：%1元").arg(order.HaveNotPaid);
+    text += "\n---------------------------------------\n";
+
+
+    text += QString("客户代号：%1").arg(order.customerID);
+    text += QString(" 店员姓名：%1\n").arg(pulic::getInstance()->currentUser->userInformation.Name);
     text += QString("客户姓名：%1\n").arg(order.customerName);
     text += QString("取衣日期：%1\n").arg(order.GetClothesDate);
     text += QString("查询电话：%1\n").arg(shopData.SearchPhone);
     text += QString("本店地址：%1\n").arg(shopData.ShopAddress);
-    text += QString("投诉电话：%1\n").arg(shopData.ComplaintsPhone);
-
-    text += "\n----------------------------------\n";
+    text += QString("投诉电话：%1").arg(shopData.ComplaintsPhone);
+    text += "\n---------------------------------------\n";
 
     text += shopData.AdvertiseMent;
 
 
-    text += "\n----------------------------------\n";
+    text += "\n---------------------------------------\n";
     text += "我对以上打印内容确认无误\n";
-    text += "\n----------------------------------\n";
-    text += "顾客签名：\n";
-    text += "\n";
-    text += "电话：\n";
-    text += "\n";
+    text += "\n---------------------------------------\n";
+    text += "顾客签名：  \n";
+    text += "电话：     \n";
+    text += "          \n";
+    text += "          \n";
+    text += "\n---------------------------------------\n";
 
-    // 打印机初始化
-    QPrinter printer;
-    // 指定打印机名称
-    printer.setPrinterName("CHITENG-CT320B");
-
-    // 设置纸张大小80*30mm（由于setPageSize默认设置中没有对应的纸张，所以需要转一手设置）
-    QPageSize customPageSize(QSizeF(80, 80), QPageSize::Millimeter);
-
-    // 纸张大小设定
-    printer.setPageSize(customPageSize);
-
-    //设置打印方向为横向
-    printer.setPageOrientation(QPageLayout::Portrait);
-
-    // 设置打印分辨率为300 DPI（常规设置，够用了）
-    printer.setResolution(300);
-
-    //设置打印份数
-    printer.setCopyCount(1);
-
-    // 另起一页，可以避免第一次使用时出现打印2次的情况
-    printer.newPage();
-
-
-//    // 使用QPainter在打印机上绘制图片
-//    QPainter painter(&printer);
-
-//    // 开始绘制
-//    painter.begin(&printer);
-
-//    QImage img =  QZXing::encodeData(order.orderID
-
-//                  ,QZXing::EncoderFormat::EncoderFormat_QR_CODE
-
-//                  ,QSize(80,80)
-
-//                  ,QZXing::EncodeErrorCorrectionLevel::EncodeErrorCorrectionLevel_H
-
-//                  ,true
-
-//                  ,false);
-
-
-//    // 调整打印坐标的图片大小，以适应页面大小或保持图片的比例
-//    qreal scaleX = printer.width() / img.width();
-//    qreal scaleY = printer.height() / img.height();
-//    qreal scale  = qMin(scaleX, scaleY);
-
-
-//    // 生成坐标和区域参数（二维码居中偏上，已调）
-//    QRect rect((printer.width() - img.width() * scale) / 2 - 25,
-//               (printer.height() - img.height() * scale) / 2 - 6,
-//               img.width() * scale,
-//               img.height() * scale);
-
-//    // 在坐标参数下打印图片
-//    painter.drawImage(rect, img);
-
-//    // 保存结果
-//    painter.save();
-
-//    // 设置文本字体
-//    QFont font("MS Reference Sans Serif", 10);
-//    painter.setFont(font);
-
-//    // 将绘制原点移到文本区域的中心
-//    painter.translate(rect.center());
-
-//    // 根据实际逆时针方向旋转文本（实际需要旋转270°）
-//    painter.rotate(270);
-
-//    //在二维码底部绘制文本（根据实际情况调整坐标，已调整）
-//    painter.drawText(QPointF(-rect.width() / 2 + 8,rect.height() / 2 + 55), order.orderID);
-
-//    // 恢复设置，可以避免第一次使用时出现打印2次的情况
-//    painter.restore();
-
-//    // 完成绘制
-//    painter.end();
-
-
-    qDebug() << text.split("\n");
+    textDocument.setTextWidth(mPrinter.pageRect().width()); // 减去一定的边距
+    QFont font("SimHei",10);  // 获取默认字体
+    font.setStyleStrategy(QFont::PreferAntialias);  // 优先使用抗锯齿
+    font.setHintingPreference(QFont::PreferFullHinting);  // 优先使用全提示
+    textDocument.setDefaultFont(font);  // 更新默认字体
+    textDocument.setPlainText(text);
 }
 
-void Printer::printSelectedOrder(QList<OrderInfo> order)
+void Printer::makeCurrentOrderTittleDocument(QTextDocument& tittleDocument,OrderInfo order)
 {
-
+    QString tittle;
+    tittle = +"        " + *pulic::getInstance()->currentAddress + "服务点（洗衣单）";
+    tittle += "\n   ---------------------------------   \n";
+    tittle += QString("           流水号：%1").arg(order.orderID);
+    tittleDocument.setTextWidth(mPrinter.pageRect().width()); // 减去一定的边距
+    QFont font("SimHei",10);  // 获取默认字体
+    font.setStyleStrategy(QFont::PreferAntialias);  // 优先使用抗锯齿
+    font.setHintingPreference(QFont::PreferFullHinting);  // 优先使用全提示
+    tittleDocument.setDefaultFont(font);  // 更新默认字体
+    tittleDocument.setPlainText(tittle);
 }
 
-void Printer::printUserCurrentOrder(OrderInfo order)
-{
-
-}
 
 void Printer::printTest()
 {
@@ -231,7 +326,7 @@ void Printer::printTest()
 
     // 创建 QPrinter 对象，指定使用高分辨率模式
     QPrinter printer(QPrinter::HighResolution);
-
+    printer.setResolution(300);
     // 设置纸张宽度为 80mm，高度为根据文本高度动态计算
     qreal paperWidth = 80; // 80mm
     qreal paperHeight = textSize.height() + 20; // 额外加上一定的边距，比如 20mm
@@ -309,3 +404,23 @@ void Printer::recordShelves(QString OrderID,QString& Shelves)
     }
 
 }
+
+QRect Printer::getDocumentBoundingRect(QTextDocument &doc) {
+    QSizeF size = doc.size(); // 获取文档的尺寸
+    return QRect(0, 0, size.width(), size.height()); // 创建 QRect
+}
+
+void Printer::set80mmPaperPrinter(QSizeF tittleDocumentSize,QSizeF textDocumentSize)
+{
+    // 设置自定义纸张尺寸（注意：部分打印机不支持自定义尺寸）
+    // 计算文本的宽高（以点为单位）
+    QSizeF textSize = tittleDocumentSize + textDocumentSize;
+    // 将点转换为毫米
+    qreal heightInMM = textSize.height() * 25.4 / 72;
+    // 额外加上边距，比如 20mm
+    qreal paperHeight = heightInMM; // 20mm边距
+    QPageSize customPageSize(QSizeF(80, paperHeight), QPageSize::Millimeter);
+    mPrinter.setPageSize(customPageSize);
+}
+
+

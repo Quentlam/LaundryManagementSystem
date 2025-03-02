@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2011 QZXing authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -108,7 +108,8 @@ public:
 
     enum EncoderFormat {
         EncoderFormat_INVALID,
-        EncoderFormat_QR_CODE
+        EncoderFormat_QR_CODE,
+        EncoderFormat_CODE_128
     };
 
     enum EncodeErrorCorrectionLevel {

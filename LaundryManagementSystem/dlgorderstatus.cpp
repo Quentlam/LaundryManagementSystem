@@ -234,11 +234,11 @@ void dlgOrderStatus::on_BtnClothesSent_clicked()
     auto db = pulic::getInstance()->getDB();
     db.transaction();
     auto status = sqlPtr->exec(QString("UPDATE OrderStatus SET ClothesSendStatus = '已发出' where OrderID = '%1';").arg(currentOrderID));
-    auto shelfStatus = sqlPtr->exec(QString("UPDATE Shelf%1 SET ShelfStatus = '%2' where ShelfID = '%3';")//要把架号还原
-    .arg(ui->tableWidget->item(ui->tableWidget->currentRow(),5)->text().right(1))
-    .arg("空").arg(ui->tableWidget->item(ui->tableWidget->currentRow(),5)->text()));
+    //auto shelfStatus = sqlPtr->exec(QString("UPDATE Shelf%1  SET ShelfStatus = '%2' where OrderID = '%3';")//不需要还原了
+    //.arg(ui->tableWidget->item(ui->tableWidget->currentRow(),5)->text().right(1))
+    //.arg("空").arg(ui->tableWidget->item(ui->tableWidget->currentRow(),0)->text()));
 
-    if(false == status || false == shelfStatus)
+    if(false == status)// || false == shelfStatus)
     {
         QMessageBox::information(nullptr,"信息","修改失败！");
         qDebug() << sqlPtr->lastError().text();
@@ -247,7 +247,7 @@ void dlgOrderStatus::on_BtnClothesSent_clicked()
     }
 
 
-    if(true == status && true == shelfStatus)
+    if(true == status)// && true == shelfStatus)
     {
         QMessageBox::information(nullptr,"信息","修改成功！");
         db.commit();

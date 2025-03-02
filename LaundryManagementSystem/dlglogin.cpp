@@ -13,14 +13,14 @@ dlgLogin::dlgLogin(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
-    QFile cssFile;
-    auto cssFilePath = QCoreApplication::applicationDirPath();
-    cssFile.setFileName(cssFilePath + "/" + "style.css");
-    cssFile.open(QIODevice::ReadOnly);
-    auto css = cssFile.readAll();
-    //qDebug() << css;
+//    QFile cssFile;
+//    auto cssFilePath = QCoreApplication::applicationDirPath();
+//    cssFile.setFileName(cssFilePath + "/" + "style.css");
+//    cssFile.open(QIODevice::ReadOnly);
+//    auto css = cssFile.readAll();
+//    qDebug() << css;
+//  this->setStyleSheet(css);
 
-    this->setStyleSheet(css);
 }
 
 dlgLogin::~dlgLogin()

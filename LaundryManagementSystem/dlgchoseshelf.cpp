@@ -10,6 +10,7 @@
 dlgChoseShelf::dlgChoseShelf(QWidget *parent) :
     QDialog(parent),
     shelfNumber("未选择"),
+    shelfSelected(false),
     ui(new Ui::dlgChoseShelf)
 {
     ui->setupUi(this);
@@ -83,6 +84,7 @@ void dlgChoseShelf::on_RAASet_clicked()
 {
     reFresh();
     shelfNumber = "未选择";
+    shelfSelected = false;
     ui->LBShelfNumber->setText(QString("当前选择的架号：未选择"));
     ui->tableWidget->clearSelection();
 }
@@ -91,6 +93,7 @@ void dlgChoseShelf::on_RABSet_clicked()
 {
     reFresh();
     shelfNumber = "未选择";
+    shelfSelected = false;
     ui->LBShelfNumber->setText(QString("当前选择的架号：未选择"));
     ui->tableWidget->clearSelection();
 }
@@ -125,7 +128,6 @@ void dlgChoseShelf::on_BtnEnter_clicked()
         return;
     }
 
-
     shelfSelected = true;
     shelfNumber = ui->tableWidget->currentItem()->text();
     this->close();
@@ -138,6 +140,7 @@ void dlgChoseShelf::keyPressEvent(QKeyEvent* event)
         if(nullptr == ui->tableWidget->currentItem()->text())
         {
             shelfNumber = "未选择";
+            shelfSelected = false;
             this->close();
             return;
         }

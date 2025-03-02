@@ -1,6 +1,7 @@
 ﻿#include "dlgneworder.h"
 #include "ui_dlgneworder.h"
 #include "pulic.h"
+#include "printpreviewwidget.h"
 #include <QSqlError>
 #include <QDebug>
 #include <QMessageBox>
@@ -207,7 +208,7 @@ void dlgNewOrder::on_BtnClothesTemp_clicked()
 
 void dlgNewOrder::on_BtnEnterOrder_clicked()
 {
-    if(!choseShelf.shelfSelected)
+    if(false == choseShelf.shelfSelected)
     {
         QMessageBox::information(nullptr,"信息","生成订单前，要先确认架号哦！");
         return;
@@ -220,6 +221,7 @@ void dlgNewOrder::on_BtnEnterOrder_clicked()
        {
            orderFinished = true;//此时订单成功创建了
            orderPrinter.printCustomerCurrentOrder(currentOrder);
+           orderPrinter.printUserCurrentOrder(currentOrder);
            //orderPrinter.printTest();
            emit CreateNewOrderSuccess();
            this->close();

@@ -30,6 +30,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+include($$PWD/zint/backend_qt/backend_qt.pro);
+
+
 CONFIG += c++17
 
 SOURCES += \
@@ -78,7 +81,8 @@ SOURCES += \
     shopdata.cpp \
     printer.cpp \
     dlgcustomergetclothes.cpp \
-    code128generator.cpp
+    code128generator.cpp \
+    printpreviewwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -125,7 +129,8 @@ HEADERS += \
     shopdata.h \
     printer.h \
     dlgcustomergetclothes.h \
-    code128generator.h
+    code128generator.h \
+    printpreviewwidget.h
 
 FORMS += \
         mainwindow.ui \
@@ -169,14 +174,19 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 
-
 RESOURCES += \
     src.qrc
 
-
+DEFINES += ZINT_VERSION="\\\"2.15.0.9\\\""
+DEFINES += ZINT_NO_PNG
 DEFINES += ENABLE_ENCODER_GENERIC
 
 win32: LIBS += -L$$PWD/../thirdParty/libs/ -lQZXing3
+win32: LIBS += -L$$PWD/../thirdParty/libs/ -lQtZint
+win32: LIBS += -L$$PWD/../thirdParty/libs/ -lzint
 
 INCLUDEPATH += $$PWD/../thirdParty/include/QZXing
 DEPENDPATH += $$PWD/../thirdParty/include/QZXing
+
+INCLUDEPATH += $$PWD/../thirdParty/include/zint/backend_qt
+DEPENDPATH += $$PWD/../thirdParty/include/zint/backend_qt
