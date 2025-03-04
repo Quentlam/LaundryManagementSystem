@@ -15,9 +15,9 @@ class dlgUpadateUser : public QDialog
 
 public:
     explicit dlgUpadateUser(QWidget *parent = nullptr);
-    explicit dlgUpadateUser(QWidget *parent, UserInformation Temp);
+    explicit dlgUpadateUser(QWidget *parent, userInfo Temp);
     ~dlgUpadateUser();
-    UserInformation userTemp;
+    userInfo userTemp;
     Operate updateUserOperate;
 
 

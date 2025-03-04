@@ -21,42 +21,26 @@ STSelectClothes02::~STSelectClothes02()
     delete ui;
 }
 
-void STSelectClothes02::keyPressEvent(QKeyEvent* event)
-{
-    for (int row = 0; row < ui->tableWidget->rowCount(); ++row)
-    {
-        bool rowMatches = false;
-        for (int column = 0; column < ui->tableWidget->columnCount(); ++column) {
-            QTableWidgetItem *item = ui->tableWidget->item(row, column);
-            if (item) {
-                // 判断单元格文本是否包含搜索词
-                if (item->text() == (ui->lineEdit->text())) {
-                    rowMatches = true;
-                    message = ui->tableWidget->item(row,1)->text();
-                    ui->lineEdit->clear();
-                    emit chosenMessage();
-                    return;
-                }
-            }
-        }
-        // 根据是否匹配来发送信号
-
-    }
-}
-
-void STSelectClothes02::lineFocus()
-{
-    ui->lineEdit->setFocus();
-}
-
 void STSelectClothes02::on_tableWidget_cellClicked(int row, int column)
 {
+    if(ui->tableWidget->item(ui->tableWidget->currentRow(),0)->text().isNull())
+    {
+        return;
+    }
+    QString text = ui->tableWidget->item(row,0)->text();
+    bool isNumber = false;
+    text.toInt(&isNumber);
+    if(!isNumber)
+    {
+        return;
+    }
     message = ui->tableWidget->item(row,1)->text();
     //qDebug() << "message:" << message;
     emit chosenMessage();
 }
 
-void STSelectClothes02::on_lineEdit_textChanged(const QString &arg1)
+
+bool STSelectClothes02::searchClothes(QString text)
 {
     for (int row = 0; row < ui->tableWidget->rowCount(); ++row)
     {
@@ -65,40 +49,31 @@ void STSelectClothes02::on_lineEdit_textChanged(const QString &arg1)
             QTableWidgetItem *item = ui->tableWidget->item(row, column);
             if (item) {
                 // 判断单元格文本是否包含搜索词
-                if (item->text().contains(arg1,Qt::CaseInsensitive)) {
+                if (item->text() == (text)) {
                     rowMatches = true;
-                    break;
+                    message = ui->tableWidget->item(row,1)->text();
+                    emit chosenMessage();
+                    return true;
                 }
             }
         }
-        // 根据是否匹配来显示或隐藏行
-        ui->tableWidget->setRowHidden(row, !rowMatches);
+        // 根据是否匹配来发送信号
     }
+    return false;
 }
 
 void STSelectClothes02::reFresh()
 {
-    QList<QString> tittle;
-    tittle << "编号" << "衣服瑕疵";
-    auto sqlPtr = pulic::getInstance()->sql;
-    sqlPtr->exec("select count(ID) from ClothesBrand");
-    sqlPtr->next();
-    int Ctn = sqlPtr->value(0).toInt();
-    ui->tableWidget->setRowCount(Ctn);
-    ui->tableWidget->setColumnCount(tittle.size());
-    for(int i = 0 ; i < tittle.size(); i ++)
-    ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem(tittle[i]));
+    std::unique_ptr<QList<clothesAttributeInfo>> clothesAttributeTempList = sqlManager::createClothesSql()->showClothesBrandInfo();
+    ui->tableWidget->setRowCount(clothesAttributeTempList->size());
+    ui->tableWidget->setColumnCount(clothesInfo::clothesBrandTittle.size());
+    for(int i = 0 ; i < clothesInfo::clothesBrandTittle.size(); i ++)
+    ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem(clothesInfo::clothesBrandTittle[i]));
 
-    sqlPtr->exec("select * from ClothesBrand");
-    int i = 0;
-    QString ID;
-    QString name;
-    while(sqlPtr->next())
+
+    for(int i = 0 ; i < clothesAttributeTempList->size(); i ++)
     {
-        ID = sqlPtr->value(0).toString();
-        ui->tableWidget->setItem(i,0,new QTableWidgetItem(ID));
-        name = sqlPtr->value(1).toString();
-        ui->tableWidget->setItem(i,1,new QTableWidgetItem(name));
-        i++;
+        ui->tableWidget->setItem(i,0,new QTableWidgetItem((*clothesAttributeTempList)[i].ID));
+        ui->tableWidget->setItem(i,1,new QTableWidgetItem((*clothesAttributeTempList)[i].Name));
     }
 }

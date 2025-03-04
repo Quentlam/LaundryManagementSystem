@@ -126,8 +126,6 @@ void dlgCustomerRecharge::on_BtnPayForHaveNotPay_clicked()
     dlgPayForNotPay = new dlgCustomerCostForHaveNotPaid(nullptr,currentCustomer);
     connect(dlgPayForNotPay,&dlgCustomerCostForHaveNotPaid::PayForNotPaidSuccess,this,&dlgCustomerRecharge::updateForPayForNotPaid);
     dlgPayForNotPay->exec();
-
-
 }
 
 void dlgCustomerRecharge::updateForPayForNotPaid()

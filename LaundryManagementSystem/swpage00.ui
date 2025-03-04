@@ -10,25 +10,23 @@
     <height>480</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>微软雅黑</family>
+    <pointsize>11</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="4">
-    <widget class="QPushButton" name="BtnLeather">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>100</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-      </font>
+   <item row="0" column="6">
+    <widget class="QLabel" name="label_5">
+     <property name="styleSheet">
+      <string notr="true">image: url(:/yurong.png);</string>
      </property>
      <property name="text">
-      <string>皮衣</string>
+      <string/>
      </property>
     </widget>
    </item>
@@ -47,8 +45,8 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="2">
-    <widget class="QPushButton" name="BtnDry">
+   <item row="1" column="5">
+    <widget class="QPushButton" name="BtnSingleIroning">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -58,13 +56,40 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
-     <property name="styleSheet">
-      <string notr="true"/>
+     <property name="text">
+      <string>单烫</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="4">
+    <widget class="QPushButton" name="BtnLeather">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
      </property>
      <property name="text">
-      <string>干洗</string>
+      <string>皮衣</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="5">
+    <widget class="QLabel" name="label_4">
+     <property name="styleSheet">
+      <string notr="true">image: url(:/lifu.png);</string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </item>
@@ -83,6 +108,47 @@
      </property>
     </widget>
    </item>
+   <item row="1" column="3">
+    <widget class="QPushButton" name="BtnWater">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>水洗</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QPushButton" name="BtnDry">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="text">
+      <string>干洗</string>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="3">
     <widget class="QLabel" name="label_2">
      <property name="font">
@@ -98,42 +164,6 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="5">
-    <widget class="QPushButton" name="BtnSingleIroning">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>100</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-      </font>
-     </property>
-     <property name="text">
-      <string>单烫</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="3">
-    <widget class="QPushButton" name="BtnWater">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>100</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <family>微软雅黑</family>
-      </font>
-     </property>
-     <property name="text">
-      <string>水洗</string>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="6">
     <widget class="QPushButton" name="BtnOther">
      <property name="minimumSize">
@@ -145,30 +175,11 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
       <string>其他</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="5">
-    <widget class="QLabel" name="label_4">
-     <property name="styleSheet">
-      <string notr="true">image: url(:/lifu.png);</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="6">
-    <widget class="QLabel" name="label_5">
-     <property name="styleSheet">
-      <string notr="true">image: url(:/yurong.png);</string>
-     </property>
-     <property name="text">
-      <string/>
      </property>
     </widget>
    </item>

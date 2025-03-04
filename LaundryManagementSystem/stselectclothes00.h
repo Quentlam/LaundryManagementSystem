@@ -17,8 +17,7 @@ public:
     QString message;
 
     void reFresh();
-    void keyPressEvent(QKeyEvent *event);
-    void lineFocus();
+    bool searchClothes(QString text);
 private:
     Ui::STSelectClothes00 *ui;
 
@@ -27,7 +26,6 @@ signals:
 
 private slots:
     void on_tableWidget_cellClicked(int row, int column);
-    void on_lineEdit_textChanged(const QString &arg1);
 };
 
 #endif // STSELECTCLOTHES00_H

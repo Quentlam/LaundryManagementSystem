@@ -12,8 +12,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>1200</width>
-    <height>540</height>
+    <width>840</width>
+    <height>300</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -21,6 +21,12 @@
     <width>1200</width>
     <height>540</height>
    </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>微软雅黑</family>
+    <pointsize>11</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -34,22 +40,15 @@
        <height>99999</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLineEdit" name="lineEdit">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>40</height>
-      </size>
-     </property>
-     <property name="placeholderText">
-      <string>请输入关键词搜索</string>
-     </property>
     </widget>
    </item>
   </layout>

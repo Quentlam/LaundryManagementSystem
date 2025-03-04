@@ -18,14 +18,9 @@ public:
     QString Name;
     QString Price;
 
-
-
-    void keyPressEvent(QKeyEvent *event);
-    void lineFocus();
+    bool searchClothes(QString text);
 private slots:
     void on_tableWidget_cellClicked(int row, int column);
-
-    void on_LeSearch_textChanged(const QString &arg1);
 
 private:
     Ui::STSelectClothesTypeAndPrice *ui;

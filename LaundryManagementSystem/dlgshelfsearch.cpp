@@ -26,27 +26,20 @@ dlgShelfSearch::~dlgShelfSearch()
 
 void dlgShelfSearch::reFresh()
 {
-    auto sqlPtr = pulic::getInstance()->sql;
-    QList<QString> ShelfID;
-    QList<QString> ShelfStatus;
+    std::unique_ptr<QList<shelfInfo>> Shelves;
+    ui->tableWidget->clear();
     shelfNumber = "未选择";
     shelfSelected = false;
     if(ui->RAASet->isChecked())
     {
-        sqlPtr->exec("select * from ShelfA");
+        Shelves = sqlManager::createShelfSql()->selectAllShelves(shelfInfo::shelfSet::A);
         ui->LBShelfSet->setText(QString("当前选择的架号系列：%1").arg("A"));
     }
 
     if(ui->RABSet->isChecked())
     {
-        sqlPtr->exec("select * from ShelfB");
+        Shelves = sqlManager::createShelfSql()->selectAllShelves(shelfInfo::shelfSet::B);
         ui->LBShelfSet->setText(QString("当前选择的架号系列：%1").arg("B"));
-    }
-
-    while(sqlPtr->next())
-    {
-        ShelfID.push_back(sqlPtr->value(0).toString());
-        ShelfStatus.push_back(sqlPtr->value(1).toString());
     }
 
     int k = 0;
@@ -55,8 +48,8 @@ void dlgShelfSearch::reFresh()
             for(int i = 0 ; i < 13 ; i ++)//第几列
             {
                 if(k > 999)break;
-                ui->tableWidget->setItem(j,i,new QTableWidgetItem(ShelfID[k]));
-                if("已上架" == ShelfStatus[k ++])
+                ui->tableWidget->setItem(j,i,new QTableWidgetItem((*Shelves)[k].ID));
+                if("已上架" == (*Shelves)[k ++].status)
                 {
                   ui->tableWidget->item(j,i)->setForeground(QBrush(QColor("red")));
                 }
@@ -95,10 +88,15 @@ void dlgShelfSearch::on_RABSet_clicked()
 
 void dlgShelfSearch::on_BtnUp_clicked()
 {
-    auto sqlPtr = pulic::getInstance()->sql;
-
+    if(255 == ui->tableWidget->currentItem()->foreground().color().red())//如果字体是红色的
+    {
+        QMessageBox::information(nullptr,"信息","该格架已使用！请更换！");
+        return;
+    }
     auto answer = QMessageBox::question(nullptr,"信息","您确定要将此架号上架？",QMessageBox::Yes,QMessageBox::No);
-    auto ShelfOccupy = sqlPtr->exec(QString("update Shelf%1 set ShelfStatus = '已上架' where ShelfID = '%2'; ").arg(ui->LBShelfSet->text().right(1)).arg(shelfNumber));
+    QString set = ui->LBShelfSet->text().right(1);
+    auto ShelfOccupy = sqlManager::createShelfSql()->setShelfOccupy(shelfNumber,ui->LBShelfSet->text().right(1));
+
     if(true == ShelfOccupy && QMessageBox::Yes == answer)
     {
         QMessageBox::information(nullptr,"信息","上架成功！");
@@ -108,18 +106,16 @@ void dlgShelfSearch::on_BtnUp_clicked()
 
     if(false == ShelfOccupy)
     {
+        sqlManager::createShelfSql()->getError();
         QMessageBox::information(nullptr,"信息","上架失败！");
-        qDebug() << sqlPtr->lastError().text();
         return;
     }
 }
 
 void dlgShelfSearch::on_BtnDown_clicked()
 {
-    auto sqlPtr = pulic::getInstance()->sql;
-
     auto answer = QMessageBox::question(nullptr,"信息","您确定要将此架号下架？",QMessageBox::Yes,QMessageBox::No);
-    auto ShelfOccupy = sqlPtr->exec(QString("update Shelf%1 set ShelfStatus = '空' where ShelfID = '%2'; ").arg(ui->LBShelfSet->text().right(1)).arg(shelfNumber));
+    auto ShelfOccupy = sqlManager::createShelfSql()->setShelfNotOccupy(shelfNumber,ui->LBShelfSet->text().right(1));
     if(true == ShelfOccupy && QMessageBox::Yes == answer)
     {
         QMessageBox::information(nullptr,"信息","下架成功！");
@@ -129,8 +125,8 @@ void dlgShelfSearch::on_BtnDown_clicked()
 
     if(false == ShelfOccupy)
     {
+        sqlManager::createShelfSql()->getError();
         QMessageBox::information(nullptr,"信息","下架失败！");
-        qDebug() << sqlPtr->lastError().text();
         return;
     }
 

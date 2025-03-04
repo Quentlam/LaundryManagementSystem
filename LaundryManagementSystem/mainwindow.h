@@ -10,6 +10,7 @@
 #include "dlgmanage.h"
 #include "dlgcustomerrecharge.h"
 #include "dlgSearch.h"
+#include "sqlmanager.h"
 
 namespace Ui {
 class MainWindow;
@@ -26,6 +27,7 @@ public:
     {
         if(nullptr == Instance)
         {
+            //sqlManager::createSqlManager();//这个也要初始化，不然一切都炸
             return new MainWindow();
         }
 

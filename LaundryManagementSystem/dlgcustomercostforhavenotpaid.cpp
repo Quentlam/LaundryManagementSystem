@@ -13,9 +13,9 @@ dlgCustomerCostForHaveNotPaid::dlgCustomerCostForHaveNotPaid(QWidget *parent,cus
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
-    if("欠缴" == customerTemp.HaveNotPaid)
+    if("欠缴" == this->customerTemp.HaveNotPaid)
     {
-         ui->LeHaveNotPaidMoney->setText(customerTemp.HaveNotPaidMoney);
+         ui->LeHaveNotPaidMoney->setText(this->customerTemp.HaveNotPaidMoney);
     }
     else
     {
@@ -23,7 +23,7 @@ dlgCustomerCostForHaveNotPaid::dlgCustomerCostForHaveNotPaid(QWidget *parent,cus
     }
     ui->LeHaveNotPaidMoney->setEnabled(false);
 
-    ui->LeCardMoney->setText(QString::number(customerTemp.CardMoney));
+    ui->LeCardMoney->setText(QString::number(this->customerTemp.CardMoney));
     ui->LeCardMoney->setEnabled(false);
     //回显一下客户有多少钱，并且欠了多少钱
 
@@ -80,6 +80,7 @@ void dlgCustomerCostForHaveNotPaid::on_BtnEnter_clicked()
          {
              QMessageBox::information(nullptr,"信息","缴费成功！");
              emit PayForNotPaidSuccess();
+             accept();
              this->close();
          }
 
@@ -107,6 +108,7 @@ void dlgCustomerCostForHaveNotPaid::on_BtnEnter_clicked()
 
 void dlgCustomerCostForHaveNotPaid::on_BtnCancel_clicked()
 {
+    reject();
     this->close();
 }
 

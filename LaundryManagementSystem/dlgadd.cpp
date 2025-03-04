@@ -8,6 +8,8 @@
 #include "customerinfo.h"
 #include "clothesinfo.h"
 #include <QSqlError>
+#include <QVariant>
+#include "sqlmanager.h"
 
 dlgAdd::dlgAdd(QWidget *parent) :
     QDialog(parent),
@@ -73,66 +75,39 @@ int dlgAdd::choseMode()
 
 void dlgAdd::reFresh(int index)
 {
-    auto sqlPtr = pulic::getInstance()->sql;
     currentMode = index;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////查看客户信息
     if(0 == currentMode)//选择客户
     {
         ui->tableWidget->clear();
-        QList<QString> customerTittle;
-        QList<customerInfo> customerListTemp;
-        customerInfo customerTemp;
-        customerTittle << "客户编号" << "客户性别" << "客户姓名"  << "客户电话" << "客户卡号" << "消费额" << "消费次数" << "消费卡种类" << "欠缴情况" << "欠缴余额" << "客户卡剩余余额" << "客户住址" << "客户信用" << "备注";
+
+        std::unique_ptr<QList<customerInfo>> customerListTemp;
+        customerListTemp = sqlManager::createCustomerSql()->selectAllCustomerInfo();
+
+        ui->LbCount->setText(QString("当前总客户人数:%1").arg(customerListTemp->size()));
+        ui->tableWidget->setRowCount(customerListTemp->size());
+        ui->tableWidget->setColumnCount(customerInfo::customerTittle.size());
 
 
-        sqlPtr->exec("select count(ID) from Customer");
-        sqlPtr->next();
-        int Cnt = sqlPtr->value(0).toInt();
-        ui->LbCount->setText(QString("当前总客户人数:%1").arg(Cnt));
-        ui->tableWidget->setRowCount(Cnt);
-        ui->tableWidget->setColumnCount(customerTittle.size());
+        for(int i = 0; i < customerInfo::customerTittle.size() ; i ++)
+        ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem (customerInfo::customerTittle[i]));//设置tittle
 
-
-        for(int i = 0; i < customerTittle.size() ; i ++)
-        ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem (customerTittle[i]));//设置tittle
-
-
-        sqlPtr->exec("select * from Customer");
-        while(sqlPtr->next())//从数据库里把所有的客户查出来
+        for(int i = 0; i < customerListTemp->size(); i ++ )//客户的数据回显
         {
-            customerTemp.ID = sqlPtr->value(0).toString();
-            customerTemp.Gender = sqlPtr->value(1).toString();
-            customerTemp.Name = sqlPtr->value(2).toString();
-            customerTemp.Phone = sqlPtr->value(3).toString();
-            customerTemp.CardID = sqlPtr->value(4).toString();
-            customerTemp.Spend = sqlPtr->value(5).toDouble();
-            customerTemp.Count = sqlPtr->value(6).toDouble();
-            customerTemp.CardType = sqlPtr->value(7).toString();
-            customerTemp.HaveNotPaid = sqlPtr->value(8).toString();
-            customerTemp.HaveNotPaidMoney = sqlPtr->value(9).toString();
-            customerTemp.CardMoney = sqlPtr->value(10).toDouble();
-            customerTemp.Address = sqlPtr->value(11).toString();
-            customerTemp.Credit = sqlPtr->value(12).toString();
-            customerTemp.Notes = sqlPtr->value(13).toString();
-            customerListTemp.push_back(customerTemp);
-        }
-
-        for(int i = 0; i < customerListTemp.size(); i ++ )//客户的数据回显
-        {
-            ui->tableWidget->setItem(i,0,new QTableWidgetItem(customerListTemp[i].ID));
-            ui->tableWidget->setItem(i,1,new QTableWidgetItem(customerListTemp[i].Gender));
-            ui->tableWidget->setItem(i,2,new QTableWidgetItem(customerListTemp[i].Name));
-            ui->tableWidget->setItem(i,3,new QTableWidgetItem(customerListTemp[i].Phone));
-            ui->tableWidget->setItem(i,4,new QTableWidgetItem(customerListTemp[i].CardID));
-            ui->tableWidget->setItem(i,5,new QTableWidgetItem(QString::number(customerListTemp[i].Spend)));
-            ui->tableWidget->setItem(i,6,new QTableWidgetItem(QString::number(customerListTemp[i].Count)));
-            ui->tableWidget->setItem(i,7,new QTableWidgetItem(customerListTemp[i].CardType));
-            ui->tableWidget->setItem(i,8,new QTableWidgetItem(customerListTemp[i].HaveNotPaid));
-            ui->tableWidget->setItem(i,9,new QTableWidgetItem(customerListTemp[i].HaveNotPaidMoney));
-            ui->tableWidget->setItem(i,10,new QTableWidgetItem(QString::number(customerListTemp[i].CardMoney)));
-            ui->tableWidget->setItem(i,11,new QTableWidgetItem(customerListTemp[i].Address));
-            ui->tableWidget->setItem(i,12,new QTableWidgetItem(customerListTemp[i].Credit));
-            ui->tableWidget->setItem(i,13,new QTableWidgetItem(customerListTemp[i].Notes));
+            ui->tableWidget->setItem(i,0,new QTableWidgetItem((*customerListTemp)[i].ID));
+            ui->tableWidget->setItem(i,1,new QTableWidgetItem((*customerListTemp)[i].Gender));
+            ui->tableWidget->setItem(i,2,new QTableWidgetItem((*customerListTemp)[i].Name));
+            ui->tableWidget->setItem(i,3,new QTableWidgetItem((*customerListTemp)[i].Phone));
+            ui->tableWidget->setItem(i,4,new QTableWidgetItem((*customerListTemp)[i].CardID));
+            ui->tableWidget->setItem(i,5,new QTableWidgetItem(QString::number((*customerListTemp)[i].Spend)));
+            ui->tableWidget->setItem(i,6,new QTableWidgetItem(QString::number((*customerListTemp)[i].Count)));
+            ui->tableWidget->setItem(i,7,new QTableWidgetItem((*customerListTemp)[i].CardType));
+            ui->tableWidget->setItem(i,8,new QTableWidgetItem((*customerListTemp)[i].HaveNotPaid));
+            ui->tableWidget->setItem(i,9,new QTableWidgetItem((*customerListTemp)[i].HaveNotPaidMoney));
+            ui->tableWidget->setItem(i,10,new QTableWidgetItem(QString::number((*customerListTemp)[i].CardMoney)));
+            ui->tableWidget->setItem(i,11,new QTableWidgetItem((*customerListTemp)[i].Address));
+            ui->tableWidget->setItem(i,12,new QTableWidgetItem((*customerListTemp)[i].Credit));
+            ui->tableWidget->setItem(i,13,new QTableWidgetItem((*customerListTemp)[i].Notes));
         }
          ui->tableWidget->update();
 
@@ -145,10 +120,6 @@ void dlgAdd::reFresh(int index)
     else if(1 == currentMode)//选择衣物种类
     {
         ui->tableWidget->clear();
-        QList<clothesInfo> clothesListTemp;
-        QList<QString> clothesTittle;
-        clothesInfo clothesTemp;
-
         ui->ClothesBrand->show();
         ui->ClothesTreatment->show();
         ui->ClothesEffect->show();
@@ -160,311 +131,124 @@ void dlgAdd::reFresh(int index)
 
         if(ui->ClothesNameAndPrice->isChecked())
        {
-        clothesTittle.clear();
         ui->tableWidget->clear();
         QString washWay = ui->CBWashWay->currentText();
-        clothesTittle << "衣服ID" << "衣服名称" << "建议价格" << "衣服类型" << "衣物处理";
+        clothesInfo::WashWayType type = clothesInfo::allClothes;
+        //以下是选择类型
+        if("全部" == washWay)
+        type = clothesInfo::allClothes;
+        if("水洗" == washWay)
+        type = clothesInfo::wash;
+        if("干洗" == washWay)
+        type = clothesInfo::dryClean;
+        if("皮衣" == washWay)
+        type = clothesInfo::leatherCoat;
+        if("单烫" == washWay)
+        type = clothesInfo::singleIroning;
+        if("其他" == washWay)
+        type = clothesInfo::other;
 
-        if("全部" == washWay)//如果是全部，那么就全部放上去
+        std::unique_ptr<QList<clothesInfo>> clothesTempList;
+        clothesTempList = sqlManager::createClothesSql()->showClothesInfo(type);
+        ui->LbCount->setText(QString("当前衣物种类总数:%1").arg(clothesTempList->size()));
+        ui->tableWidget->setRowCount(clothesTempList->size());
+        ui->tableWidget->setColumnCount(clothesInfo::clothesTittle.size());
+
+        for(int i = 0 ; i < clothesInfo::clothesTittle.size(); i ++)
+        ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem(clothesInfo::clothesTittle[i]));//设置tittle
+
+        for(int i = 0; i < clothesTempList->size(); i ++)//把所有的衣服都查出来都放上去
         {
-            sqlPtr->exec(QString("select count(ID) from Clothes"));
-            sqlPtr->next();
-            int Cnt = sqlPtr->value(0).toInt();
-            ui->LbCount->setText(QString("当前衣物种类总数:%1").arg(Cnt));
-            ui->tableWidget->setRowCount(Cnt);
-            ui->tableWidget->setColumnCount(clothesTittle.size());
-
-            for(int i = 0 ; i < clothesTittle.size(); i ++)
-            ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem(clothesTittle[i]));//设置tittle
-
-
-
-
-            sqlPtr->exec(QString("select * from Clothes"));
-            while(sqlPtr->next())
-            {
-                clothesTemp.ID = sqlPtr->value(0).toString();
-                clothesTemp.Name = sqlPtr->value(1).toString();
-                clothesTemp.Price = sqlPtr->value(2).toInt();
-                clothesTemp.Type = sqlPtr->value(3).toString();
-                clothesTemp.WashWay = sqlPtr->value(4).toString();
-                clothesListTemp.push_back(clothesTemp);
-
-            }
-
-            for(int i = 0; i < clothesListTemp.size(); i ++)//把所有的衣服都查出来都放上去
-            {
-                ui->tableWidget->setItem(i,0,new QTableWidgetItem(clothesListTemp[i].ID));
-                ui->tableWidget->setItem(i,1,new QTableWidgetItem(clothesListTemp[i].Name));
-                ui->tableWidget->setItem(i,2,new QTableWidgetItem(QString::number(clothesListTemp[i].Price)));
-                ui->tableWidget->setItem(i,3,new QTableWidgetItem(clothesListTemp[i].Type));
-                ui->tableWidget->setItem(i,4,new QTableWidgetItem(clothesListTemp[i].WashWay));
-            }
+            ui->tableWidget->setItem(i,0,new QTableWidgetItem((*clothesTempList)[i].ID));
+            ui->tableWidget->setItem(i,1,new QTableWidgetItem((*clothesTempList)[i].Name));
+            ui->tableWidget->setItem(i,2,new QTableWidgetItem(QString::number((*clothesTempList)[i].Price)));
+            ui->tableWidget->setItem(i,3,new QTableWidgetItem((*clothesTempList)[i].Type));
+            ui->tableWidget->setItem(i,4,new QTableWidgetItem((*clothesTempList)[i].WashWay));
+        }
 
              ui->tableWidget->update();
              return;
         }
 
-        sqlPtr->exec(QString("select count(ID) from Clothes where WashWay = '%1';").arg(washWay));
-        sqlPtr->next();
-        int Cnt = sqlPtr->value(0).toInt();
-        ui->LbCount->setText(QString("当前衣物种类总数:%1").arg(Cnt));
-        ui->tableWidget->setRowCount(Cnt);
-        ui->tableWidget->setColumnCount(clothesTittle.size());
 
-        for(int i = 0 ; i < clothesTittle.size(); i ++)
-        ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem(clothesTittle[i]));//设置tittle
-
-
-
-
-        sqlPtr->exec(QString("select * from Clothes where WashWay = '%1'").arg(washWay));
-        while(sqlPtr->next())
+        if(!ui->ClothesNameAndPrice->isChecked())
         {
-            clothesTemp.ID = sqlPtr->value(0).toString();
-            clothesTemp.Name = sqlPtr->value(1).toString();
-            clothesTemp.Price = sqlPtr->value(2).toInt();
-            clothesTemp.Type = sqlPtr->value(3).toString();
-            clothesTemp.WashWay = sqlPtr->value(4).toString();
-            clothesListTemp.push_back(clothesTemp);
-
-        }
-
-        for(int i = 0; i < clothesListTemp.size(); i ++)//把所有的衣服都查出来都放上去
-        {
-            ui->tableWidget->setItem(i,0,new QTableWidgetItem(clothesListTemp[i].ID));
-            ui->tableWidget->setItem(i,1,new QTableWidgetItem(clothesListTemp[i].Name));
-            ui->tableWidget->setItem(i,2,new QTableWidgetItem(QString::number(clothesListTemp[i].Price)));
-            ui->tableWidget->setItem(i,3,new QTableWidgetItem(clothesListTemp[i].Type));
-            ui->tableWidget->setItem(i,4,new QTableWidgetItem(clothesListTemp[i].WashWay));
-        }
-
-         ui->tableWidget->update();
-       }
-
-
-
-
+            ui->tableWidget->clear();
+            std::unique_ptr<QList<clothesAttributeInfo>> clothesAttributeList;
+            QList<QString>* tittle;
         if(ui->ClothesColor->isChecked())////////////////////////选择了衣服，如果选择了衣服的颜色
        {
-        ui->tableWidget->clear();
-        clothesTittle.clear();
-        clothesTittle << "ID" << "衣服颜色";
-
-        sqlPtr->exec("select count(ID) from ClothesColor");
-        sqlPtr->next();
-        int Cnt = sqlPtr->value(0).toInt();
-        ui->LbCount->setText(QString("当前衣物颜色总数:%1").arg(Cnt));
-        ui->tableWidget->setRowCount(Cnt);
-        ui->tableWidget->setColumnCount(clothesTittle.size());
-
-        for(int i = 0 ; i < clothesTittle.size(); i ++)
-        ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem(clothesTittle[i]));//设置tittle
-
-
-
-
-        sqlPtr->exec("select * from ClothesColor");
-
-
-        for(int i = 0;sqlPtr->next(); i ++)//把所有的衣服颜色都查出来都放上去
-        {
-            ui->tableWidget->setItem(i,0,new QTableWidgetItem(sqlPtr->value(0).toString()));
-            ui->tableWidget->setItem(i,1,new QTableWidgetItem(sqlPtr->value(1).toString()));
-        }
-
-         ui->tableWidget->update();
+            tittle = &clothesInfo::clothesColorTittle;
+            clothesAttributeList = sqlManager::createClothesSql()->showClothesColorInfo();//查询
+            ui->LbCount->setText(QString("当前衣物颜色总数:%1").arg(clothesAttributeList->size()));
        }
-
-
-
         if(ui->ClothesDefect->isChecked())////////////////////////选择了衣服，如果选择了衣服的瑕疵
        {
-        ui->tableWidget->clear();
-        clothesTittle.clear();
-        clothesTittle << "ID" << "衣服瑕疵";
-
-        sqlPtr->exec("select count(ID) from ClothesDefect");
-        sqlPtr->next();
-        int Cnt = sqlPtr->value(0).toInt();
-        ui->LbCount->setText(QString("当前衣物瑕疵总数:%1").arg(Cnt));
-        ui->tableWidget->setRowCount(Cnt);
-        ui->tableWidget->setColumnCount(clothesTittle.size());
-
-        for(int i = 0 ; i < clothesTittle.size(); i ++)
-        ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem(clothesTittle[i]));//设置tittle
-
-
-
-
-        sqlPtr->exec("select * from ClothesDefect");
-
-
-        for(int i = 0;sqlPtr->next(); i ++)//把所有的衣服瑕疵都查出来都放上去
-        {
-            ui->tableWidget->setItem(i,0,new QTableWidgetItem(sqlPtr->value(0).toString()));
-            ui->tableWidget->setItem(i,1,new QTableWidgetItem(sqlPtr->value(1).toString()));
-        }
-
-         ui->tableWidget->update();
+            tittle = &clothesInfo::clothesDefectTittle;
+            clothesAttributeList = sqlManager::createClothesSql()->showClothesDefectInfo();//查询
+            ui->LbCount->setText(QString("当前衣物瑕疵总数:%1").arg(clothesAttributeList->size()));
        }
-
-
-
-
         if(ui->ClothesBrand->isChecked())////////////////////////选择了衣服，如果选择了衣服的品牌
        {
-        ui->tableWidget->clear();
-        clothesTittle.clear();
-        clothesTittle << "ID" << "衣服品牌";
-
-        sqlPtr->exec("select count(ID) from ClothesBrand");
-        sqlPtr->next();
-        int Cnt = sqlPtr->value(0).toInt();
-        ui->LbCount->setText(QString("当前衣物品牌总数:%1").arg(Cnt));
-        ui->tableWidget->setRowCount(Cnt);
-        ui->tableWidget->setColumnCount(clothesTittle.size());
-
-        for(int i = 0 ; i < clothesTittle.size(); i ++)
-        ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem(clothesTittle[i]));//设置tittle
-
-
-
-
-        sqlPtr->exec("select * from ClothesBrand");
-
-
-        for(int i = 0;sqlPtr->next(); i ++)//把所有的衣服品牌都查出来都放上去
-        {
-            ui->tableWidget->setItem(i,0,new QTableWidgetItem(sqlPtr->value(0).toString()));
-            ui->tableWidget->setItem(i,1,new QTableWidgetItem(sqlPtr->value(1).toString()));
-        }
-
-         ui->tableWidget->update();
+            tittle = &clothesInfo::clothesBrandTittle;
+            clothesAttributeList = sqlManager::createClothesSql()->showClothesBrandInfo();//查询
+            ui->LbCount->setText(QString("当前衣物品牌总数:%1").arg(clothesAttributeList->size()));
        }
-
-
-
         if(ui->ClothesTreatment->isChecked())////////////////////////选择了衣服，如果选择了衣服的特殊处理
        {
-        ui->tableWidget->clear();
-        clothesTittle.clear();
-        clothesTittle << "ID" << "特殊处理";
-
-        sqlPtr->exec("select count(ID) from SpecialTreatment");
-        sqlPtr->next();
-        int Cnt = sqlPtr->value(0).toInt();
-        ui->LbCount->setText(QString("当前特殊处理总数:%1").arg(Cnt));
-        ui->tableWidget->setRowCount(Cnt);
-        ui->tableWidget->setColumnCount(clothesTittle.size());
-
-        for(int i = 0 ; i < clothesTittle.size(); i ++)
-        ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem(clothesTittle[i]));//设置tittle
-
-
-
-
-        sqlPtr->exec("select * from SpecialTreatment");
-
-
-        for(int i = 0;sqlPtr->next(); i ++)//把所有的衣服品牌都查出来都放上去
-        {
-            ui->tableWidget->setItem(i,0,new QTableWidgetItem(sqlPtr->value(0).toString()));
-            ui->tableWidget->setItem(i,1,new QTableWidgetItem(sqlPtr->value(1).toString()));
-        }
-
-         ui->tableWidget->update();
+            tittle = &clothesInfo::clothesSpecialTreatmentTittle;
+            clothesAttributeList = sqlManager::createClothesSql()->showClothesSpecialTreatmentInfo();//查询
+            ui->LbCount->setText(QString("当前衣物特殊处理总数:%1").arg(clothesAttributeList->size()));
        }
-
-
-
 
         if(ui->ClothesEffect->isChecked())////////////////////////选择了衣服，如果选择了衣服的洗后效果
        {
-        ui->tableWidget->clear();
-        clothesTittle.clear();
-        clothesTittle << "ID" << "衣服洗后效果";
-
-        sqlPtr->exec("select count(ID) from WashingEffect");
-        sqlPtr->next();
-        int Cnt = sqlPtr->value(0).toInt();
-        ui->LbCount->setText(QString("当前洗后效果总数:%1").arg(Cnt));
-        ui->tableWidget->setRowCount(Cnt);
-        ui->tableWidget->setColumnCount(clothesTittle.size());
-
-        for(int i = 0 ; i < clothesTittle.size(); i ++)
-        ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem(clothesTittle[i]));//设置tittle
-
-
-
-
-        sqlPtr->exec("select * from WashingEffect");
-
-
-        for(int i = 0;sqlPtr->next(); i ++)//把所有的衣服品牌都查出来都放上去
-        {
-            ui->tableWidget->setItem(i,0,new QTableWidgetItem(sqlPtr->value(0).toString()));
-            ui->tableWidget->setItem(i,1,new QTableWidgetItem(sqlPtr->value(1).toString()));
-        }
-
-         ui->tableWidget->update();
+            tittle = &clothesInfo::clothesWashEffectTittle;
+            clothesAttributeList = sqlManager::createClothesSql()->showClothesWashingEffectInfo();//查询
+            ui->LbCount->setText(QString("当前衣物洗后效果总数:%1").arg(clothesAttributeList->size()));
        }
-
-
-
-
-
-     }
+            ui->tableWidget->setRowCount(clothesAttributeList->size());
+            ui->tableWidget->setColumnCount(tittle->size());
+            for(int i = 0 ; i < tittle->size(); i ++)
+            ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem((*tittle)[i]));//设置tittle
+            for(int i = 0; i < clothesAttributeList->size() ; i ++)//把所有的衣服属性都查出来都放上去
+            {
+                ui->tableWidget->setItem(i,0,new QTableWidgetItem((*clothesAttributeList)[i].ID));
+                ui->tableWidget->setItem(i,1,new QTableWidgetItem((*clothesAttributeList)[i].Name));
+            }
+             ui->tableWidget->update();
+        }
+    }
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////查看员工账号密码
-    else if(2 == currentMode && "经理" == pulic::currentUser->userInformation.Authority)//如果选择的是员工账号并且有用经理特权，才能查看员工的账号密码
+    else if(2 == currentMode && "经理" == pulic::currentUser->Authority)//如果选择的是员工账号并且有用经理特权，才能查看员工的账号密码
     {
         ui->tableWidget->clear();
-        QList<UserInformation> tempList;
-        QList<QString> horizontalTitleList;
-        UserInformation tempInfo;
-        horizontalTitleList << "员工编号ID" << "员工账号" << "员工密码" << "员工姓名" << "员工权限";//插入title要在setColum和setRow之后再设置标题，不然不会显示
+        std::unique_ptr<QList<userInfo>> userTempList;
+        userTempList = sqlManager::createUserSql()->showAllUser();
 
-
-
-
-        sqlPtr->exec("select * from User");//把所有的员工都查出来（反正也没几个）
-        while(sqlPtr->next())
-        {
-            tempInfo.ID = sqlPtr->value(0).toString();
-            tempInfo.Account = sqlPtr->value(1).toString();
-            tempInfo.Password = sqlPtr->value(2).toString();
-            tempInfo.Name = sqlPtr->value(3).toString();
-            tempInfo.Authority = sqlPtr->value(4).toString();
-            tempList.push_back(tempInfo);
-        }
-
-
-        sqlPtr->exec("select count(ID) from User");
-        sqlPtr->next();
-        int Cnt = sqlPtr->value(0).toInt();//在设置多少行之前，要先拿到总共有多少人
-        ui->LbCount->setText(QString("当前总员工人数:%1").arg(Cnt));//并且用标签播报出来
+        ui->LbCount->setText(QString("当前总员工人数:%1").arg(userTempList->size()));//并且用标签播报出来
         //qDebug() << "现在员工总共有：" << Cnt << "人";
 
-        ui->tableWidget->setRowCount(Cnt);//设置有多少行
-        ui->tableWidget->setColumnCount(horizontalTitleList.size());//设置总共有多少列
-        for(int i = 0 ; i < tempList.size() ; i ++)//设置表中的元素
+        ui->tableWidget->setRowCount(userTempList->size());//设置有多少行
+        ui->tableWidget->setColumnCount(userInfo::userInfoTittle.size());//设置总共有多少列
+        for(int i = 0 ; i < userTempList->size() ; i ++)//设置表中的元素
         {
-            ui->tableWidget->setItem(i,0,new QTableWidgetItem(tempList[i].ID));
-            ui->tableWidget->setItem(i,1,new QTableWidgetItem(tempList[i].Account));
-            ui->tableWidget->setItem(i,2,new QTableWidgetItem(tempList[i].Password));
-            ui->tableWidget->setItem(i,3,new QTableWidgetItem(tempList[i].Name));
-            ui->tableWidget->setItem(i,4,new QTableWidgetItem(tempList[i].Authority));
+            ui->tableWidget->setItem(i,0,new QTableWidgetItem((*userTempList)[i].ID));
+            ui->tableWidget->setItem(i,1,new QTableWidgetItem((*userTempList)[i].Account));
+            ui->tableWidget->setItem(i,2,new QTableWidgetItem((*userTempList)[i].Password));
+            ui->tableWidget->setItem(i,3,new QTableWidgetItem((*userTempList)[i].Name));
+            ui->tableWidget->setItem(i,4,new QTableWidgetItem((*userTempList)[i].Authority));
         }
-        for(int i = 0 ; i < 5 ; i ++)//设置tittle
-        ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem(horizontalTitleList[i]));
+        for(int i = 0 ; i < userInfo::userInfoTittle.size() ; i ++)//设置tittle
+        ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem(userInfo::userInfoTittle[i]));
 
         ui->tableWidget->update();
 
     }
 
-    else if(2 == currentMode && "员工" == pulic::currentUser->userInformation.Authority)//否则不能查看
+    else if(2 == currentMode && "员工" == pulic::currentUser->Authority)//否则不能查看
     {
         ui->tableWidget->setColumnCount(1);
         ui->tableWidget->setRowCount(1);
@@ -480,7 +264,7 @@ void dlgAdd::reFresh(int index)
 
 void dlgAdd::on_BtnAdd_clicked()//如果点击了添加
 {
-    if(pulic::currentUser->userInformation.Authority != "经理")
+    if(pulic::currentUser->Authority != "经理")
     {
         QMessageBox::information(nullptr,"信息","只有经理才能进行添加！");
         return;
@@ -571,7 +355,7 @@ void dlgAdd::on_BtnreFresh_clicked()//刷新键
 void dlgAdd::on_BtnDelete_clicked()
 {
     auto currentRow = ui->tableWidget->currentRow();
-    if(pulic::currentUser->userInformation.Authority != "经理")
+    if(pulic::currentUser->Authority != "经理")
     {
         QMessageBox::information(nullptr,"信息","只有经理才能进行删除！");
         return;
@@ -581,95 +365,102 @@ void dlgAdd::on_BtnDelete_clicked()
         auto status = QMessageBox::question(nullptr, "确认操作", "你确定要继续吗？",QMessageBox::Yes | QMessageBox::No);
         if(status == QMessageBox::Yes)
         {
-        QTableWidgetItem *item = ui->tableWidget->item(currentRow, 0);
-        QString id = item->data(0).toString();
+        QString id = ui->tableWidget->item(currentRow, 0)->text();
         currentMode = choseMode();
-        auto sqlPtr = pulic::getInstance()->sql;
         bool success = false;
 
         if(0 == currentMode)//如果是客户
         {
+            success = sqlManager::createCustomerSql()->deleteCustomerByID(id);
             deleteOperate.target = QString("删除了客户：%1，ID：%2,客户性别：%3，客户卡ID：%4，客户欠缴情况：%5，客户欠缴费：%6元，客户卡余额：%7,客户住址：%8，客户信用：%9")
-                    .arg(ui->tableWidget->item(currentRow, 2)->text()).arg(item->text().toInt()).arg(ui->tableWidget->item(currentRow,1)->text())
+                    .arg(ui->tableWidget->item(currentRow, 2)->text()).arg(id).arg(ui->tableWidget->item(currentRow,1)->text())
                     .arg(ui->tableWidget->item(currentRow,4)->text()).arg(ui->tableWidget->item(currentRow,8)->text())
                     .arg(ui->tableWidget->item(currentRow,9)->text()).arg(ui->tableWidget->item(currentRow,10)->text())
                     .arg(ui->tableWidget->item(currentRow,11)->text()).arg(ui->tableWidget->item(currentRow,12)->text());
-            LaundryManagementLogger::record(deleteOperate);
-            success = sqlPtr->exec(QString("delete from Customer where ID = '%1'").arg(id));
-
+            if(success)
+            {
+                QMessageBox::information(nullptr,"信息","删除成功！");
+                LaundryManagementLogger::record(deleteOperate);
+            }
+            else
+            {
+                sqlManager::createUserSql()->getError();
+                QMessageBox::information(nullptr,"信息","删除失败！");
+            }
         }
 
 
         if(1 == currentMode)//如果是衣服
         {
-            QString ID = ui->tableWidget->item(currentRow,0)->text();
             if(ui->ClothesNameAndPrice->isChecked())
             {
+                success = sqlManager::createClothesSql()->deleteClothesByID(id);
                 deleteOperate.target = QString("删除了衣服:%1，ID为%2").arg(ui->tableWidget->item(currentRow, 1)->text()).arg(ui->tableWidget->item(currentRow,0)->text());
-                LaundryManagementLogger::record(deleteOperate);
-                success = sqlPtr->exec(QString("delete from Clothes where ID = '%1'").arg(ID));
             }
 
             if(ui->ClothesColor->isChecked())
             {
+                success = sqlManager::createClothesSql()->deleteClothesColorByID(id);
                 deleteOperate.target = QString("删除了衣服颜色:%1，ID为%2").arg(ui->tableWidget->item(currentRow, 1)->text()).arg(ui->tableWidget->item(currentRow,0)->text());
-                LaundryManagementLogger::record(deleteOperate);
-                success = sqlPtr->exec(QString("delete from ClothesColor where ID = '%1'").arg(ID));
             }
 
             if(ui->ClothesDefect->isChecked())
             {
+                success = sqlManager::createClothesSql()->deleteClothesDefectByID(id);
                 deleteOperate.target = QString("删除了衣服瑕疵:%1，ID为%2").arg(ui->tableWidget->item(currentRow, 1)->text()).arg(ui->tableWidget->item(currentRow,0)->text());
-                LaundryManagementLogger::record(deleteOperate);
-                success = sqlPtr->exec(QString("delete from ClothesDefect where ID = '%1'").arg(ID));
             }
 
             if(ui->ClothesBrand->isChecked())
             {
+                success = sqlManager::createClothesSql()->deleteClothesBrandByID(id);
                 deleteOperate.target = QString("删除了衣服品牌:%1，ID为%2").arg(ui->tableWidget->item(currentRow, 1)->text()).arg(ui->tableWidget->item(currentRow,0)->text());
-                LaundryManagementLogger::record(deleteOperate);
-                success = sqlPtr->exec(QString("delete from ClothesBrand where ID = '%1'").arg(ID));
             }
 
             if(ui->ClothesEffect->isChecked())
             {
+                success = sqlManager::createClothesSql()->deleteClothesWashingEffectByID(id);
                 deleteOperate.target = QString("删除了衣服洗后效果:%1，ID为%2").arg(ui->tableWidget->item(currentRow, 1)->text()).arg(ui->tableWidget->item(currentRow,0)->text());
-                LaundryManagementLogger::record(deleteOperate);
-                success = sqlPtr->exec(QString("delete from WashingEffect where ID = '%1'").arg(ID));
             }
 
             if(ui->ClothesTreatment->isChecked())
             {
+                success = sqlManager::createClothesSql()->deleteClothesTreatmentByID(id);
                 deleteOperate.target = QString("删除了特殊处理:%1，ID为%2").arg(ui->tableWidget->item(currentRow, 1)->text()).arg(ui->tableWidget->item(currentRow,0)->text());
+
+            }
+            if(success)
+            {
+                QMessageBox::information(nullptr,"信息","删除成功！");
                 LaundryManagementLogger::record(deleteOperate);
-                success = sqlPtr->exec(QString("delete from SpecialTreatment where ID = '%1'").arg(ID));
+            }
+            else
+            {
+                sqlManager::createClothesSql()->getError();
+                QMessageBox::information(nullptr,"信息","删除失败！");
             }
         }
 
 
         if(2 == currentMode)//如果是员工
         {
-           deleteOperate.target = QString("删除了员工%1，ID为%2").arg(ui->tableWidget->item(currentRow, 3)->data(0).toString()).arg(item->data(0).toInt());
-           LaundryManagementLogger::record(deleteOperate);
-           success = sqlPtr->exec(QString("delete from User where ID = '%1'").arg(id));
-
-        }
-
-
-        if(true == success)
-        {
-            QMessageBox::information(nullptr,"信息","删除成功！");
-        }
-
-        else
-        {
-            QMessageBox::information(nullptr,"信息","删除失败！");
-            qDebug() << sqlPtr->lastError().text();
+           success = sqlManager::createUserSql()->deleteUserById(id);
+           if(success)
+           {
+               QMessageBox::information(nullptr,"信息","删除成功！");
+               deleteOperate.target = QString("删除了员工%1，ID为%2").arg(ui->tableWidget->item(currentRow, 3)->data(0).toString()).arg(id);
+               LaundryManagementLogger::record(deleteOperate);
+           }
+           else
+           {
+               sqlManager::createUserSql()->getError();
+               QMessageBox::information(nullptr,"信息","删除失败！");
+           }
         }
 
         }
 
     }
+
      reFresh(choseMode());
 }
 
@@ -677,7 +468,7 @@ void dlgAdd::on_BtnDelete_clicked()
 
 void dlgAdd::on_BetnUpdate_clicked()
 {
-    if(pulic::currentUser->userInformation.Authority != "经理")
+    if(pulic::currentUser->Authority != "经理")
     {
         QMessageBox::information(nullptr,"信息","只有经理才能进行修改！");
         return;
@@ -690,7 +481,7 @@ void dlgAdd::on_BetnUpdate_clicked()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////如果选择了修改员工
     if(2 == currentMode)
     {
-        UserInformation userTemp;
+        userInfo userTemp;
         userTemp.ID = ui->tableWidget->item(currentRow,0)->text();
         userTemp.Account = ui->tableWidget->item(currentRow,1)->text();
         userTemp.Password = ui->tableWidget->item(currentRow,2)->text();
@@ -716,12 +507,7 @@ void dlgAdd::on_BetnUpdate_clicked()
         clothesTemp.Name = ui->tableWidget->item(currentRow,1)->text();
         clothesTemp.Price = ui->tableWidget->item(currentRow,2)->text().toInt();
         clothesTemp.Type = ui->tableWidget->item(currentRow,3)->text();
-
-//        qDebug() << clothesTemp.ID;
-//        qDebug() << clothesTemp.Name;
-//        qDebug() << clothesTemp.Price;
-//        qDebug() << clothesTemp.Type;
-
+        clothesTemp.WashWay = ui->tableWidget->item(currentRow,4)->text();
         mDlgUpdateClothes = new dlgUpdateClothes(nullptr,clothesTemp);
         mDlgUpdateClothes->exec();
      }
@@ -848,5 +634,4 @@ void dlgAdd::show()
 void dlgAdd::on_CBWashWay_currentIndexChanged(int index)
 {
     reFresh(choseMode());
-
 }

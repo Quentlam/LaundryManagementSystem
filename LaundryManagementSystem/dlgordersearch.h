@@ -14,9 +14,6 @@ class dlgOrderSearch : public QDialog
 public:
     explicit dlgOrderSearch(QWidget *parent = nullptr);
     ~dlgOrderSearch();
-
-
-    QList<OrderInfo> allOrder;
     void reFresh();
     void show();
 private slots:

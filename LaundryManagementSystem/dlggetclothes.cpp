@@ -3,7 +3,7 @@
 #include "mainwindow.h"
 #include <QDebug>
 #include <QMessageBox>
-
+#include "sqlmanager.h"
 
 dlgGetClothes::dlgGetClothes(QWidget *parent) :
     QDialog(parent),
@@ -28,13 +28,13 @@ dlgGetClothes::dlgGetClothes(QWidget *parent) :
 
     ui->Time->setMinimumDate(QDate::currentDate());
 
-    ui->SW->addWidget(&clothesSelectPage00);//首先先选择对衣物的处理
-    ui->SW->addWidget(&selectPage00);//选择衣服颜色
-    ui->SW->addWidget(&selectPage01);//选择衣服瑕疵
-    ui->SW->addWidget(&selectPage02);//选择衣服品牌
-    ui->SW->addWidget(&selectPage03);//选择特殊处理
-    ui->SW->addWidget(&selectPage04);//选择洗后效果
-    ui->SW->addWidget(&Selectclothes);//正式选择衣服
+    ui->SW->addWidget(&clothesSelectPage00);//首先先选择对衣物的处理 0
+    ui->SW->addWidget(&selectPage00);//选择衣服颜色                1
+    ui->SW->addWidget(&selectPage01);//选择衣服瑕疵                2
+    ui->SW->addWidget(&selectPage02);//选择衣服品牌                3
+    ui->SW->addWidget(&selectPage03);//选择特殊处理                4
+    ui->SW->addWidget(&selectPage04);//选择洗后效果                5
+    ui->SW->addWidget(&Selectclothes);//正式选择衣服               6
     ui->SW->setCurrentIndex(0);
 
 
@@ -173,6 +173,7 @@ void dlgGetClothes::on_BtnCustomerTemp_clicked()
 
 void dlgGetClothes::on_TWClothes_cellClicked(int row, int column)
 {
+    ui->LESearch->setFocus();
     if(ClothesCount < row)
     {
         QMessageBox::information(nullptr,"警告","请按顺序选择衣服！");
@@ -200,7 +201,6 @@ void dlgGetClothes::putChosenMessageIntoTable00()//以下函数都是把衣服�
     }
     ui->TWClothes->setCurrentItem(ui->TWClothes->item(ui->TWClothes->currentRow(),ui->TWClothes->currentColumn() + 1));
     ui->SW->setCurrentIndex(ui->SW->currentIndex() + 1);
-    setLineFocus();
 }
 
 void dlgGetClothes::putChosenMessageIntoTable01()
@@ -215,7 +215,6 @@ void dlgGetClothes::putChosenMessageIntoTable01()
     }
     ui->TWClothes->setCurrentItem(ui->TWClothes->item(ui->TWClothes->currentRow(),ui->TWClothes->currentColumn() + 1));
     ui->SW->setCurrentIndex(ui->SW->currentIndex() + 1);
-    setLineFocus();
 }
 
 void dlgGetClothes::putChosenMessageIntoTable02()
@@ -230,7 +229,6 @@ void dlgGetClothes::putChosenMessageIntoTable02()
     }
     ui->TWClothes->setCurrentItem(ui->TWClothes->item(ui->TWClothes->currentRow(),ui->TWClothes->currentColumn() + 1));
     ui->SW->setCurrentIndex(ui->SW->currentIndex() + 1);
-    setLineFocus();
 }
 
 void dlgGetClothes::putChosenMessageIntoTable03()
@@ -245,7 +243,6 @@ void dlgGetClothes::putChosenMessageIntoTable03()
     }
     ui->TWClothes->setCurrentItem(ui->TWClothes->item(ui->TWClothes->currentRow(),ui->TWClothes->currentColumn() + 1));
     ui->SW->setCurrentIndex(ui->SW->currentIndex() + 1);
-    setLineFocus();
 }
 
 void dlgGetClothes::putChosenMessageIntoTable04()
@@ -260,7 +257,6 @@ void dlgGetClothes::putChosenMessageIntoTable04()
     }
     ui->TWClothes->setCurrentItem(ui->TWClothes->item(ui->TWClothes->currentRow(),ui->TWClothes->currentColumn() + 1));
     ui->SW->setCurrentIndex(ui->SW->currentIndex() + 1);
-    setLineFocus();
 }
 
 void dlgGetClothes::putChosenTypeIntoTable()
@@ -284,7 +280,6 @@ void dlgGetClothes::putChosenTypeIntoTable()
     {
         ui->SW->setCurrentIndex(1);
         ui->TWClothes->setCurrentItem(ui->TWClothes->item(ui->TWClothes->currentRow(),ui->TWClothes->currentColumn() + 1));
-        setLineFocus();
     }
     else if(ui->TWClothes->currentColumn() == 6)
     {
@@ -302,7 +297,6 @@ void dlgGetClothes::putChosenTypePage()
     }
     Selectclothes.choseClothes(clothesSelectPage00.type);
     ui->SW->setCurrentIndex(6);
-    setLineFocus();
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////以下是创建订单
@@ -371,6 +365,7 @@ void dlgGetClothes::on_BtnEnter_clicked()//创建订单了
                 selectClothesTemp.Price = ui->TWClothes->item(i,6)->text();
                 currentOrder.clothesTemp.push_back(selectClothesTemp);
             }
+
             currentOrder.MoneyCount = QString::number(money);
             currentOrder.Discount =  ui->TWCal->item(1,0)->text();
             currentOrder.AfterDiscountMoneyCount = QString::number(afterDiscountMoney);
@@ -640,7 +635,6 @@ void dlgGetClothes::reFresh()//每次打开这个界面的时候，都刷新一�
     selectCustomer = false;
     selectClothes = false;
     customerTemp = customerInfo();
-    //dlgEnterOrder->orderFinished = false;这个根本就不用设置，因为我每次都是new一个order对象的，里面自动给我设置的是false
     money = 0.0;
     payWay = "未选择";
     input = 0.0;//收银0元
@@ -743,12 +737,146 @@ void dlgGetClothes::rechargeSuccessFuc()
     //qDebug() << "当前客户的钱为：" << dlgChoseCus.chosedCustomer.CardMoney;
 }
 
-void dlgGetClothes::setLineFocus()
+void dlgGetClothes::keyPressEvent(QKeyEvent *event)
 {
-    selectPage00.lineFocus();
-    selectPage01.lineFocus();
-    selectPage02.lineFocus();
-    selectPage03.lineFocus();
-    selectPage04.lineFocus();
-    Selectclothes.lineFocus();
+    if(
+      Qt::Key::Key_0 == event->key()
+    ||Qt::Key::Key_1 == event->key()
+    ||Qt::Key::Key_2 == event->key()
+    ||Qt::Key::Key_3 == event->key()
+    ||Qt::Key::Key_4 == event->key()
+    ||Qt::Key::Key_5 == event->key()
+    ||Qt::Key::Key_6 == event->key()
+    ||Qt::Key::Key_7 == event->key()
+    ||Qt::Key::Key_8 == event->key()
+    ||Qt::Key::Key_9 == event->key()
+           )
+    {
+       QString text = event->text();
+       ui->LESearch->setFocus();
+       ui->LESearch->setText(text);
+    }
+    if(Qt::Key::Key_Enter == event->key())
+    {
+        int index = ui->SW->currentIndex();
+        bool status = false;
+        //qDebug() << index;
+       if(0 == index || 6 == index)
+       {
+            status = Selectclothes.searchClothes(ui->LESearch->text());
+            if(true == status)ui->SW->setCurrentIndex(1);
+       }
+
+       if(1 == index)
+       {
+           status = selectPage00 .searchClothes(ui->LESearch->text());
+           if(true == status)ui->SW->setCurrentIndex(2);
+       }
+       if(2 == index)
+       {
+           status = selectPage01 .searchClothes(ui->LESearch->text());
+           if(true == status)ui->SW->setCurrentIndex(3);
+       }
+
+       if(3 == index)
+       {
+           status = selectPage02 .searchClothes(ui->LESearch->text());
+           if(true == status)ui->SW->setCurrentIndex(4);
+       }
+
+       if(4 == index)
+       {
+           status = selectPage03 .searchClothes(ui->LESearch->text());
+           if(true == status)ui->SW->setCurrentIndex(5);
+       }
+
+       if(5 == index)
+       {
+           status = selectPage04 .searchClothes(ui->LESearch->text());
+           if(true == status)ui->SW->setCurrentIndex(6);
+       }
+
+
+
+       ui->LESearch->clear();
+    }
+
+
+}
+
+void dlgGetClothes::on_LESearch_textChanged(const QString &arg1)
+{
+    if(!arg1.isNull() && 0 == ui->SW->currentIndex())
+    {
+        ui->SW->setCurrentIndex(6);
+    }
+
+    if(ui->LESearch->text().size() == 14)
+    {
+        auto ptr = sqlManager::createCustomerSql()->selectCusotmerByCardId(ui->LESearch->text());
+        if(!(*ptr).ID.isNull())
+        {
+            dlgChoseCus.chosedCustomer = *(ptr);
+            customerTemp = dlgChoseCus.chosedCustomer;
+            ui->LeName->setReadOnly(true);//首先先让输入框不可编辑，因为客户信息选择好之后就不能改了
+            ui->LePhone->setReadOnly(true);
+            ui->LeCardID->setReadOnly(true);
+            ui->LeCost->setReadOnly(true);
+            ui->LeCount->setReadOnly(true);
+
+            ui->LeName->setText(dlgChoseCus.chosedCustomer.Name);//选择好客户之后，就让数据回显
+            ui->LePhone->setText(dlgChoseCus.chosedCustomer.Phone);
+            ui->LeCardID->setText(dlgChoseCus.chosedCustomer.CardID);
+            ui->LeCost->setText(QString::number(dlgChoseCus.chosedCustomer.Spend));
+            ui->LeCount->setText(QString::number(dlgChoseCus.chosedCustomer.Count));
+            if(!dlgChoseCus.chosedCustomer.CardType.isEmpty())
+            {
+                ui->TWCal->item(1,0)->setText(dlgChoseCus.chosedCustomer.CardType);
+                discount = true;
+            }
+
+
+            ui->TWCal->setItem(4,0,new QTableWidgetItem(QString::number(dlgChoseCus.chosedCustomer.CardMoney)));//表里的卡余额
+            selectCustomer = true;
+            ui->LESearch->clear();
+        }
+    }
+}
+
+void dlgGetClothes::on_LESearch_returnPressed()
+{
+    if(ui->LESearch->text().size() == 14)
+    {
+        auto ptr = sqlManager::createCustomerSql()->selectCusotmerByCardId(ui->LESearch->text());
+        if(!(*ptr).ID.isNull())
+        {
+            dlgChoseCus.chosedCustomer = *(ptr);
+            customerTemp = dlgChoseCus.chosedCustomer;
+            ui->LeName->setReadOnly(true);//首先先让输入框不可编辑，因为客户信息选择好之后就不能改了
+            ui->LePhone->setReadOnly(true);
+            ui->LeCardID->setReadOnly(true);
+            ui->LeCost->setReadOnly(true);
+            ui->LeCount->setReadOnly(true);
+
+            ui->LeName->setText(dlgChoseCus.chosedCustomer.Name);//选择好客户之后，就让数据回显
+            ui->LePhone->setText(dlgChoseCus.chosedCustomer.Phone);
+            ui->LeCardID->setText(dlgChoseCus.chosedCustomer.CardID);
+            ui->LeCost->setText(QString::number(dlgChoseCus.chosedCustomer.Spend));
+            ui->LeCount->setText(QString::number(dlgChoseCus.chosedCustomer.Count));
+            if(!dlgChoseCus.chosedCustomer.CardType.isEmpty())
+            {
+                ui->TWCal->item(1,0)->setText(dlgChoseCus.chosedCustomer.CardType);
+                discount = true;
+            }
+
+
+            ui->TWCal->setItem(4,0,new QTableWidgetItem(QString::number(dlgChoseCus.chosedCustomer.CardMoney)));//表里的卡余额
+            selectCustomer = true;
+        }
+        if(nullptr == ptr)
+        {
+            QMessageBox::information(nullptr,"信息","找不到该客户！");
+        }
+    }
+    ui->LESearch->clear();
 }

@@ -6,6 +6,8 @@
 #include <qnamespace.h>
 #include <QMessageBox>
 #include <QDebug>
+#include "sqlmanager.h"
+
 
 dlgChoseShelf::dlgChoseShelf(QWidget *parent) :
     QDialog(parent),
@@ -36,29 +38,23 @@ int dlgChoseShelf::exec()
 
 void dlgChoseShelf::reFresh()
 {
-    auto sqlPtr = pulic::getInstance()->sql;
-    QList<QString> ShelfID;
-    QList<QString> ShelfStatus;
+    std::unique_ptr<QList<shelfInfo>> shelvesList;
     shelfNumber = "未选择";
     shelfSelected = false;
     ui->LEShelfNumber->clear();
     if(ui->RAASet->isChecked())
     {
-        sqlPtr->exec("select * from ShelfA");
-        ui->LBShelfSet->setText(QString("当前选择的架号系列：%1").arg("A"));
+        shelvesList = sqlManager::createShelfSql()->selectAllShelves(shelfInfo::A);
+        ui->LBShelfSet->setText(QString("当前选择的架号系列：A"));
     }
 
     if(ui->RABSet->isChecked())
     {
-        sqlPtr->exec("select * from ShelfB");
-        ui->LBShelfSet->setText(QString("当前选择的架号系列：%1").arg("B"));
+        shelvesList = sqlManager::createShelfSql()->selectAllShelves(shelfInfo::B);
+        ui->LBShelfSet->setText(QString("当前选择的架号系列：B"));
     }
 
-    while(sqlPtr->next())
-    {
-        ShelfID.push_back(sqlPtr->value(0).toString());
-        ShelfStatus.push_back(sqlPtr->value(1).toString());
-    }
+
 
     int k = 0;
     for(int j = 0 ; j < 77 ; j ++)//第几行
@@ -66,8 +62,8 @@ void dlgChoseShelf::reFresh()
             for(int i = 0 ; i < 13 ; i ++)//第几列
             {
                 if(k > 999)break;
-                ui->tableWidget->setItem(j,i,new QTableWidgetItem(ShelfID[k]));
-                if("已上架" == ShelfStatus[k ++])
+                ui->tableWidget->setItem(j,i,new QTableWidgetItem((*shelvesList)[k].ID));
+                if("已上架" == (*shelvesList)[k++].status)
                 {
                   ui->tableWidget->item(j,i)->setForeground(QBrush(QColor("red")));
                 }

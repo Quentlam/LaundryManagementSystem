@@ -16,7 +16,7 @@ customerCost::~customerCost()
 
 void customerCost::cardCost(customerInfo currentCustomer,double money,QString OrderID)//客户充值卡消费
 {
-    auto sqlPtr = pulic::getInstance()->sql;
+    auto sqlPtr = GET_SQL_POINTER;
     moneyTemp = money;
 
     currentCustomer.Count ++;
@@ -47,14 +47,12 @@ void customerCost::cardCost(customerInfo currentCustomer,double money,QString Or
 
 void customerCost::cardCostHaveNotPaid(customerInfo currentCustomer,double money,QString OrderID)//充值卡缴费
 {
-    auto sqlPtr = pulic::getInstance()->sql;
+    auto sqlPtr = GET_SQL_POINTER;
     moneyTemp = money;
 
     currentCustomer.Count ++;
     currentCustomer.Spend = currentCustomer.Spend + money;
     currentCustomer.CardMoney = currentCustomer.CardMoney - money;//充值卡花了多少钱，并且此时是一个负数，此时等于要欠缴的钱
-    //currentCustomer.CardMoney = -currentCustomer.CardMoney;
-    //currentCustomer.HaveNotPaidMoney = QString::number(currentCustomer.HaveNotPaidMoney.toDouble() + currentCustomer.CardMoney);//欠缴的钱要加上
     currentCustomer.CardMoney = 0;
     operate.operate = "客户消费";
     //因为创建的时候，当前客户的当前的消费额和消费次数没有受影响，只有订单受影响了，所以后面这里要加上
@@ -83,7 +81,7 @@ void customerCost::cardCostHaveNotPaid(customerInfo currentCustomer,double money
 
 void customerCost::ortherCost(customerInfo currentCustomer, double money,QString way,QString OrderID)//客户其他方式消费
 {
-    auto sqlPtr = pulic::getInstance()->sql;
+    auto sqlPtr = GET_SQL_POINTER;
     moneyTemp = money;
     operate.operate = "客户消费";
     currentCustomer.Count ++;
@@ -116,7 +114,7 @@ void customerCost::normalCost(QString Name, QString Phone,QString Payway, double
 
 void customerCost::cardRecharge(customerInfo currentCustomer, double money)//客户充值
 {
-    auto sqlPtr = pulic::getInstance()->sql;
+    auto sqlPtr = GET_SQL_POINTER;
     moneyTemp = money;
     currentCustomer.CardMoney = currentCustomer.CardMoney + money;//充值卡冲了多少钱
 
@@ -141,7 +139,7 @@ void customerCost::cardRecharge(customerInfo currentCustomer, double money)//客
 
 bool customerCost::customerPayForNotPaid(customerInfo& currentCustomer, double money,QString payWay)//客户缴费
 {
-    auto sqlPtr = pulic::getInstance()->sql;
+    auto sqlPtr = GET_SQL_POINTER;
     moneyTemp = money;
     operate.operate = "客户缴费";
     money = currentCustomer.HaveNotPaidMoney.toDouble() - money;//算一下缴费了多少钱
@@ -173,7 +171,7 @@ bool customerCost::customerPayForNotPaid(customerInfo& currentCustomer, double m
 
 void customerCost::ortherCostHaveNotPaid(customerInfo currentCustomer,double money,QString way,QString OrderID)//其他付款方式但是欠缴了
 {
-    auto sqlPtr = pulic::getInstance()->sql;
+    auto sqlPtr = GET_SQL_POINTER;
     moneyTemp = money;
     operate.operate = "客户消费";
     currentCustomer.Count ++;

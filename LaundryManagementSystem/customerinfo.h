@@ -22,7 +22,7 @@ public:
     QString Address;
     QString Credit;
     QString Notes;
-
+    static QList<QString> customerTittle;
 };
 
 #endif // CUSTOMERINFO_H

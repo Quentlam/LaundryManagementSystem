@@ -6,7 +6,7 @@
 #include <QTextCodec>
 #include <QPrinter>
 #include <QPainter>
-#include <QPrinterInfo>
+//#include <QPrinterInfo>
 #include <QSerialPortInfo>
 
 
@@ -14,11 +14,12 @@ MainWindow* MainWindow::Instance = nullptr;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    sqlManager::createSqlManager();
     auto mainWindow = MainWindow::getInstance();
-    QList<QPrinterInfo> printerList = QPrinterInfo::availablePrinters();
-    foreach (const QPrinterInfo &printerInfo, printerList) {
-        qDebug() << "Printer Name:" << printerInfo.printerName();
-    }
+//    QList<QPrinterInfo> printerList = QPrinterInfo::availablePrinters();
+//    foreach (const QPrinterInfo &printerInfo, printerList) {
+//        qDebug() << "Printer Name:" << printerInfo.printerName();
+//    }
 
     return a.exec();
 }

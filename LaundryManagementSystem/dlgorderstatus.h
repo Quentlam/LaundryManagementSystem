@@ -16,7 +16,6 @@ public:
     ~dlgOrderStatus();
 
     void reFresh();
-    QList<OrderStatus> OrdetStatusTempList;
     QString currentOrderID;
 private slots:
     void on_tableWidget_cellClicked(int row, int column);

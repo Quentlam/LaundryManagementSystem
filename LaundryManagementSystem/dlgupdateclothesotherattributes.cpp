@@ -58,7 +58,6 @@ dlgUpdateClothesOtherAttributes::~dlgUpdateClothesOtherAttributes()
 
 void dlgUpdateClothesOtherAttributes::on_BtnEnter_clicked()
 {
-    auto sqlPtr = pulic::getInstance()->sql;
     bool status = false;
     if(ui->LeID->text().isEmpty() || ui->LeText->text().isEmpty())
     {
@@ -66,50 +65,47 @@ void dlgUpdateClothesOtherAttributes::on_BtnEnter_clicked()
         return;
     }
 
-
-
-
+    clothesAttributeInfo::AttributeType type;
     switch(chosenRadio)
     {
          case 1://如果选的是衣服颜色
         {
-            status = sqlPtr->exec(QString("update ClothesColor set ID = '%1',Color = '%2' where ID = '%3';").arg(ui->LeID->text()).arg(ui->LeText->text()).arg(currentID));
+            type = clothesAttributeInfo::AttributeType::Color;
             operate.target = QString("修改了衣服颜色，原本是：%1,ID为%2,现在是：%3,ID为%4").arg(currentText).arg(currentID).arg(ui->LeText->text()).arg(ui->LeID->text());
             break;
         }
         case 2://如果选的是衣服瑕疵
        {
-           status = sqlPtr->exec(QString("update ClothesDefect set ID = '%1',Defect = '%2' where ID = '%3';").arg(ui->LeID->text()).arg(ui->LeText->text()).arg(currentID));
-           operate.target = QString("修改了衣服瑕疵，原本是：%1,ID为%2,现在是：%3,ID为%4").arg(currentText).arg(currentID).arg(ui->LeText->text()).arg(ui->LeID->text());
-           break;
+            type = clothesAttributeInfo::AttributeType::Defect;
+            operate.target = QString("修改了衣服瑕疵，原本是：%1,ID为%2,现在是：%3,ID为%4").arg(currentText).arg(currentID).arg(ui->LeText->text()).arg(ui->LeID->text());
+            break;
        }
         case 3://如果选的是衣服品牌
        {
-           status = sqlPtr->exec(QString("update ClothesBrand set ID = '%1',Brand = '%2' where ID = '%3';").arg(ui->LeID->text()).arg(ui->LeText->text()).arg(currentID));
-           operate.target = QString("修改了衣服品牌，原本是：%1,ID为%2,现在是：%3,ID为%4").arg(currentText).arg(currentID).arg(ui->LeText->text()).arg(ui->LeID->text());
-           break;
+            type = clothesAttributeInfo::AttributeType::Brand;
+            operate.target = QString("修改了衣服品牌，原本是：%1,ID为%2,现在是：%3,ID为%4").arg(currentText).arg(currentID).arg(ui->LeText->text()).arg(ui->LeID->text());
+            break;
        }
         case 4://如果选的是特殊处理
        {
-           status = sqlPtr->exec(QString("update SpecialTreatment set ID = '%1',Treatment = '%2' where ID = '%3';").arg(ui->LeID->text()).arg(ui->LeText->text()).arg(currentID));
+           type = clothesAttributeInfo::AttributeType::SpecialTreatment;
            operate.target = QString("修改了特殊处理，原本是：%1,ID为%2,现在是：%3,ID为%4").arg(currentText).arg(currentID).arg(ui->LeText->text()).arg(ui->LeID->text());
            break;
        }
         case 5://如果选的是洗后效果
        {
-           status = sqlPtr->exec(QString("update WashingEffect set ID = '%1',Effect = '%2' where ID = '%3';").arg(ui->LeID->text()).arg(ui->LeText->text()).arg(currentID));
+           type = clothesAttributeInfo::AttributeType::WashingEffect;
            operate.target = QString("修改了洗后效果，原本是：%1,ID为%2,现在是：%3,ID为%4").arg(currentText).arg(currentID).arg(ui->LeText->text()).arg(ui->LeID->text());
            break;
        }
-        default:
-        {
-            QMessageBox::information(nullptr,"信息","你圈了个什么玩意儿？？？");
-            break;
-        }
+       default:
+       {
+           QMessageBox::information(nullptr,"信息","你圈了个什么玩意儿？？？");
+           break;
+       }
 
     }
-
-
+    status = sqlManager::createClothesSql()->updateClothesAttributeById({ui->LeID->text(),ui->LeText->text()},type,currentID);
 
     if(status)
     {
@@ -119,12 +115,16 @@ void dlgUpdateClothesOtherAttributes::on_BtnEnter_clicked()
     }
     else
     {
+        sqlManager::createClothesSql()->getError();
         QMessageBox::information(nullptr,"信息","修改失败！");
-        qDebug() << sqlPtr->lastQuery();
-        qDebug() << sqlPtr->lastError().text();
-
     }
 
 
 
+}
+
+void dlgUpdateClothesOtherAttributes::on_BtnCancel_clicked()
+{
+    deleteLater();
+    this->close();
 }

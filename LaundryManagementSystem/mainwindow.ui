@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
-    <height>1080</height>
+    <width>236</width>
+    <height>874</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1920</width>
-    <height>1080</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -26,369 +26,377 @@
    <string>选择业务</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="widget_3" native="true">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>1921</width>
-      <height>1081</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>微软雅黑</family>
-     </font>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="3" column="3">
-      <widget class="QLabel" name="LbTime">
-       <property name="font">
-        <font>
-         <family>微软雅黑</family>
-        </font>
-       </property>
-       <property name="text">
-        <string>时间：</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0" rowspan="2" colspan="3">
-      <widget class="QWidget" name="widget_2" native="true">
-       <property name="font">
-        <font>
-         <family>微软雅黑</family>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-image: url(:/psd/MainWindow.png);</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="3" rowspan="2">
-      <widget class="QWidget" name="widget" native="true">
-       <property name="maximumSize">
-        <size>
-         <width>350</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>微软雅黑</family>
-        </font>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
-         <layout class="QGridLayout" name="gridLayout_2">
-          <item row="6" column="1">
-           <spacer name="verticalSpacer_3">
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-             </font>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="11" column="1">
-           <widget class="QPushButton" name="BtnHandOver">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>75</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-              <pointsize>18</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>交班</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
-           <widget class="QPushButton" name="BtnFinance">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>75</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-              <pointsize>18</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>财务</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="1">
-           <widget class="QPushButton" name="BtnRecharge">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>75</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-              <pointsize>18</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>客户</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="1">
-           <spacer name="verticalSpacer_7">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="1">
-           <widget class="QPushButton" name="BtnGetClothes">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>75</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-              <pointsize>18</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>收衣</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <spacer name="verticalSpacer_2">
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-             </font>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="0" rowspan="16">
-           <widget class="Line" name="line_2">
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-             </font>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="13" column="1">
-           <spacer name="verticalSpacer_6">
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-             </font>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="2" column="1">
-           <widget class="QPushButton" name="BtnSearch">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>75</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-              <pointsize>18</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>查询</string>
-            </property>
-           </widget>
-          </item>
-          <item row="15" column="1">
-           <widget class="QPushButton" name="BtnCancel">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>75</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>18</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>退出</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="1">
-           <spacer name="verticalSpacer_4">
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-             </font>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="1" column="1">
-           <spacer name="verticalSpacer">
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-             </font>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="4" column="1">
-           <widget class="QPushButton" name="BtnAdd">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>75</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>微软雅黑</family>
-              <pointsize>18</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>管理</string>
-            </property>
-           </widget>
+   <property name="minimumSize">
+    <size>
+     <width>1200</width>
+     <height>900</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>1920</width>
+     <height>1080</height>
+    </size>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_4">
+    <item row="0" column="0">
+     <widget class="QWidget" name="widget_3" native="true">
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+       </font>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="3" column="3">
+        <widget class="QLabel" name="LbTime">
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>时间：</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" rowspan="2" colspan="3">
+        <widget class="QWidget" name="widget_2" native="true">
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-image: url(:/psd/MainWindow.png);</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3" rowspan="2">
+        <widget class="QWidget" name="widget" native="true">
+         <property name="maximumSize">
+          <size>
+           <width>350</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+          </font>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
+           <layout class="QGridLayout" name="gridLayout_2">
+            <item row="6" column="1">
+             <spacer name="verticalSpacer_3">
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+               </font>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="11" column="1">
+             <widget class="QPushButton" name="BtnHandOver">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>75</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>18</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>交班</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="1">
+             <widget class="QPushButton" name="BtnFinance">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>75</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>18</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>财务</string>
+              </property>
+             </widget>
+            </item>
+            <item row="9" column="1">
+             <widget class="QPushButton" name="BtnRecharge">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>75</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>18</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>客户</string>
+              </property>
+             </widget>
+            </item>
+            <item row="10" column="1">
+             <spacer name="verticalSpacer_7">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="BtnGetClothes">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>75</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>18</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>收衣</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <spacer name="verticalSpacer_2">
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+               </font>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="0" column="0" rowspan="16">
+             <widget class="Line" name="line_2">
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+               </font>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="13" column="1">
+             <spacer name="verticalSpacer_6">
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+               </font>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="BtnSearch">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>75</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>18</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>查询</string>
+              </property>
+             </widget>
+            </item>
+            <item row="15" column="1">
+             <widget class="QPushButton" name="BtnCancel">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>75</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>18</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>退出</string>
+              </property>
+             </widget>
+            </item>
+            <item row="8" column="1">
+             <spacer name="verticalSpacer_4">
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+               </font>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="1">
+             <spacer name="verticalSpacer">
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+               </font>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="4" column="1">
+             <widget class="QPushButton" name="BtnAdd">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>75</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>18</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>管理</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QLabel" name="LbAuthortiy">
-       <property name="font">
-        <font>
-         <family>微软雅黑</family>
-        </font>
-       </property>
-       <property name="text">
-        <string>权限：</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="LbUser">
-       <property name="maximumSize">
-        <size>
-         <width>16777205</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <family>微软雅黑</family>
-        </font>
-       </property>
-       <property name="text">
-        <string>用户：</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLabel" name="LbAddress">
-       <property name="font">
-        <font>
-         <family>微软雅黑</family>
-        </font>
-       </property>
-       <property name="text">
-        <string>所在分店：</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0" colspan="4">
-      <widget class="Line" name="line">
-       <property name="font">
-        <font>
-         <family>微软雅黑</family>
-        </font>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QLabel" name="LbAuthortiy">
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>权限：</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="LbUser">
+         <property name="maximumSize">
+          <size>
+           <width>16777205</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>用户：</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLabel" name="LbAddress">
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>所在分店：</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="4">
+        <widget class="Line" name="line">
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+          </font>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

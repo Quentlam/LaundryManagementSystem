@@ -3,6 +3,8 @@
 #include <QMessageBox>
 #include <customerinfo.h>
 #include "pulic.h"
+#include "sqlmanager.h"
+
 
 dlgAddCustomer::dlgAddCustomer(QWidget *parent) :
     QDialog(parent),
@@ -84,13 +86,7 @@ void dlgAddCustomer::on_BtnEnter_clicked()
     temp.Notes = ui->TeNotes->toPlainText();
 
 
-
-
-
-    auto sqlPtr = pulic::getInstance()->sql;
-    auto status = sqlPtr->exec(QString("insert into Customer values('%1','%2','%3','%4','%5',0,0,'%6','%7','%8',%9,'%10','%11','%12');")
-                               .arg(temp.ID).arg(temp.Gender).arg(temp.Name).arg(temp.Phone).arg(temp.CardID).arg(temp.CardType).arg(temp.HaveNotPaid)
-                               .arg(temp.HaveNotPaidMoney).arg(temp.CardMoney).arg(temp.Address).arg(temp.Credit).arg(temp.Notes));
+    auto status = sqlManager::createCustomerSql()->addCustomer(temp);
     if(true == status)
     {
         QMessageBox::information(nullptr,"信息","添加成功！");
@@ -101,6 +97,7 @@ void dlgAddCustomer::on_BtnEnter_clicked()
     }
     else
     {
+        sqlManager::createCustomerSql()->getError();
         QMessageBox::information(nullptr,"信息","添加失败！");
     }
     this->close();

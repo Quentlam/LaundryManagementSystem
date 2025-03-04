@@ -12,28 +12,31 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>1200</width>
-    <height>540</height>
+    <width>0</width>
+    <height>300</height>
    </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>微软雅黑</family>
+    <pointsize>11</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QTableWidget" name="tableWidget"/>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLineEdit" name="LeSearch">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>40</height>
-      </size>
+    <widget class="QTableWidget" name="tableWidget">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
      </property>
-     <property name="placeholderText">
-      <string>请输入关键词搜索</string>
-     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
     </widget>
    </item>
   </layout>

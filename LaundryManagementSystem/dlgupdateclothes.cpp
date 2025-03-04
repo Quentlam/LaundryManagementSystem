@@ -2,7 +2,7 @@
 #include "ui_dlgupdateclothes.h"
 #include <QMessageBox>
 #include "pulic.h"
-
+#include "sqlmanager.h"
 
 
 dlgUpdateClothes::dlgUpdateClothes(QWidget *parent) :
@@ -24,7 +24,40 @@ dlgUpdateClothes::dlgUpdateClothes(QWidget *parent, clothesInfo Temp):
     ui->LeName->setText(Temp.Name);
     ui->LePrice->setText(QString::number(Temp.Price));
     updateClothesOperate.operate = QString("修改了衣服的数据");
+    if("普通" ==clothesTemp.Type)
+    {
+        ui->CBType->setCurrentIndex(0);
+    }
+    if("高档" ==clothesTemp.Type)
+    {
+        ui->CBType->setCurrentIndex(1);
+    }
+    if("其他" ==clothesTemp.Type)
+    {
+        ui->CBType->setCurrentIndex(2);
+    }
 
+
+    if("水洗" ==clothesTemp.WashWay)
+    {
+        ui->CBWashWay->setCurrentIndex(0);
+    }
+    if("干洗" ==clothesTemp.WashWay)
+    {
+        ui->CBWashWay->setCurrentIndex(1);
+    }
+    if("皮衣" ==clothesTemp.WashWay)
+    {
+        ui->CBWashWay->setCurrentIndex(2);
+    }
+    if("单烫" ==clothesTemp.WashWay)
+    {
+        ui->CBWashWay->setCurrentIndex(3);
+    }
+    if("其他" ==clothesTemp.WashWay)
+    {
+        ui->CBWashWay->setCurrentIndex(4);
+    }
 
 }
 
@@ -35,24 +68,35 @@ dlgUpdateClothes::~dlgUpdateClothes()
 
 void dlgUpdateClothes::on_BtnEnter_clicked()
 {
-    auto sqlPtr = pulic::getInstance()->sql;
-    QString sql = QString("UPDATE Clothes SET ID = '%1',Name = '%2',Price = %3,Type = '%4' where ID = '%5'")
-            .arg(ui->LeID->text()).arg(ui->LeName->text()).arg(ui->LePrice->text()).arg(ui->CBType->currentText()).arg(clothesTemp.ID);
+    clothesInfo currentClothesTemp;
 
-    auto status = sqlPtr->exec(sql);
+    currentClothesTemp.ID = ui->LeID->text();
+    currentClothesTemp.Price = ui->LePrice->text().toInt();
+    currentClothesTemp.Type = ui->CBType->currentText();
+    currentClothesTemp.Name = ui->LeName->text();
+    currentClothesTemp.ID = ui->LeID->text();
+    currentClothesTemp.WashWay = ui->CBWashWay->currentText();
+    auto status = sqlManager::createClothesSql()->updateClothesById(currentClothesTemp,clothesTemp.ID);
     if(true == status)
     {
         QMessageBox::information(nullptr,"信息","修改成功！");
-        updateClothesOperate.target = QString("原先衣服ID：%1，原先衣服名称：%2，原先衣服价格：%3，原先衣服类型：%4-----现在衣服ID：%5，现在衣服名称：%6，现在衣服价格：%7，现在衣服类型：%8")
-                .arg(clothesTemp.ID).arg(clothesTemp.Name).arg(clothesTemp.Price).arg(clothesTemp.Type)
-                .arg(ui->LeID->text()).arg(ui->LeName->text()).arg(ui->LePrice->text()).arg(ui->CBType->currentText());
+        updateClothesOperate.target = QString("原先衣服ID：%1，原先衣服名称：%2，原先衣服价格：%3，原先衣服类型：%4，原先衣服处理方式：%5-----现在衣服ID：%6，现在衣服名称：%7，现在衣服价格：%8，现在衣服类型：%9，现在衣服处理方式：%10")
+                .arg(clothesTemp.ID).arg(clothesTemp.Name).arg(clothesTemp.Price).arg(clothesTemp.Type).arg(clothesTemp.WashWay)
+                .arg(currentClothesTemp.ID).arg(currentClothesTemp.Name).arg(currentClothesTemp.Price).arg(currentClothesTemp.Type).arg(currentClothesTemp.WashWay);
         LaundryManagementLogger::record(updateClothesOperate);
         this->close();
     }
     else
     {
         QMessageBox::information(nullptr,"信息","修改失败！");
+        sqlManager::createClothesSql()->getError();
     }
 
 
+}
+
+void dlgUpdateClothes::on_BtnCancel_clicked()
+{
+    deleteLater();
+    this->close();
 }

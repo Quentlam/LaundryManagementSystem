@@ -11,7 +11,7 @@
 #include "dlgupdatecustomer.h"
 #include "dlgupdateclothesotherattributes.h"
 #include "dlgaddclothesotherattributes.h"
-
+#include <memory>
 
 
 namespace Ui {
@@ -61,6 +61,7 @@ private:
     dlgAddClothesOtherAttributes* dlgAC;
 
 
+    clothesInfo clothesTemp;
 
 
 };

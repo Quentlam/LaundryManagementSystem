@@ -20,37 +20,28 @@ dlgShopData::~dlgShopData()
 
 void dlgShopData::reFresh()
 {
-    auto sqlPtr = pulic::getInstance()->sql;
-    sqlPtr->exec("select * from ShopData");
-    ShopData temp;
-    while(sqlPtr->next())
-    {
-        temp.ShopID          = sqlPtr->value(0).toString();
-        temp.ShopName        = sqlPtr->value(1).toString();
-        temp.ShopAddress     = sqlPtr->value(2).toString();
-        temp.SearchPhone     = sqlPtr->value(3).toString();
-        temp.ComplaintsPhone = sqlPtr->value(4).toString();
-        temp.AdvertiseMent   = sqlPtr->value(5).toString();
-    }
-    sqlPtr->exec("select * from ShelfStatus");
-    sqlPtr->next();
-    QString ShlefCount = sqlPtr->value(0).toString();
-    ui->LEShopID->setText(temp.ShopID);
-    ui->LEShopName->setText(temp.ShopName);
-    ui->LEShopAddress->setText(temp.ShopAddress);
-    ui->LESearchPhone->setText(temp.SearchPhone);
-    ui->LEComplaintPhone->setText(temp.ComplaintsPhone);
-    ui->PTAdvertisement->setPlainText(temp.AdvertiseMent);
-    ui->LEEveryShelfClothesCount->setText(ShlefCount);
+    std::unique_ptr<ShopData> temp = sqlManager::createUserSql()->showShopData();
+
+    ui->LEShopID->setText((*temp).ShopID);
+    ui->LEShopName->setText((*temp).ShopName);
+    ui->LEShopAddress->setText((*temp).ShopAddress);
+    ui->LESearchPhone->setText((*temp).SearchPhone);
+    ui->LEComplaintPhone->setText((*temp).ComplaintsPhone);
+    ui->PTAdvertisement->setPlainText((*temp).AdvertiseMent);
+    ui->LEEveryShelfClothesCount->setText(QString::number(pulic::getInstance()->shelfCount));
 }
 
 void dlgShopData::on_BtnSave_clicked()
 {
-    auto sqlPtr = pulic::getInstance()->sql;
-    auto status = sqlPtr->exec(QString("UPDATE ShopData SET ShopID = '%1',ShopName = '%2',ShopAddress = '%3',SearchPhone = '%4',ComplaintsPhone = '%5',Advertisement = '%6'")
-                 .arg(ui->LEShopID->text()).arg(ui->LEShopName->text()).arg(ui->LEShopAddress->text()).arg(ui->LESearchPhone->text())
-                 .arg(ui->LEComplaintPhone->text()).arg(ui->PTAdvertisement->toPlainText())
-                 );
+    ShopData shopData;
+    shopData.ShopID = ui->LEShopID->text();
+    shopData.ShopName = ui->LEShopName->text();
+    shopData.SearchPhone = ui->LESearchPhone->text();
+    shopData.ShopAddress = ui->LEShopAddress->text();
+    shopData.AdvertiseMent = ui->PTAdvertisement->toPlainText();
+    shopData.ComplaintsPhone = ui->LEComplaintPhone->text();
+
+    auto status = sqlManager::createUserSql()->saveShopData(shopData);
     if(true == status)
     {
         QMessageBox::information(nullptr,"信息","修改成功！");
@@ -59,8 +50,8 @@ void dlgShopData::on_BtnSave_clicked()
     }
     if(false == status)
     {
+        sqlManager::createUserSql()->getError();
         QMessageBox::information(nullptr,"信息","修改失败！");
-        qDebug() << sqlPtr->lastError().text();
         return;
     }
 }

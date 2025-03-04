@@ -1,6 +1,7 @@
 ﻿#include "dlgorderstatus.h"
 #include "ui_dlgorderstatus.h"
 #include "pulic.h"
+#include "sqlmanager.h"
 #include <QMessageBox>
 #include <QDebug>
 #include <QSqlError>
@@ -30,52 +31,34 @@ dlgOrderStatus::~dlgOrderStatus()
 void dlgOrderStatus::reFresh()
 {
     ui->tableWidget->clear();
-    OrdetStatusTempList.clear();
-    auto sqlPtr = pulic::getInstance()->sql;
-    sqlPtr->exec("select count(OrderID) from OrderStatus");
-    sqlPtr->next();
-    int orderCnt = sqlPtr->value(0).toInt();
-    QList<QString> OrderStatusTittle;
-    OrderStatusTittle << "订单流水号" << "订单状态" << "衣服收发情况" << "客户编号" << "客户姓名" << "架号";
-    ui->LBCnt->setText(QString("显示订单总数：%1").arg(orderCnt));
-    ui->tableWidget->setRowCount(orderCnt);
-    ui->tableWidget->setColumnCount(OrderStatusTittle.size());
-    for(int i = 0 ; i < OrderStatusTittle.size(); i ++)
-    ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem(OrderStatusTittle[i]));
+    std::unique_ptr<QList<OrderStatus>> OrdetStatusTempList = sqlManager::createOrderSql()->selectAllOrderStatus();
+    ui->LBCnt->setText(QString("显示订单总数：%1").arg(OrdetStatusTempList->size()));
+    ui->tableWidget->setRowCount(OrdetStatusTempList->size());
+    ui->tableWidget->setColumnCount(OrderStatus::orderStatusTittle.size());
+    for(int i = 0 ; i < OrderStatus::orderStatusTittle.size(); i ++)
+    ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem(OrderStatus::orderStatusTittle[i]));
 
-    OrderStatus temp;
-    sqlPtr->exec("select * from OrderStatus");
 
-    while(sqlPtr->next())
+
+    for(int i = 0 ; i < OrdetStatusTempList->size(); i ++)
     {
-        temp.orderID                = sqlPtr->value(0).toString();
-        temp.orderStatus            = sqlPtr->value(1).toString();
-        temp.ClothesSendStatus      = sqlPtr->value(2).toString();
-        temp.customerID             = sqlPtr->value(3).toString();
-        temp.customerName           = sqlPtr->value(4).toString();
-        temp.shelfID                = sqlPtr->value(5).toString();
-        OrdetStatusTempList.push_back(temp);
-    }
-
-    for(int i = 0 ; i < OrdetStatusTempList.size(); i ++)
-    {
-        ui->tableWidget->setItem(i,0 ,new QTableWidgetItem(OrdetStatusTempList[i].orderID));
-        ui->tableWidget->setItem(i,1 ,new QTableWidgetItem(OrdetStatusTempList[i].orderStatus));
-        if("未完成" == OrdetStatusTempList[i].orderStatus)
+        ui->tableWidget->setItem(i,0 ,new QTableWidgetItem((*OrdetStatusTempList)[i].orderID));
+        ui->tableWidget->setItem(i,1 ,new QTableWidgetItem((*OrdetStatusTempList)[i].orderStatus));
+        if(ORDER_NOT_FINISHED_STATUS == (*OrdetStatusTempList)[i].orderStatus)
         {
             ui->tableWidget->item(i,1)->setForeground(QBrush(QColor("Red")));
         }
 
-        ui->tableWidget->setItem(i,2 ,new QTableWidgetItem(OrdetStatusTempList[i].ClothesSendStatus));
+        ui->tableWidget->setItem(i,2 ,new QTableWidgetItem((*OrdetStatusTempList)[i].ClothesSendStatus));
 
-        if("未发出" == OrdetStatusTempList[i].ClothesSendStatus)
+        if(CLOTHES_NOT_SEND == (*OrdetStatusTempList)[i].ClothesSendStatus)
         {
             ui->tableWidget->item(i,2)->setForeground(QBrush(QColor("Red")));
         }
 
-        ui->tableWidget->setItem(i,3 ,new QTableWidgetItem(OrdetStatusTempList[i].customerID));
-        ui->tableWidget->setItem(i,4 ,new QTableWidgetItem(OrdetStatusTempList[i].customerName));
-        ui->tableWidget->setItem(i,5 ,new QTableWidgetItem(OrdetStatusTempList[i].shelfID));
+        ui->tableWidget->setItem(i,3 ,new QTableWidgetItem((*OrdetStatusTempList)[i].customerID));
+        ui->tableWidget->setItem(i,4 ,new QTableWidgetItem((*OrdetStatusTempList)[i].customerName));
+        ui->tableWidget->setItem(i,5 ,new QTableWidgetItem((*OrdetStatusTempList)[i].shelfID));
     }
     ui->tableWidget->update();
 
@@ -136,19 +119,17 @@ void dlgOrderStatus::on_BtnOrderNotFinished_clicked()
         return;
     }
 
-    auto sqlPtr = pulic::getInstance()->sql;
-    auto status = sqlPtr->exec(QString("UPDATE OrderStatus SET OrderStatus = '未完成' where OrderID = '%1';").arg(currentOrderID));
+    auto status = sqlManager::createOrderSql()->updateOrderStatusByOrderId(currentOrderID,ORDER_NOT_FINISHED_STATUS);
     if(true == status)
     {
         QMessageBox::information(nullptr,"信息","修改成功！");
-        //ui->tableWidget->item(ui->tableWidget->currentRow(),1)->setText("未完成");
         reFresh();
         return;
     }
     if(false == status)
     {
+        sqlManager::createOrderSql()->getError();
         QMessageBox::information(nullptr,"信息","修改失败！");
-        qDebug() << sqlPtr->lastError().text();
         return;
     }
 
@@ -169,19 +150,17 @@ void dlgOrderStatus::on_BtnClothesNotBeSent_clicked()
         return;
     }
 
-    auto sqlPtr = pulic::getInstance()->sql;
-    auto status = sqlPtr->exec(QString("UPDATE OrderStatus SET ClothesSendStatus = '未发出' where OrderID = '%1';").arg(currentOrderID));
+    auto status = sqlManager::createOrderSql()->updateClothesStatusByOrderId(currentOrderID,CLOTHES_NOT_SEND);
     if(true == status)
     {
         QMessageBox::information(nullptr,"信息","修改成功！");
-        //ui->tableWidget->item(ui->tableWidget->currentRow(),1)->setText("未发出");
         reFresh();
         return;
     }
     if(false == status)
     {
+        sqlManager::createOrderSql()->getError();
         QMessageBox::information(nullptr,"信息","修改失败！");
-        qDebug() << sqlPtr->lastError().text();
         return;
     }
 
@@ -199,20 +178,17 @@ void dlgOrderStatus::on_BtnOrderFinished_clicked()
     {
         return;
     }
-
-    auto sqlPtr = pulic::getInstance()->sql;
-    auto status = sqlPtr->exec(QString("UPDATE OrderStatus SET OrderStatus = '已完成' where OrderID = '%1';").arg(currentOrderID));
+    auto status = sqlManager::createOrderSql()->updateOrderStatusByOrderId(currentOrderID,ORDER_FINISHED_STATUS);
     if(true == status)
     {
         QMessageBox::information(nullptr,"信息","修改成功！");
-        //ui->tableWidget->item(ui->tableWidget->currentRow(),1)->setText("已完成");
         reFresh();
         return;
     }
     if(false == status)
     {
+        sqlManager::createOrderSql()->getError();
         QMessageBox::information(nullptr,"信息","修改失败！");
-        qDebug() << sqlPtr->lastError().text();
         return;
     }
 }
@@ -230,122 +206,69 @@ void dlgOrderStatus::on_BtnClothesSent_clicked()
         return;
     }
 
-    auto sqlPtr = pulic::getInstance()->sql;
-    auto db = pulic::getInstance()->getDB();
-    db.transaction();
-    auto status = sqlPtr->exec(QString("UPDATE OrderStatus SET ClothesSendStatus = '已发出' where OrderID = '%1';").arg(currentOrderID));
-    //auto shelfStatus = sqlPtr->exec(QString("UPDATE Shelf%1  SET ShelfStatus = '%2' where OrderID = '%3';")//不需要还原了
-    //.arg(ui->tableWidget->item(ui->tableWidget->currentRow(),5)->text().right(1))
-    //.arg("空").arg(ui->tableWidget->item(ui->tableWidget->currentRow(),0)->text()));
-
+    auto status = sqlManager::createOrderSql()->clothesHaveBeenSendOut(currentOrderID);
     if(false == status)// || false == shelfStatus)
     {
         QMessageBox::information(nullptr,"信息","修改失败！");
-        qDebug() << sqlPtr->lastError().text();
-        db.rollback();
         return;
     }
-
 
     if(true == status)// && true == shelfStatus)
     {
         QMessageBox::information(nullptr,"信息","修改成功！");
-        db.commit();
         reFresh();
         return;
     }
+
 }
 
 void dlgOrderStatus::on_comboBox_currentIndexChanged(int index)
 {
+    QString type;
     switch (index)
     {
-        case 0://如果是全部
+    case 0:
+    break;
+    case 1:
+        type = ORDER_FINISHED_STATUS;
+    break;
+    case 2:
+        type = ORDER_NOT_FINISHED_STATUS;
+    break;
+    case 3:
+        type = CLOTHES_HAVE_BEEN_SEND;
+    break;
+    case 4:
+        type = CLOTHES_NOT_SEND;
+    break;
+    }
+    if(index != 0)
+    {
+        for (int row = 0; row < ui->tableWidget->rowCount(); ++row)
         {
-            reFresh();
-            for(int i = 0; i < ui->tableWidget->rowCount(); i++)
-            {
-                  ui->tableWidget->setRowHidden(i,false);
-            }
-
-            break;
-        }
-        case 1://如果是已完成
-        {
-            for (int row = 0; row < ui->tableWidget->rowCount(); ++row)
-            {
-                bool rowMatches = false;
-                for (int column = 0; column < ui->tableWidget->columnCount(); ++column) {
-                    QTableWidgetItem *item = ui->tableWidget->item(row, column);
-                    if (item) {
-                        if (item->text().contains("已完成")) {
-                            rowMatches = true;
-                            break;
-                        }
+            bool rowMatches = false;
+            for (int column = 0; column < ui->tableWidget->columnCount(); ++column) {
+                QTableWidgetItem *item = ui->tableWidget->item(row, column);
+                if (item) {
+                    if (item->text().contains(type)) {
+                        rowMatches = true;
+                        break;
                     }
                 }
-                // 根据是否匹配来显示或隐藏行
-                ui->tableWidget->setRowHidden(row, !rowMatches);
             }
-            break;
-        }
-        case 2://如果是未完成
-        {
-            for (int row = 0; row < ui->tableWidget->rowCount(); ++row)
-            {
-                bool rowMatches = false;
-                for (int column = 0; column < ui->tableWidget->columnCount(); ++column) {
-                    QTableWidgetItem *item = ui->tableWidget->item(row, column);
-                    if (item) {
-                        if (item->text().contains("未完成")) {
-                            rowMatches = true;
-                            break;
-                        }
-                    }
-                }
-                // 根据是否匹配来显示或隐藏行
-                ui->tableWidget->setRowHidden(row, !rowMatches);
-            }
-            break;
-        }
-        case 3://如果是已发出
-        {
-            for (int row = 0; row < ui->tableWidget->rowCount(); ++row)
-            {
-                bool rowMatches = false;
-                for (int column = 0; column < ui->tableWidget->columnCount(); ++column) {
-                    QTableWidgetItem *item = ui->tableWidget->item(row, column);
-                    if (item) {
-                        if (item->text().contains("已发出")) {
-                            rowMatches = true;
-                            break;
-                        }
-                    }
-                }
-                // 根据是否匹配来显示或隐藏行
-                ui->tableWidget->setRowHidden(row, !rowMatches);
-            }
-            break;
-        }
-        case 4://如果是未发出
-        {
-            for (int row = 0; row < ui->tableWidget->rowCount(); ++row)
-            {
-                bool rowMatches = false;
-                for (int column = 0; column < ui->tableWidget->columnCount(); ++column) {
-                    QTableWidgetItem *item = ui->tableWidget->item(row, column);
-                    if (item) {
-                        if (item->text().contains("未发出")) {
-                            rowMatches = true;
-                            break;
-                        }
-                    }
-                }
-                // 根据是否匹配来显示或隐藏行
-                ui->tableWidget->setRowHidden(row, !rowMatches);
-            }
-            break;
+            // 根据是否匹配来显示或隐藏行
+            ui->tableWidget->setRowHidden(row, !rowMatches);
         }
     }
+    else
+    {
+        reFresh();
+        for(int i = 0; i < ui->tableWidget->rowCount(); i++)
+        {
+              ui->tableWidget->setRowHidden(i,false);
+        }
+
+    }
+
 
 }

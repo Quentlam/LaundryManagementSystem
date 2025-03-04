@@ -54,7 +54,7 @@ public:
     void calFinalMoney();
     void createNewOrderSuccess();
     void rechargeSuccessFuc();
-    void setLineFocus();
+    void keyPressEvent(QKeyEvent *event);
 private slots:
     void on_BtnCancel_clicked();
 
@@ -75,6 +75,10 @@ private slots:
     void on_TWMoney_cellChanged(int row, int column);
 
     void on_TWCal_cellClicked(int row, int column);
+
+    void on_LESearch_textChanged(const QString &arg1);
+
+    void on_LESearch_returnPressed();
 
 private:
     dlgGetMoney dlgGetMon;
@@ -114,6 +118,7 @@ private:
 signals:
     void backToMainWindow();
     void backToGetMoney();
+    void searchClothes();
 };
 
 #endif // DLGGETCLOTHES_H

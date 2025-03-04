@@ -1,4 +1,4 @@
-#include "ordernumbergenerator.h"
+﻿#include "ordernumbergenerator.h"
 #include "pulic.h"
 #include <QVariant>
 #include <QDebug>
@@ -10,7 +10,7 @@ OrderNumberGenerator::OrderNumberGenerator()
 
 QString OrderNumberGenerator::generateOrderNumber()
 {
-    auto sqlPtr = pulic::getInstance()->sql;
+    auto sqlPtr = GET_SQL_POINTER;
     sqlPtr->exec("select * from CurrentOrderID");
     sqlPtr->next();
     QString preOrderID = sqlPtr->value(0).toString();//这里拿的是之前的OrderID

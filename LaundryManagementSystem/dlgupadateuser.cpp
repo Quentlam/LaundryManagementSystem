@@ -6,7 +6,7 @@
 #include <QSqlError>
 #include <QSqlDatabase>
 #include <QSqlQuery>
-
+#include "sqlmanager.h"
 
 dlgUpadateUser::dlgUpadateUser(QWidget *parent) :
     QDialog(parent),
@@ -18,7 +18,7 @@ dlgUpadateUser::dlgUpadateUser(QWidget *parent) :
     updateUserOperate.operate = QString("修改了员工数据");
 }
 
-dlgUpadateUser::dlgUpadateUser(QWidget *parent, UserInformation Temp):
+dlgUpadateUser::dlgUpadateUser(QWidget *parent, userInfo Temp):
     QDialog(parent),
     userTemp(Temp),
     ui(new Ui::dlgUpadateUser)
@@ -39,19 +39,19 @@ dlgUpadateUser::~dlgUpadateUser()
 
 void dlgUpadateUser::on_BtnEnter_clicked()
 {
-    auto sqlPtr = pulic::getInstance()->sql;
-    QString sql = QString("UPDATE User SET ID = '%1',Account = '%2',Password = '%3',Name = '%4' where ID = '%6'")
-            .arg(ui->LeID->text()).arg(ui->LeAccount->text()).arg(ui->LePassword->text()).arg(ui->LeName->text()).arg(userTemp.ID);
-    //qDebug() << sql;
-    auto status = sqlPtr->exec(sql);
-    //QSqlError error = sqlPtr->lastError();
-    //qDebug() << error.text();
-    if(true == status)
+    userInfo userTemp;
+    userTemp.ID = ui->LeID->text();
+    userTemp.Account = ui->LeAccount->text();
+    userTemp.Password = ui->LePassword->text();
+    userTemp.Name = ui->LeName->text();
+    bool success = sqlManager::createUserSql()->updateUserById(userTemp,this->userTemp.ID);
+    updateUserOperate.target = QString("原先员工ID：%1,原先员工账号：%2，原先员工密码：%3，原先员工名字：%4----现在员工ID：%5，现在员工账号：%6，现在员工密码：%7，现在员工名字：%8")
+            .arg(userTemp.ID).arg(userTemp.Account).arg(userTemp.Password).arg(userTemp.Name).arg(ui->LeID->text()).arg(ui->LeAccount->text())
+            .arg(ui->LePassword->text()).arg(ui->LeName->text());//修改用户的比较严重，所以多写了一点
+
+    if(true == success)
     {
         QMessageBox::information(nullptr,"信息","修改成功！");
-        updateUserOperate.target = QString("原先员工ID：%1,原先员工账号：%2，原先员工密码：%3，原先员工名字：%4----现在员工ID：%5，现在员工账号：%6，现在员工密码：%7，现在员工名字：%8")
-                .arg(userTemp.ID).arg(userTemp.Account).arg(userTemp.Password).arg(userTemp.Name).arg(ui->LeID->text()).arg(ui->LeAccount->text())
-                .arg(ui->LePassword->text()).arg(ui->LeName->text());//修改用户的比较严重，所以多写了一点
         LaundryManagementLogger::record(updateUserOperate);
         this->close();
     }
@@ -63,5 +63,6 @@ void dlgUpadateUser::on_BtnEnter_clicked()
 
 void dlgUpadateUser::on_BtnCancel_clicked()
 {
+    deleteLater();
     this->close();
 }

@@ -106,7 +106,7 @@ void Printer::makeUserCurrentOrderDocument(QTextDocument& textDocument,OrderInfo
     // 另起一页
     //mPrinter.newPage(); // 这行代码会将当前页面结束并开始新的一页
     QString text;
-    auto sqlPtr = pulic::getInstance()->sql;
+    auto sqlPtr = GET_SQL_POINTER;
     sqlPtr->exec("select * from ShopData");
     ShopData shopData;
     while(sqlPtr->next())
@@ -179,7 +179,7 @@ void Printer::makeUserCurrentOrderDocument(QTextDocument& textDocument,OrderInfo
 
 
     text += QString("客户代号：%1").arg(order.customerID);
-    text += QString(" 店员姓名：%1\n").arg(pulic::getInstance()->currentUser->userInformation.Name);
+    text += QString(" 店员姓名：%1\n").arg((*pulic::getInstance()).currentUser->Name);
     text += QString("客户姓名：%1\n").arg(order.customerName);
     text += QString("取衣日期：%1\n").arg(order.GetClothesDate);
     text += "\n---------------------------------------\n";
@@ -195,7 +195,7 @@ void Printer::makeUserCurrentOrderDocument(QTextDocument& textDocument,OrderInfo
 void Printer::makeCusotmerCurrentOrderDocument(QTextDocument& textDocument,OrderInfo order)
 {
     QString text;
-    auto sqlPtr = pulic::getInstance()->sql;
+    auto sqlPtr = GET_SQL_POINTER;
     sqlPtr->exec("select * from ShopData");
     ShopData shopData;
     while(sqlPtr->next())
@@ -269,7 +269,7 @@ void Printer::makeCusotmerCurrentOrderDocument(QTextDocument& textDocument,Order
 
 
     text += QString("客户代号：%1").arg(order.customerID);
-    text += QString(" 店员姓名：%1\n").arg(pulic::getInstance()->currentUser->userInformation.Name);
+    text += QString(" 店员姓名：%1\n").arg((*pulic::getInstance()).currentUser->Name);
     text += QString("客户姓名：%1\n").arg(order.customerName);
     text += QString("取衣日期：%1\n").arg(order.GetClothesDate);
     text += QString("查询电话：%1\n").arg(shopData.SearchPhone);
@@ -384,7 +384,7 @@ QString Printer::incrementPrefix(const QString& input)
 
 bool Printer::shelfOccupy(QString ShelfID)
 {
-    auto sqlPtr = pulic::getInstance()->sql;
+    auto sqlPtr = GET_SQL_POINTER;
     auto shelfOccupyStatus = sqlPtr->exec(QString("update Shelf%1 set ShelfStatus = '已上架' where ShelfID = '%2';").arg(ShelfID.at(4)).arg(ShelfID.left(5)));
     if(false == shelfOccupyStatus)
     {
@@ -395,7 +395,7 @@ bool Printer::shelfOccupy(QString ShelfID)
 
 void Printer::recordShelves(QString OrderID,QString& Shelves)
 {
-    auto sqlPtr = pulic::getInstance()->sql;
+    auto sqlPtr = GET_SQL_POINTER;
     auto OrderLogShelfStatus = sqlPtr->exec(QString("UPDATE OrderLog SET ShelfID = '%1' where OrderID = '%2';").arg(Shelves).arg(OrderID));
     auto OrderStatusShelfStatus = sqlPtr->exec(QString("UPDATE OrderStatus SET ShelfID = '%1' where OrderID = '%2';").arg(Shelves).arg(OrderID));
     if(false == OrderLogShelfStatus || false == OrderStatusShelfStatus)

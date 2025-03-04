@@ -2,6 +2,7 @@
 #include "ui_dlgneworder.h"
 #include "pulic.h"
 #include "printpreviewwidget.h"
+#include "sqlmanager.h"
 #include <QSqlError>
 #include <QDebug>
 #include <QMessageBox>
@@ -113,25 +114,18 @@ dlgNewOrder::~dlgNewOrder()
 
 bool dlgNewOrder::createNewOrder()
 {
-    QString ClothesNameMessage;
-    QString ClothesColorMessage;
-    QString ClothesDefectMessage;
-    QString ClothesBrandMessage;
-    QString ClothesTreatmentMessage;
-    QString ClothesEffectMessage;
-    QString ClothesPriceMessage;
-
-
+    OrderClothesAttributeMessage Message;
     for(int i = 0 ; i < currentOrder.clothesTemp.size(); i ++)
     {
-        ClothesNameMessage      += (dlgSelectClothes->temp[i].Name + " ")     ;
-        ClothesColorMessage     += (dlgSelectClothes->temp[i].Color+ " ")     ;
-        ClothesDefectMessage    += (dlgSelectClothes->temp[i].Defect+ " ")    ;
-        ClothesBrandMessage     += (dlgSelectClothes->temp[i].Brand+ " ")     ;
-        ClothesTreatmentMessage += (dlgSelectClothes->temp[i].Treament+ " ")  ;
-        ClothesEffectMessage    += (dlgSelectClothes->temp[i].Effect+ " ")    ;
-        ClothesPriceMessage     += (dlgSelectClothes->temp[i].Price + " ")    ;
+        Message.ClothesNameMessage      += (dlgSelectClothes->temp[i].Name + " ")     ;
+        Message.ClothesColorMessage     += (dlgSelectClothes->temp[i].Color+ " ")     ;
+        Message.ClothesDefectMessage    += (dlgSelectClothes->temp[i].Defect+ " ")    ;
+        Message.ClothesBrandMessage     += (dlgSelectClothes->temp[i].Brand+ " ")     ;
+        Message.ClothesTreatmentMessage += (dlgSelectClothes->temp[i].Treament+ " ")  ;
+        Message.ClothesEffectMessage    += (dlgSelectClothes->temp[i].Effect+ " ")    ;
+        Message.ClothesPriceMessage     += (dlgSelectClothes->temp[i].Price + " ")    ;
     }
+
     if("充值卡支付" == currentOrder.PayWay)
     {
         ui->LBInput->setText("充值卡不支持收银");
@@ -139,55 +133,41 @@ bool dlgNewOrder::createNewOrder()
         currentOrder.InputMoney = "充值卡不支持收银";
         currentOrder.OutputMoney = "充值卡不支持找零";
     }
-
-    auto sqlPtr = pulic::getInstance()->sql;
-    auto status = sqlPtr->exec(QString("insert into OrderLog values ('%1','%2','%3','%4','%5','%6','%7','%8','%9','%10','%11','%12','%13','%14','%15','%16','%17','%18','%19','%20','%21','%22','%23','%24','%25','%26');")
-                 .arg(currentOrder.orderID).arg(currentOrder.customerID).arg(currentOrder.customerName).arg(currentOrder.customerPhone)
-                 .arg(currentOrder.customerCount).arg(currentOrder.customerSpend).arg(currentOrder.customerCardID).arg(ClothesNameMessage)
-                 .arg(ClothesColorMessage).arg(ClothesDefectMessage).arg(ClothesBrandMessage).arg(ClothesTreatmentMessage)
-                 .arg(ClothesEffectMessage).arg(ClothesPriceMessage).arg(currentOrder.MoneyCount).arg(currentOrder.Discount)
-                 .arg(currentOrder.AfterDiscountMoneyCount).arg(currentOrder.ClothesCount).arg(currentOrder.CustomerCardMoney).arg(currentOrder.InputMoney)
-                 .arg(currentOrder.OutputMoney).arg(currentOrder.PayWay).arg(currentOrder.HaveNotPaid).arg(currentOrder.GetClothesDate)
-                 .arg(currentOrder.CustomerAddress).arg(choseShelf.shelfNumber)
-                 );
+    currentOrder.ShelfID = choseShelf.shelfNumber;//这里要更新一下这个架号
+    auto status = sqlManager::createOrderSql()->createNewOrder(currentOrder,Message);
     if(false == status)
     {
+        sqlManager::createOrderSql()->getError();
         QMessageBox::information(nullptr,"信息","创建订单失败！");
-        qDebug() << sqlPtr->lastError().text();
     }
-
     else
     {
         QMessageBox::information(nullptr,"信息","创建订单成功！");//首先先修改流水号
-        auto orderIncrease = sqlPtr->exec(QString("update CurrentOrderID set CurrentOrderID = '%1';").arg(currentOrder.orderID));
-
+        auto orderIncrease = sqlManager::createOrderSql()->updateCurrentOrderID(currentOrder.orderID);
          if(false == orderIncrease)
         {
-          qDebug() << sqlPtr->lastError().text();
+          sqlManager::createOrderSql()->getError();
         }
-         currentOrder.ShelfID = choseShelf.shelfNumber;
-         auto orderStatus = sqlPtr->exec(QString("insert into OrderStatus values ('%1','%2','%3','%4','%5','%6');").arg(currentOrder.orderID).arg("未完成").arg("未发出").arg(currentOrder.customerID).arg(currentOrder.customerName).arg(currentOrder.ShelfID));
-        //其次就是插入新的订单状态
+         auto orderStatus = sqlManager::createOrderSql()->createNewOrderStatus(currentOrder);//其次就是插入新的订单状态
          if(false == orderStatus)
         {
-          qDebug() << sqlPtr->lastError().text();
+          sqlManager::createOrderSql()->getError();
         }
-
          bool ShelfOccupy = false;
          if(choseShelf.shelfNumber.right(1) == "A")
          {
-             ShelfOccupy = sqlPtr->exec(QString("update ShelfA set ShelfStatus = '已上架' where ShelfID = '%1'; ").arg(choseShelf.shelfNumber));
+             ShelfOccupy =  sqlManager::createShelfSql()->setShelfOccupy(currentOrder.ShelfID,shelfInfo::shelfSet::A);
          }
 
          if(choseShelf.shelfNumber.right(1) == "B")
          {
-             ShelfOccupy = sqlPtr->exec(QString("update ShelfB set ShelfStatus = '已上架' where ShelfID = '%1'; ").arg(choseShelf.shelfNumber));
+             ShelfOccupy = sqlManager::createShelfSql()->setShelfOccupy(currentOrder.ShelfID,shelfInfo::shelfSet::B);
          }
          //最后架号也修改为已上架
          if(false == ShelfOccupy)
-        {
-          qDebug() << sqlPtr->lastError().text();
-        }
+         {
+             sqlManager::createShelfSql()->getError();
+         }
 
     }
 

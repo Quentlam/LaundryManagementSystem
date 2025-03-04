@@ -1,5 +1,6 @@
 ﻿#include "swpage00.h"
 #include "ui_swpage00.h"
+#include "sqlmanager.h"
 
 swpage00::swpage00(QWidget *parent) :
     QDialog(parent),
@@ -13,7 +14,6 @@ swpage00::~swpage00()
 {
     delete ui;
 }
-
 
 void swpage00::on_BtnDry_clicked()
 {

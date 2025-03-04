@@ -4,7 +4,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QSqlError>
-
+#include "sqlmanager.h"
 
 
 dlgAddClothesOtherAttributes::dlgAddClothesOtherAttributes(QWidget *parent,int chosenRadio) :
@@ -63,74 +63,63 @@ int dlgAddClothesOtherAttributes::exec()
 
 void dlgAddClothesOtherAttributes::on_BtnEnter_clicked()
 {
-    auto sqlPtr = pulic::getInstance()->sql;
     bool status = false;
     if(ui->LeText->text().isEmpty() || ui->LeID->text().isEmpty())
     {
         QMessageBox::information(nullptr,"警告","添加衣物其他属性时，要填写完整！");
         return;
     }
-
-
+    clothesAttributeInfo clothesAttributeInfoTemp;
+    clothesAttributeInfoTemp.ID = ui->LeID->text();
+    clothesAttributeInfoTemp.Name = ui->LeText->text();
+    clothesAttributeInfo::AttributeType type;
     switch(chosenRadio)
     {
          case 1://如果选的是衣服颜色
         {
-            if(!ui->LeID->text().isEmpty())
-            {
-            status = sqlPtr->exec(QString("insert into ClothesColor values('%1','%2')").arg(ui->LeID->text()).arg(ui->LeText->text()));
-            }
+            type = clothesAttributeInfo::AttributeType::Color;
+            status = sqlManager::createClothesSql()->addClothesAttribute(clothesAttributeInfoTemp,type);
             operate.target = QString("添加了衣服颜色：%1,ID为：%2").arg(ui->LeText->text()).arg(ui->LeID->text());
             break;
         }
         case 2://如果选的是衣服瑕疵
        {
-            if(!ui->LeID->text().isEmpty())
-            {
-            status = sqlPtr->exec(QString("insert into ClothesDefect values('%1','%2')").arg(ui->LeID->text()).arg(ui->LeText->text()));
-            }
-            operate.target = QString("添加了衣服瑕疵：%1,ID为：%2").arg(ui->LeText->text()).arg(ui->LeID->text());
+            type = clothesAttributeInfo::AttributeType::Defect;
+            status = sqlManager::createClothesSql()->addClothesAttribute(clothesAttributeInfoTemp,type);
+            operate.target = QString("添加了衣服颜色：%1,ID为：%2").arg(ui->LeText->text()).arg(ui->LeID->text());
             break;
        }
         case 3://如果选的是衣服品牌
        {
-            if(!ui->LeID->text().isEmpty())
-            {
-            status = sqlPtr->exec(QString("insert into ClothesBrand values('%1','%2')").arg(ui->LeID->text()).arg(ui->LeText->text()));
-            }
-            operate.target = QString("添加了衣服品牌：%1,ID为：%2").arg(ui->LeText->text()).arg(ui->LeID->text());
+            type = clothesAttributeInfo::AttributeType::Brand;
+            status = sqlManager::createClothesSql()->addClothesAttribute(clothesAttributeInfoTemp,type);
+            operate.target = QString("添加了衣服颜色：%1,ID为：%2").arg(ui->LeText->text()).arg(ui->LeID->text());
             break;
        }
         case 4://如果选的是特殊处理
        {
-            if(!ui->LeID->text().isEmpty())
-            {
-            status = sqlPtr->exec(QString("insert into SpecialTreatment values('%1','%2')").arg(ui->LeID->text()).arg(ui->LeText->text()));
-            }
-            operate.target = QString("添加了特殊处理：%1,ID为：%2").arg(ui->LeText->text()).arg(ui->LeID->text());
+            type = clothesAttributeInfo::AttributeType::SpecialTreatment;
+            status = sqlManager::createClothesSql()->addClothesAttribute(clothesAttributeInfoTemp,type);
+            operate.target = QString("添加了衣服颜色：%1,ID为：%2").arg(ui->LeText->text()).arg(ui->LeID->text());
             break;
        }
         case 5://如果选的是洗后效果
        {
-            if(!ui->LeID->text().isEmpty())
-            {
-            status = sqlPtr->exec(QString("insert into WashingEffect values('%1','%2')").arg(ui->LeID->text()).arg(ui->LeText->text()));
-            }
-            operate.target = QString("添加了洗后效果：%1,ID为：%2").arg(ui->LeText->text()).arg(ui->LeID->text());
+            type = clothesAttributeInfo::AttributeType::WashingEffect;
+            status = sqlManager::createClothesSql()->addClothesAttribute(clothesAttributeInfoTemp,type);
+            operate.target = QString("添加了衣服颜色：%1,ID为：%2").arg(ui->LeText->text()).arg(ui->LeID->text());
             break;
        }
 
         default:
-        {
+        {   
             QMessageBox::information(nullptr,"信息","你圈了个什么玩意儿？？？");
             break;
         }
 
     }
 
-
-
-    if(status)
+    if(true == status)
     {
         QMessageBox::information(nullptr,"信息","添加成功！");
         LaundryManagementLogger::record(operate);
@@ -138,10 +127,8 @@ void dlgAddClothesOtherAttributes::on_BtnEnter_clicked()
     }
     else
     {
+        sqlManager::createClothesSql()->getError();
         QMessageBox::information(nullptr,"信息","添加失败！");
-        qDebug() << sqlPtr->lastQuery();
-        qDebug() << sqlPtr->lastError().text();
-
     }
 
 

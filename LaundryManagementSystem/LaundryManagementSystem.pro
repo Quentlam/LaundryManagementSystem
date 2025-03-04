@@ -82,7 +82,14 @@ SOURCES += \
     printer.cpp \
     dlgcustomergetclothes.cpp \
     code128generator.cpp \
-    printpreviewwidget.cpp
+    printpreviewwidget.cpp \
+    sqlmanager.cpp \
+    clothesql.cpp \
+    ordersql.cpp \
+    customersql.cpp \
+    usersql.cpp \
+    shelfsql.cpp \
+    shelfinfo.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -130,7 +137,14 @@ HEADERS += \
     printer.h \
     dlgcustomergetclothes.h \
     code128generator.h \
-    printpreviewwidget.h
+    printpreviewwidget.h \
+    sqlmanager.h \
+    clothesql.h \
+    ordersql.h \
+    customersql.h \
+    usersql.h \
+    shelfsql.h \
+    shelfinfo.h
 
 FORMS += \
         mainwindow.ui \
@@ -182,7 +196,7 @@ DEFINES += ZINT_NO_PNG
 DEFINES += ENABLE_ENCODER_GENERIC
 
 win32: LIBS += -L$$PWD/../thirdParty/libs/ -lQZXing3
-win32: LIBS += -L$$PWD/../thirdParty/libs/ -lQtZint
+win32: LIBS += -L$$PWD/../thirdParty/libs/ -lQtZintd
 win32: LIBS += -L$$PWD/../thirdParty/libs/ -lzint
 
 INCLUDEPATH += $$PWD/../thirdParty/include/QZXing
@@ -190,3 +204,8 @@ DEPENDPATH += $$PWD/../thirdParty/include/QZXing
 
 INCLUDEPATH += $$PWD/../thirdParty/include/zint/backend_qt
 DEPENDPATH += $$PWD/../thirdParty/include/zint/backend_qt
+
+
+LIBS += -L$$PWD/../thirdParty/libs/ -lQtZintd
+#LIBS += -L$$PWD/../thirdParty/libs/ -lQtZint
+

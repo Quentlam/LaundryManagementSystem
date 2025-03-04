@@ -3,6 +3,8 @@
 #include <QMessageBox>
 #include <clothesinfo.h>
 #include "pulic.h"
+#include "sqlmanager.h"
+
 
 dlgAddClothes::dlgAddClothes(QWidget *parent) :
     QDialog(parent),
@@ -43,21 +45,21 @@ void dlgAddClothes::on_BtnEnter_clicked()
     temp.Price = ui->LePrice->text().toInt();
     temp.Type = ui->CBType->currentText();
     temp.WashWay = ui->CBWashWay->currentText();
-    auto sqlPtr = pulic::getInstance()->sql;
 
-    bool status = sqlPtr->exec(QString("insert into Clothes values('%1','%2',%3,'%4','%5')").arg(temp.ID).arg(temp.Name).arg(temp.Price).arg(temp.Type).arg(temp.WashWay));
+    bool status = sqlManager::createClothesSql()->addClothes(temp);
     if(true == status)
     {
         QMessageBox::information(nullptr,"信息","添加成功！");
         addClothesOperate.target = QString("添加了%1衣服,编号为:%2").arg(temp.Name).arg(temp.ID);
         LaundryManagementLogger::record(addClothesOperate);
+        this->close();
     }
     else
     {
+        sqlManager::createClothesSql()->getError();
         QMessageBox::information(nullptr,"信息","添加失败！");
     }
 
-    this->close();
 }
 
 void dlgAddClothes::on_BtnCancel_clicked()

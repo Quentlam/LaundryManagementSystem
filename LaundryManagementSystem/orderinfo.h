@@ -30,6 +30,8 @@ public:
     QString GetClothesDate;
     QString CustomerAddress;
     QString ShelfID;
+
+    static QList<QString> orderTittle;
 };
 
 class OrderStatus
@@ -43,7 +45,25 @@ public:
     QString customerID;
     QString customerName;
     QString shelfID;
+
+    static QList<QString> orderStatusTittle;
 };
 
+
+class OrderClothesAttributeMessage
+{
+public:
+    OrderClothesAttributeMessage();
+    ~OrderClothesAttributeMessage();
+public:
+    QString ClothesNameMessage;
+    QString ClothesColorMessage;
+    QString ClothesDefectMessage;
+    QString ClothesBrandMessage;
+    QString ClothesTreatmentMessage;
+    QString ClothesEffectMessage;
+    QString ClothesPriceMessage;
+
+};
 
 #endif // ORDERINFO_H

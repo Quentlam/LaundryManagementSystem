@@ -5,14 +5,13 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include "userinfo.h"
+#include "sqlmanager.h"
 
 class pulic : public QObject
 {
     Q_OBJECT
 public:
     explicit pulic(QObject *parent = nullptr);
-
-
     static pulic* getInstance()
     {
         if(nullptr == instance)
@@ -22,24 +21,14 @@ public:
           return instance;
     }
 
-    QSqlDatabase getDB()
-    {
-        return DB;
-    }
-
-    QSqlQuery* sql;
     static userInfo* currentUser;
     static QString* currentAddress;
     static bool login;
-
     static int shelfCount;
-
+    static QSqlDatabase* DB;
 
 private:
     static pulic* instance;
-    QSqlDatabase DB;
-
-
 
 };
 

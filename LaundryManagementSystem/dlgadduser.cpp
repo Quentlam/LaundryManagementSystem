@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include "pulic.h"
 #include "mainwindow.h"
+#include "sqlmanager.h"
 
 dlgAddUser::dlgAddUser(QWidget *parent) :
     QDialog(parent),
@@ -36,52 +37,39 @@ int dlgAddUser::exec()
 void dlgAddUser::on_BtnEnter_clicked()
 {
     userInfo temp;
-    temp.userInformation.ID = ui->LeID->text();
-    temp.userInformation.Account = ui->leAccount->text();
-    temp.userInformation.Password = ui->lePassword->text();
-    temp.userInformation.Name = ui->leName->text();
+    temp.ID = ui->LeID->text();
+    temp.Account = ui->leAccount->text();
+    temp.Password = ui->lePassword->text();
+    temp.Name = ui->leName->text();
     if(ui->radioButton->isChecked())
-    temp.userInformation.Authority = "员工";
+    temp.Authority = "员工";
 
 
     else if(ui->radioButton_2->isChecked())
-    temp.userInformation.Authority = "经理";
+    temp.Authority = "经理";
 
 
-    if(temp.userInformation.ID.isEmpty() || temp.userInformation.Name.isEmpty() || temp.userInformation.Password.isEmpty() || temp.userInformation.Account.isEmpty() || temp.userInformation.Authority.isEmpty())
+    if(temp.ID.isEmpty() || temp.Name.isEmpty() || temp.Password.isEmpty() || temp.Account.isEmpty() || temp.Authority.isEmpty())
         QMessageBox::information(nullptr,"警告","添加员工时，全部都不能为空！");
     else//先判断是否为空，如果不是就有以下查重
     {   
-        auto sql = pulic::getInstance()->sql;
-
-        sql->exec(QString("select * from User where Account = '%1'").arg(temp.userInformation.Account));
-        if(sql->next())
+        auto accountOccupystatus = sqlManager::createUserSql()->selectUserByAccount(temp.Account);
+        if(accountOccupystatus)
         {
-        QMessageBox::information(nullptr,"警告","该账号已经被占用过！请重新输入要添加的账号！");
-        return;
+            QMessageBox::information(nullptr,"警告","该账号已经被占用过！请重新输入要添加的账号！");
+            return;
         }
 
-
-        sql->exec(QString("select * from User where Name = '%1'").arg(temp.userInformation.Name));
-        if(sql->next())
+        auto userHaveAccountOrnot = sqlManager::createUserSql()->selectUserByName(temp.Name);
+        if(userHaveAccountOrnot)
         {
-        QMessageBox::information(nullptr,"警告","该员工已经有账号了！");
-        return;
+            QMessageBox::information(nullptr,"警告","该员工已经有账号了！");
+            return;
         }
-
-
-        sql->exec(QString("insert into User values('%1','%2','%3','%4','%5');").
-                  arg(temp.userInformation.ID).
-                  arg(temp.userInformation.Account).
-                  arg(temp.userInformation.Password).
-                  arg(temp.userInformation.Name).
-                  arg(temp.userInformation.Authority)
-                      );
+        sqlManager::createUserSql()->addUser(temp);
         QMessageBox::information(nullptr,"信息","添加成功！");
-        addUserOperate.target = QString("添加了%1员工账号，员工编号为：%2").arg(temp.userInformation.Name).arg(temp.userInformation.ID);
+        addUserOperate.target = QString("添加了%1员工账号，员工编号为：%2").arg(temp.Name).arg(temp.ID);
         LaundryManagementLogger::record(addUserOperate);
-
-
         this->close();
 
     }

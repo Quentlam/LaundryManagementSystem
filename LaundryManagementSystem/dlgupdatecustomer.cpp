@@ -128,7 +128,6 @@ dlgUpdateCustomer::~dlgUpdateCustomer()
 
 void dlgUpdateCustomer::on_BtnEnter_clicked()
 {
-    auto sqlPtr = pulic::getInstance()->sql;
     QString sql;
     bool isNumber;
     bool noPaid = false;
@@ -138,30 +137,39 @@ void dlgUpdateCustomer::on_BtnEnter_clicked()
         QMessageBox::information(nullptr,"信息","请在欠缴框里输入数字！");
         return;
     }
-
+    customerInfo temp;
+    temp.ID = ui->LeID->text();
+    temp.Gender = ui->CBGender->currentText();
+    temp.Name = ui->LeName->text();
+    temp.Phone = ui->LePhone->text();
+    temp.CardID = ui->LeCardID->text();
+    temp.Spend = ui->LeSpend->text().toDouble(); // 假设 Spend 是 double 类型
+    temp.Count = ui->LeCount->text().toInt(); // 假设 Count 是 int 类型
+    temp.CardType = ui->CBCardType->currentText();
+    temp.HaveNotPaid = "欠缴"; // 因为这个字段始终为 "欠缴"
+    temp.HaveNotPaidMoney = ui->LeHaveNotPaid->text(); // 假设这是 double 类型
+    temp.CardMoney = ui->LeCardMoney->text().toDouble(); // 假设 CardMoney 是 double 类型
+    temp.Address = ui->LeAddress->text();
+    temp.Credit = ui->CBCredit->currentText();
+    temp.Notes = ui->PTENotes->toPlainText();
+    bool status = false;
     if(0 != ui->LeHaveNotPaid->text().toInt())//如果输入框里不是0的话
     {
         noPaid = true;
-        //如果不是0，则为欠缴，并且写上欠缴多少钱
-         sql = QString("UPDATE Customer SET ID = '%1',Gender = '%2',Name = '%3',Phone = '%4',CardID = '%5',Spend = %6,Count = %7 ,CardType = '%8',HaveNotPaid = '%9',HaveNotPaidMoney = '%10' ,CardMoney = %11 ,Address = '%12',Credit = '%13',Notes = '%14' where ID = '%15';")
-                            .arg(ui->LeID->text()).arg(ui->CBGender->currentText()).arg(ui->LeName->text()).arg(ui->LePhone->text()).arg(ui->LeCardID->text()).arg(ui->LeSpend->text())
-                            .arg(ui->LeCount->text()).arg(ui->CBCardType->currentText()).arg("欠缴").arg(ui->LeHaveNotPaid->text()).arg(ui->LeCardMoney->text())
-                            .arg(ui->LeAddress->text()).arg(ui->CBCredit->currentText()).arg(ui->PTENotes->toPlainText()).arg(customerTemp.ID);
-
-
-
+        status = sqlManager::createCustomerSql()->updateCustomerById(temp,customerTemp.ID);
+        if(false == status)
+        {
+            sqlManager::createCustomerSql()->getError();
+        }
     }
     else//如果是0，则为未欠缴，并且写上欠缴0元
     {
         noPaid = false;
         //如果是0，则为未欠缴
-         sql = QString("UPDATE Customer SET ID = '%1',Gender = '%2',Name = '%3',Phone = '%4',CardID = '%5',Spend = %6,Count = %7 ,CardType = '%8',HaveNotPaid = '%9',HaveNotPaidMoney = '%10' ,CardMoney = %11 ,Address = '%12',Credit = '%13',Notes = '%14' where ID = '%15';")
-                            .arg(ui->LeID->text()).arg(ui->CBGender->currentText()).arg(ui->LeName->text()).arg(ui->LePhone->text()).arg(ui->LeCardID->text()).arg(ui->LeSpend->text())
-                            .arg(ui->LeCount->text()).arg(ui->CBCardType->currentText()).arg("未欠缴").arg("0").arg(ui->LeCardMoney->text())
-                            .arg(ui->LeAddress->text()).arg(ui->CBCredit->currentText()).arg(ui->PTENotes->toPlainText()).arg(customerTemp.ID);
+        temp.HaveNotPaid = "未欠缴";
+        status = sqlManager::createCustomerSql()->updateCustomerById(temp,customerTemp.ID);
     }
     ///////////////////////////////////////////以下是记录日志
-    auto status = sqlPtr->exec(sql);
     if(true == status)
     {
         if(true == noPaid)//如果欠缴了
@@ -192,4 +200,10 @@ void dlgUpdateCustomer::on_BtnEnter_clicked()
 
 
 
+}
+
+void dlgUpdateCustomer::on_BtnCancel_clicked()
+{
+    deleteLater();
+    this->close();
 }

@@ -24,6 +24,7 @@ public:
     bool searchStatus;
     Operate operate;
 
+    void setFocus(QString text);
 private slots:
     void on_dlgCustomerGetClothes_finished(int result);
 

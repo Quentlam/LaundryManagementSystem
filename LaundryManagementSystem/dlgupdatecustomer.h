@@ -25,6 +25,8 @@ public:
 private slots:
     void on_BtnEnter_clicked();
 
+    void on_BtnCancel_clicked();
+
 private:
     Ui::dlgUpdateCustomer *ui;
 };
