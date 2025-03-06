@@ -6,21 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
-    <height>1080</height>
+    <width>1200</width>
+    <height>1012</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1920</width>
-    <height>1080</height>
+    <width>1200</width>
+    <height>1000</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>1920</width>
-    <height>1080</height>
+    <width>1200</width>
+    <height>1012</height>
    </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>微软雅黑</family>
+   </font>
   </property>
   <property name="windowTitle">
    <string>查询业务</string>
@@ -30,13 +35,13 @@
     <widget class="QWidget" name="widgetChose" native="true">
      <property name="minimumSize">
       <size>
-       <width>350</width>
+       <width>180</width>
        <height>1000</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>350</width>
+       <width>180</width>
        <height>16777215</height>
       </size>
      </property>
@@ -54,6 +59,12 @@
           <height>60</height>
          </size>
         </property>
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>微软雅黑</family>
@@ -69,14 +80,14 @@
        <widget class="QTreeWidget" name="treeWidget">
         <property name="minimumSize">
          <size>
-          <width>330</width>
+          <width>150</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>330</width>
-          <height>16777215</height>
+          <width>150</width>
+          <height>850</height>
          </size>
         </property>
         <property name="font">
@@ -94,18 +105,16 @@
          <property name="font">
           <font>
            <family>微软雅黑</family>
-           <pointsize>20</pointsize>
           </font>
          </property>
         </column>
         <item>
          <property name="text">
-          <string>订单基本参数</string>
+          <string>订单参数</string>
          </property>
          <property name="font">
           <font>
            <family>微软雅黑</family>
-           <pointsize>12</pointsize>
           </font>
          </property>
         </item>
@@ -116,7 +125,6 @@
          <property name="font">
           <font>
            <family>微软雅黑</family>
-           <pointsize>12</pointsize>
           </font>
          </property>
         </item>
@@ -127,7 +135,6 @@
          <property name="font">
           <font>
            <family>微软雅黑</family>
-           <pointsize>12</pointsize>
           </font>
          </property>
         </item>
@@ -138,7 +145,6 @@
          <property name="font">
           <font>
            <family>微软雅黑</family>
-           <pointsize>12</pointsize>
           </font>
          </property>
         </item>

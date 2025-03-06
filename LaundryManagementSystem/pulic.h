@@ -12,11 +12,11 @@ class pulic : public QObject
     Q_OBJECT
 public:
     explicit pulic(QObject *parent = nullptr);
-    static pulic* getInstance()
+    static Scope<pulic> getInstance()
     {
         if(nullptr == instance)
         {
-           instance = new pulic();
+           instance = std::make_shared<pulic>();
         }
           return instance;
     }
@@ -28,7 +28,7 @@ public:
     static QSqlDatabase* DB;
 
 private:
-    static pulic* instance;
+    static Scope<pulic> instance;
 
 };
 

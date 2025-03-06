@@ -38,7 +38,7 @@ int dlgChoseShelf::exec()
 
 void dlgChoseShelf::reFresh()
 {
-    std::unique_ptr<QList<shelfInfo>> shelvesList;
+    Ref<QList<shelfInfo>> shelvesList;
     shelfNumber = "未选择";
     shelfSelected = false;
     ui->LEShelfNumber->clear();

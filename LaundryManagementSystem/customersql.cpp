@@ -5,9 +5,9 @@
 
 customerSql* customerSql::Instance = nullptr;
 
-std::unique_ptr<QList<customerInfo>> customerSql::selectAllCustomerInfo()
+Ref<QList<customerInfo>> customerSql::selectAllCustomerInfo()
 {
-    std::unique_ptr<QList<customerInfo>> customerListTemp = std::make_unique<QList<customerInfo>>();
+    Ref<QList<customerInfo>> customerListTemp = std::make_unique<QList<customerInfo>>();
     customerInfo customerTemp;
     sql->exec("select * from Customer;");
     while(sql->next())//从数据库里把所有的客户查出来
@@ -31,9 +31,9 @@ std::unique_ptr<QList<customerInfo>> customerSql::selectAllCustomerInfo()
     return customerListTemp;
 }
 
-std::unique_ptr<customerInfo> customerSql::selectCusotmerById(QString id)
+Ref<customerInfo> customerSql::selectCusotmerById(QString id)
 {
-    std::unique_ptr<customerInfo> customerTemp = std::make_unique<customerInfo>();
+    Ref<customerInfo> customerTemp = std::make_unique<customerInfo>();
     sql->exec(QString("select * from Customer where ID = '%1'").arg(id));
     while(sql->next())
     {
@@ -55,9 +55,9 @@ std::unique_ptr<customerInfo> customerSql::selectCusotmerById(QString id)
     return customerTemp;
 }
 
-std::unique_ptr<customerInfo> customerSql::selectCusotmerByCardId(QString cardID)
+Ref<customerInfo> customerSql::selectCusotmerByCardId(QString cardID)
 {
-    std::unique_ptr<customerInfo> customerTemp = std::make_unique<customerInfo>();
+    Ref<customerInfo> customerTemp = std::make_unique<customerInfo>();
     sql->exec(QString("select * from Customer where CardID = '%1'").arg(cardID));
     while(sql->next())
     {
@@ -75,6 +75,33 @@ std::unique_ptr<customerInfo> customerSql::selectCusotmerByCardId(QString cardID
     (*customerTemp).Address          = sql->value(11).toString();
     (*customerTemp).Credit           = sql->value(12).toString();
     (*customerTemp).Notes            = sql->value(13).toString();
+    }
+    return customerTemp;
+}
+
+Ref<customerInfo> customerSql::selectCusotmerByOrderId(QString OrderID)
+{
+    Ref<customerInfo> customerTemp = std::make_unique<customerInfo>();
+    sql->exec(QString("select CustomerID from OrderLog where OrderID = '%1';").arg(OrderID));
+    sql->next();
+    QString CustomerID = sql->value(0).toString();
+    sql->exec(QString("select * from Customer where ID = '%1';").arg(CustomerID));
+    while(sql->next())
+    {
+        (*customerTemp).ID               = sql->value(0).toString();
+        (*customerTemp).Gender           = sql->value(1).toString();
+        (*customerTemp).Name             = sql->value(2).toString();
+        (*customerTemp).Phone            = sql->value(3).toString();
+        (*customerTemp).CardID           = sql->value(4).toString();
+        (*customerTemp).Spend            = sql->value(5).toDouble();
+        (*customerTemp).Count            = sql->value(6).toDouble();
+        (*customerTemp).CardType         = sql->value(7).toString();
+        (*customerTemp).HaveNotPaid      = sql->value(8).toString();
+        (*customerTemp).HaveNotPaidMoney = sql->value(9).toString();
+        (*customerTemp).CardMoney        = sql->value(10).toDouble();
+        (*customerTemp).Address          = sql->value(11).toString();
+        (*customerTemp).Credit           = sql->value(12).toString();
+        (*customerTemp).Notes            = sql->value(13).toString();
     }
     return customerTemp;
 }
@@ -109,6 +136,13 @@ bool customerSql::updateCustomerById(customerInfo customerInfoTemp,QString id)
                             .arg(customerInfoTemp.Credit)
                             .arg(customerInfoTemp.Notes)
                             .arg(id));
+}
+
+double customerSql::selectCustomerHaveNotPaidById(QString id)
+{
+    sql->exec(QString("select HaveNotPaidMoney from Customer where ID = '%1'").arg(id));
+    sql->next();
+    return sql->value(0).toDouble();
 }
 
 customerSql::customerSql():

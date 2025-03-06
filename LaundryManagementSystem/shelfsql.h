@@ -15,7 +15,8 @@ public:
     {
         if(nullptr == Instance)
         {
-            return new shelfSql();
+            Instance = new shelfSql();
+            return Instance;
         }
         else
         {
@@ -25,7 +26,7 @@ public:
 
 public:
     int selectShelfClothesCount();
-    std::unique_ptr<QList<shelfInfo>> selectAllShelves(shelfInfo::shelfSet type);
+    Ref<QList<shelfInfo>> selectAllShelves(shelfInfo::shelfSet type);
     bool setShelfOccupy(QString shelfNumber,shelfInfo::shelfSet type);
     bool setShelfOccupy(QString shelfNumber,QString set);
     bool setShelfNotOccupy(QString shelfNumber,shelfInfo::shelfSet type);

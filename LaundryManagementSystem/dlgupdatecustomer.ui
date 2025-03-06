@@ -25,6 +25,7 @@
   <property name="font">
    <font>
     <family>微软雅黑</family>
+    <pointsize>12</pointsize>
    </font>
   </property>
   <property name="windowTitle">
@@ -33,6 +34,12 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="5" column="0">
     <widget class="QLabel" name="label_4">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>客户卡号</string>
      </property>
@@ -52,6 +59,12 @@
        <height>16777215</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
     </widget>
    </item>
    <item row="7" column="2">
@@ -67,6 +80,12 @@
        <width>140</width>
        <height>16777215</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
      </property>
     </widget>
    </item>
@@ -84,6 +103,12 @@
        <height>16777215</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
     </widget>
    </item>
    <item row="5" column="2">
@@ -100,6 +125,12 @@
        <height>16777215</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="maxLength">
       <number>14</number>
      </property>
@@ -107,6 +138,12 @@
    </item>
    <item row="4" column="0">
     <widget class="QLabel" name="label_5">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>客户电话</string>
      </property>
@@ -126,6 +163,12 @@
        <height>16777215</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
     </widget>
    </item>
    <item row="1" column="2" colspan="2">
@@ -142,10 +185,22 @@
        <height>16777215</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
     </widget>
    </item>
    <item row="9" column="0">
     <widget class="QLabel" name="label_10">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>欠缴情况</string>
      </property>
@@ -153,6 +208,12 @@
    </item>
    <item row="14" column="0">
     <widget class="QLabel" name="label_3">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>客户备注</string>
      </property>
@@ -160,6 +221,12 @@
    </item>
    <item row="3" column="0">
     <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>客户姓名</string>
      </property>
@@ -167,6 +234,12 @@
    </item>
    <item row="11" column="0">
     <widget class="QLabel" name="label_6">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>客户卡余额</string>
      </property>
@@ -180,6 +253,12 @@
        <height>30</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>确认</string>
      </property>
@@ -187,6 +266,12 @@
    </item>
    <item row="6" column="0">
     <widget class="QLabel" name="label_7">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>消费额</string>
      </property>
@@ -205,6 +290,12 @@
        <width>140</width>
        <height>16777215</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
      </property>
      <property name="placeholderText">
       <string>如果未欠缴请输入0</string>
@@ -225,10 +316,22 @@
        <height>16777215</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
     </widget>
    </item>
    <item row="7" column="0">
     <widget class="QLabel" name="label_8">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>消费次数</string>
      </property>
@@ -236,6 +339,12 @@
    </item>
    <item row="9" column="1">
     <widget class="QLabel" name="label_11">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>欠缴</string>
      </property>
@@ -243,6 +352,12 @@
    </item>
    <item row="9" column="3">
     <widget class="QLabel" name="label_12">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>元</string>
      </property>
@@ -256,6 +371,12 @@
        <height>30</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>取消</string>
      </property>
@@ -263,6 +384,12 @@
    </item>
    <item row="8" column="0">
     <widget class="QLabel" name="label_9">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>消费卡种类</string>
      </property>
@@ -270,6 +397,12 @@
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label_2">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>客户ID</string>
      </property>
@@ -289,6 +422,12 @@
        <height>16777215</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
     </widget>
    </item>
    <item row="8" column="2">
@@ -304,6 +443,12 @@
        <width>140</width>
        <height>16777215</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
      </property>
      <item>
       <property name="text">
@@ -364,6 +509,12 @@
    </item>
    <item row="12" column="0">
     <widget class="QLabel" name="label_13">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>客户住址</string>
      </property>
@@ -383,6 +534,12 @@
        <height>16777215</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
     </widget>
    </item>
    <item row="13" column="2">
@@ -398,6 +555,12 @@
        <width>140</width>
        <height>16777215</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
      </property>
      <item>
       <property name="text">
@@ -418,6 +581,12 @@
    </item>
    <item row="13" column="0">
     <widget class="QLabel" name="label_14">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>客户信用</string>
      </property>
@@ -430,6 +599,12 @@
        <width>300</width>
        <height>30</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
      </property>
      <item>
       <property name="text">
@@ -445,6 +620,12 @@
    </item>
    <item row="2" column="0">
     <widget class="QLabel" name="label_15">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>客户性别</string>
      </property>

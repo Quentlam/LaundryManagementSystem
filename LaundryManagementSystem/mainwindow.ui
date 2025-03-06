@@ -6,21 +6,27 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>236</width>
-    <height>874</height>
+    <width>1200</width>
+    <height>1000</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>0</width>
-    <height>0</height>
+    <width>1200</width>
+    <height>1000</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>1920</width>
-    <height>1080</height>
+    <width>16777215</width>
+    <height>16777215</height>
    </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>微软雅黑</family>
+    <pointsize>12</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>选择业务</string>
@@ -44,6 +50,7 @@
       <property name="font">
        <font>
         <family>微软雅黑</family>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <layout class="QGridLayout" name="gridLayout">
@@ -52,6 +59,7 @@
          <property name="font">
           <font>
            <family>微软雅黑</family>
+           <pointsize>12</pointsize>
           </font>
          </property>
          <property name="text">
@@ -64,6 +72,7 @@
          <property name="font">
           <font>
            <family>微软雅黑</family>
+           <pointsize>12</pointsize>
           </font>
          </property>
          <property name="styleSheet">
@@ -82,6 +91,7 @@
          <property name="font">
           <font>
            <family>微软雅黑</family>
+           <pointsize>12</pointsize>
           </font>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
@@ -92,6 +102,7 @@
               <property name="font">
                <font>
                 <family>微软雅黑</family>
+                <pointsize>12</pointsize>
                </font>
               </property>
               <property name="orientation">
@@ -164,6 +175,12 @@
             </item>
             <item row="10" column="1">
              <spacer name="verticalSpacer_7">
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
@@ -199,6 +216,7 @@
               <property name="font">
                <font>
                 <family>微软雅黑</family>
+                <pointsize>12</pointsize>
                </font>
               </property>
               <property name="orientation">
@@ -217,6 +235,7 @@
               <property name="font">
                <font>
                 <family>微软雅黑</family>
+                <pointsize>12</pointsize>
                </font>
               </property>
               <property name="orientation">
@@ -229,6 +248,7 @@
               <property name="font">
                <font>
                 <family>微软雅黑</family>
+                <pointsize>12</pointsize>
                </font>
               </property>
               <property name="orientation">
@@ -271,6 +291,7 @@
               </property>
               <property name="font">
                <font>
+                <family>微软雅黑</family>
                 <pointsize>18</pointsize>
                </font>
               </property>
@@ -284,6 +305,7 @@
               <property name="font">
                <font>
                 <family>微软雅黑</family>
+                <pointsize>12</pointsize>
                </font>
               </property>
               <property name="orientation">
@@ -302,6 +324,7 @@
               <property name="font">
                <font>
                 <family>微软雅黑</family>
+                <pointsize>12</pointsize>
                </font>
               </property>
               <property name="orientation">
@@ -344,6 +367,7 @@
          <property name="font">
           <font>
            <family>微软雅黑</family>
+           <pointsize>12</pointsize>
           </font>
          </property>
          <property name="text">
@@ -362,6 +386,7 @@
          <property name="font">
           <font>
            <family>微软雅黑</family>
+           <pointsize>12</pointsize>
           </font>
          </property>
          <property name="text">
@@ -374,6 +399,7 @@
          <property name="font">
           <font>
            <family>微软雅黑</family>
+           <pointsize>12</pointsize>
           </font>
          </property>
          <property name="text">
@@ -386,6 +412,7 @@
          <property name="font">
           <font>
            <family>微软雅黑</family>
+           <pointsize>12</pointsize>
           </font>
          </property>
          <property name="orientation">

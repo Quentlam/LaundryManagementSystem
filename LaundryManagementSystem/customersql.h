@@ -15,7 +15,8 @@ public:
     {
         if(nullptr == Instance)
         {
-            return new customerSql();
+            Instance =  new customerSql();
+            return Instance;
         }
         else
         {
@@ -23,13 +24,15 @@ public:
         }
     }
 public:
-    std::unique_ptr<QList<customerInfo>> selectAllCustomerInfo();
-    std::unique_ptr<customerInfo> selectCusotmerById(QString id);
-    std::unique_ptr<customerInfo> selectCusotmerByCardId(QString cardID);
+    Ref<QList<customerInfo>> selectAllCustomerInfo();
+    Ref<customerInfo> selectCusotmerById(QString id);
+    Ref<customerInfo> selectCusotmerByCardId(QString cardID);
+    Ref<customerInfo> selectCusotmerByOrderId(QString OrderID);
+
     bool deleteCustomerByID(QString id);
     bool addCustomer(customerInfo customerInfoTemp);
     bool updateCustomerById(customerInfo customerInfoTemp,QString id);
-
+    double selectCustomerHaveNotPaidById(QString id);
 
     void getError()
     {

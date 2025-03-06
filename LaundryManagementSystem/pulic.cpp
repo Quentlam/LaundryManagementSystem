@@ -5,7 +5,7 @@
 #include <QCoreApplication>
 
 
-pulic* pulic::instance          = nullptr;
+Scope<pulic> pulic::instance     = nullptr;
 userInfo* pulic::currentUser    = nullptr;
 QString* pulic::currentAddress  = nullptr;
 QSqlDatabase* pulic::DB         = nullptr;

@@ -20,7 +20,7 @@ dlgShopData::~dlgShopData()
 
 void dlgShopData::reFresh()
 {
-    std::unique_ptr<ShopData> temp = sqlManager::createUserSql()->showShopData();
+    Ref<ShopData> temp = sqlManager::createUserSql()->showShopData();
 
     ui->LEShopID->setText((*temp).ShopID);
     ui->LEShopName->setText((*temp).ShopName);

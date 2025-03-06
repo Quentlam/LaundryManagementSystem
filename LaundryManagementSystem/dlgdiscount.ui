@@ -22,6 +22,12 @@
     <height>200</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <family>微软雅黑</family>
+    <pointsize>12</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>选择折扣率</string>
   </property>
@@ -33,6 +39,12 @@
        <width>0</width>
        <height>30</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
      </property>
      <item>
       <property name="text">
@@ -93,6 +105,12 @@
    </item>
    <item row="2" column="0">
     <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>选择折扣率：</string>
      </property>
@@ -109,6 +127,12 @@
        <height>30</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>确定</string>
      </property>
@@ -121,6 +145,12 @@
        <width>0</width>
        <height>30</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>取消</string>

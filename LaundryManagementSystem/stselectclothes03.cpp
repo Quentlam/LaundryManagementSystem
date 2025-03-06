@@ -64,7 +64,7 @@ bool STSelectClothes03::searchClothes(QString text)
 
 void STSelectClothes03::reFresh()
 {
-    std::unique_ptr<QList<clothesAttributeInfo>> clothesAttributeTempList = sqlManager::createClothesSql()->showClothesSpecialTreatmentInfo();
+    Ref<QList<clothesAttributeInfo>> clothesAttributeTempList = sqlManager::createClothesSql()->showClothesSpecialTreatmentInfo();
     ui->tableWidget->setRowCount(clothesAttributeTempList->size());
     ui->tableWidget->setColumnCount(clothesInfo::clothesSpecialTreatmentTittle.size());
     for(int i = 0 ; i < clothesInfo::clothesSpecialTreatmentTittle.size(); i ++)

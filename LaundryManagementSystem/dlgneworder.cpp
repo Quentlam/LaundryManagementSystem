@@ -6,6 +6,7 @@
 #include <QSqlError>
 #include <QDebug>
 #include <QMessageBox>
+#include <sqlManager.h>
 
 
 
@@ -30,7 +31,7 @@ dlgNewOrder::dlgNewOrder(QWidget *parent, int CustomerType, OrderInfo currentOrd
                 ui->LBOrderID->setText(QString("流水号：%1").arg(currentOrder.orderID));
                 ui->LBDiscount->setText(QString("折扣率：%1").arg(currentOrder.Discount));
                 ui->LBCustomerID->setText(QString("客户编号：%1").arg(currentOrder.customerID));
-                ui->LBHaveNotPaid->setText(QString("客户现在欠缴情况：%1").arg(currentOrder.HaveNotPaid));
+                ui->LBHaveNotPaid->setText(QString("客户此订单欠缴：%1").arg(currentOrder.thisOrderNotPaid));
                 ui->LBClothesCount->setText(QString("衣服总件数：%1").arg(currentOrder.ClothesCount));
                 ui->LBCustomerName->setText(QString("客户姓名：%1").arg(currentOrder.customerName));
                 ui->LBCustomerCount->setText(QString("客户消费次数：%1").arg(currentOrder.customerCount));
@@ -57,7 +58,7 @@ dlgNewOrder::dlgNewOrder(QWidget *parent, int CustomerType, OrderInfo currentOrd
                 ui->LBOrderID->setText(QString("流水号：%1").arg(currentOrder.orderID));
                 ui->LBDiscount->setText(QString("折扣率：%1").arg(currentOrder.Discount));
                 ui->LBCustomerID->setText(QString("客户编号：%1").arg(currentOrder.customerID));
-                ui->LBHaveNotPaid->setText(QString("客户现在欠缴情况：%1").arg(currentOrder.HaveNotPaid));
+                ui->LBHaveNotPaid->setText(QString("客户此订单欠缴：%1").arg(currentOrder.thisOrderNotPaid));
                 ui->LBClothesCount->setText(QString("衣服总件数：%1").arg(currentOrder.ClothesCount));
                 ui->LBCustomerName->setText(QString("客户姓名：%1").arg(currentOrder.customerName));
                 ui->LBCustomerCount->setText(QString("客户消费次数：%1").arg(currentOrder.customerCount));
@@ -96,14 +97,16 @@ dlgNewOrder::dlgNewOrder(QWidget *parent, int CustomerType, OrderInfo currentOrd
                 break;
             }
         }
+            HaveNotPaidSituation();
 
 
 }
 
 
-void dlgNewOrder::HaveNotPaidSituation(QString money)
+void dlgNewOrder::HaveNotPaidSituation()
 {
-    ui->LACustomerAgoHaveNotPaid->setText(QString("客户之前欠缴：%1").arg(money));
+    auto haveNotPaidMoney = CUSTOMER_SQL->selectCustomerHaveNotPaidById(currentOrder.customerID);
+    ui->LACustomerAgoHaveNotPaid->setText(QString("客户之前欠缴：%1").arg(haveNotPaidMoney));
 }
 
 

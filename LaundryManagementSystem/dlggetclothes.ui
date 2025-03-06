@@ -253,7 +253,7 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>16777215</width>
+          <width>360</width>
           <height>16777215</height>
          </size>
         </property>
@@ -524,7 +524,7 @@
               </property>
               <property name="maximumTime">
                <time>
-                <hour>23</hour>
+                <hour>7</hour>
                 <minute>59</minute>
                 <second>59</second>
                </time>
@@ -544,7 +544,7 @@
           <widget class="QTableWidget" name="TWMoney">
            <property name="maximumSize">
             <size>
-             <width>16777215</width>
+             <width>360</width>
              <height>86</height>
             </size>
            </property>
@@ -774,7 +774,7 @@
        <widget class="QStackedWidget" name="SW">
         <property name="maximumSize">
          <size>
-          <width>16777215</width>
+          <width>750</width>
           <height>16777215</height>
          </size>
         </property>

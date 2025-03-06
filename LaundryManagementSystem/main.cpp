@@ -1,20 +1,20 @@
 ﻿#include "mainwindow.h"
 #include <QApplication>
-#include "pulic.h"
 #include <QDebug>
-#include "printer.h"
 #include <QTextCodec>
 #include <QPrinter>
 #include <QPainter>
 //#include <QPrinterInfo>
 #include <QSerialPortInfo>
+#include <memory>
 
 
 MainWindow* MainWindow::Instance = nullptr;
+Scope<sqlManager> sqlManager::Instance = nullptr;
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    sqlManager::createSqlManager();
     auto mainWindow = MainWindow::getInstance();
 //    QList<QPrinterInfo> printerList = QPrinterInfo::availablePrinters();
 //    foreach (const QPrinterInfo &printerInfo, printerList) {

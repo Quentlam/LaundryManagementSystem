@@ -11,9 +11,9 @@ userSql::~userSql()
     delete  Instance;
 }
 
-std::unique_ptr<QList<userInfo> > userSql::showAllUser()
+Ref<QList<userInfo> > userSql::showAllUser()
 {
-    std::unique_ptr<QList<userInfo> > userTempInfoList = std::make_unique<QList<userInfo>>();
+    Ref<QList<userInfo> > userTempInfoList = std::make_unique<QList<userInfo>>();
     userInfo userTempInfo;
     sql->exec("select * from User");//把所有的员工都查出来（反正也没几个）
     while(sql->next())
@@ -28,9 +28,9 @@ std::unique_ptr<QList<userInfo> > userSql::showAllUser()
     return userTempInfoList;
 }
 
-std::unique_ptr<ShopData> userSql::showShopData()
+Ref<ShopData> userSql::showShopData()
 {
-    std::unique_ptr<ShopData> shopData = std::make_unique<ShopData>();
+    Ref<ShopData> shopData = std::make_unique<ShopData>();
     sql->exec("select * from ShopData");
     while(sql->next())
     {

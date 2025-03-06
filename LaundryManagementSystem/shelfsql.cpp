@@ -16,9 +16,9 @@ int shelfSql::selectShelfClothesCount()
     return count;
 }
 
-std::unique_ptr<QList<shelfInfo>> shelfSql::selectAllShelves(shelfInfo::shelfSet type)
+Ref<QList<shelfInfo>> shelfSql::selectAllShelves(shelfInfo::shelfSet type)
 {
-    std::unique_ptr<QList<shelfInfo>> shelfInfoTempList = std::make_unique<QList<shelfInfo>>();
+    Ref<QList<shelfInfo>> shelfInfoTempList = std::make_unique<QList<shelfInfo>>();
     shelfInfo temp;
     switch (type) {
     case shelfInfo::A:

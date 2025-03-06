@@ -6,21 +6,27 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1565</width>
+    <width>999</width>
     <height>1000</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1565</width>
-    <height>1000</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>1565</width>
-    <height>1000</height>
+    <width>1000</width>
+    <height>1170</height>
    </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>微软雅黑</family>
+    <pointsize>12</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>添加</string>
@@ -33,6 +39,7 @@
        <property name="font">
         <font>
          <family>微软雅黑</family>
+         <pointsize>12</pointsize>
         </font>
        </property>
        <layout class="QGridLayout" name="gridLayout_10">
@@ -41,6 +48,7 @@
           <property name="font">
            <font>
             <family>微软雅黑</family>
+            <pointsize>12</pointsize>
            </font>
           </property>
           <layout class="QGridLayout" name="gridLayout_7">
@@ -49,6 +57,7 @@
              <property name="font">
               <font>
                <family>微软雅黑</family>
+               <pointsize>12</pointsize>
               </font>
              </property>
              <layout class="QGridLayout" name="gridLayout_5">
@@ -57,62 +66,10 @@
                 <property name="font">
                  <font>
                   <family>微软雅黑</family>
+                  <pointsize>12</pointsize>
                  </font>
                 </property>
-                <layout class="QGridLayout" name="gridLayout_9">
-                 <item row="0" column="0">
-                  <spacer name="horizontalSpacer">
-                   <property name="font">
-                    <font>
-                     <family>微软雅黑</family>
-                    </font>
-                   </property>
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>875</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item row="0" column="2">
-                  <spacer name="horizontalSpacer_2">
-                   <property name="font">
-                    <font>
-                     <family>微软雅黑</family>
-                    </font>
-                   </property>
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>874</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="QLabel" name="label">
-                   <property name="font">
-                    <font>
-                     <family>微软雅黑</family>
-                     <pointsize>58</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>基本数据管理</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+                <layout class="QGridLayout" name="gridLayout_9"/>
                </widget>
               </item>
               <item row="2" column="0">
@@ -120,6 +77,7 @@
                 <property name="font">
                  <font>
                   <family>微软雅黑</family>
+                  <pointsize>12</pointsize>
                  </font>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_8">
@@ -128,6 +86,7 @@
                    <property name="font">
                     <font>
                      <family>微软雅黑</family>
+                     <pointsize>12</pointsize>
                     </font>
                    </property>
                    <attribute name="horizontalHeaderVisible">
@@ -136,11 +95,11 @@
                    <attribute name="horizontalHeaderCascadingSectionResizes">
                     <bool>false</bool>
                    </attribute>
-                   <attribute name="horizontalHeaderDefaultSectionSize">
-                    <number>170</number>
-                   </attribute>
                    <attribute name="horizontalHeaderMinimumSectionSize">
                     <number>20</number>
+                   </attribute>
+                   <attribute name="horizontalHeaderDefaultSectionSize">
+                    <number>140</number>
                    </attribute>
                    <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
                     <bool>true</bool>
@@ -153,6 +112,31 @@
                    </attribute>
                   </widget>
                  </item>
+                 <item row="1" column="0">
+                  <widget class="QLineEdit" name="LeSearch">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>70</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>微软雅黑</family>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="placeholderText">
+                    <string>请根据关键字进行搜索</string>
+                   </property>
+                  </widget>
+                 </item>
                 </layout>
                </widget>
               </item>
@@ -161,14 +145,103 @@
                 <property name="font">
                  <font>
                   <family>微软雅黑</family>
+                  <pointsize>12</pointsize>
                  </font>
                 </property>
                 <layout class="QGridLayout" name="gridLayout_3">
-                 <item row="1" column="1" colspan="6">
+                 <item row="0" column="0" colspan="2">
+                  <widget class="QComboBox" name="choseCBox">
+                   <property name="minimumSize">
+                    <size>
+                     <width>160</width>
+                     <height>70</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>微软雅黑</family>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>会员客户</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>衣物种类</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>员工账号</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                 <item row="0" column="8">
+                  <widget class="QPushButton" name="BtnreFresh">
+                   <property name="minimumSize">
+                    <size>
+                     <width>155</width>
+                     <height>70</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>155</width>
+                     <height>70</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>微软雅黑</family>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>刷新</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="6">
+                  <widget class="QPushButton" name="BtnDelete">
+                   <property name="minimumSize">
+                    <size>
+                     <width>155</width>
+                     <height>70</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>155</width>
+                     <height>70</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>微软雅黑</family>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>删除</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="4" colspan="5">
                   <widget class="QGroupBox" name="groupBox">
                    <property name="font">
                     <font>
                      <family>微软雅黑</family>
+                     <pointsize>12</pointsize>
                     </font>
                    </property>
                    <property name="title">
@@ -177,73 +250,20 @@
                    <layout class="QGridLayout" name="gridLayout_2">
                     <item row="4" column="1">
                      <widget class="QRadioButton" name="ClothesTreatment">
+                      <property name="minimumSize">
+                       <size>
+                        <width>220</width>
+                        <height>0</height>
+                       </size>
+                      </property>
                       <property name="font">
                        <font>
                         <family>微软雅黑</family>
+                        <pointsize>12</pointsize>
                        </font>
                       </property>
                       <property name="text">
                        <string>特殊处理</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="0">
-                     <widget class="QRadioButton" name="ClothesNameAndPrice">
-                      <property name="font">
-                       <font>
-                        <family>微软雅黑</family>
-                       </font>
-                      </property>
-                      <property name="text">
-                       <string>衣服名称和价格</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="1">
-                     <widget class="QRadioButton" name="ClothesColor">
-                      <property name="font">
-                       <font>
-                        <family>微软雅黑</family>
-                       </font>
-                      </property>
-                      <property name="text">
-                       <string>衣服颜色</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="2">
-                     <widget class="QRadioButton" name="ClothesDefect">
-                      <property name="font">
-                       <font>
-                        <family>微软雅黑</family>
-                       </font>
-                      </property>
-                      <property name="text">
-                       <string>瑕疵</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="4" column="2">
-                     <widget class="QRadioButton" name="ClothesEffect">
-                      <property name="font">
-                       <font>
-                        <family>微软雅黑</family>
-                       </font>
-                      </property>
-                      <property name="text">
-                       <string>洗后效果</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="4" column="0">
-                     <widget class="QRadioButton" name="ClothesBrand">
-                      <property name="font">
-                       <font>
-                        <family>微软雅黑</family>
-                       </font>
-                      </property>
-                      <property name="text">
-                       <string>品牌</string>
                       </property>
                      </widget>
                     </item>
@@ -254,6 +274,12 @@
                         <width>0</width>
                         <height>30</height>
                        </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>微软雅黑</family>
+                        <pointsize>12</pointsize>
+                       </font>
                       </property>
                       <item>
                        <property name="text">
@@ -287,10 +313,105 @@
                       </item>
                      </widget>
                     </item>
+                    <item row="1" column="0">
+                     <widget class="QRadioButton" name="ClothesNameAndPrice">
+                      <property name="minimumSize">
+                       <size>
+                        <width>220</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>微软雅黑</family>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>衣服名称</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="QRadioButton" name="ClothesColor">
+                      <property name="minimumSize">
+                       <size>
+                        <width>220</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>微软雅黑</family>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>衣服颜色</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="2">
+                     <widget class="QRadioButton" name="ClothesDefect">
+                      <property name="minimumSize">
+                       <size>
+                        <width>220</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>微软雅黑</family>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>瑕疵</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="4" column="2">
+                     <widget class="QRadioButton" name="ClothesEffect">
+                      <property name="minimumSize">
+                       <size>
+                        <width>220</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>微软雅黑</family>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>洗后效果</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="4" column="0">
+                     <widget class="QRadioButton" name="ClothesBrand">
+                      <property name="minimumSize">
+                       <size>
+                        <width>220</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>微软雅黑</family>
+                        <pointsize>12</pointsize>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>品牌</string>
+                      </property>
+                     </widget>
+                    </item>
                    </layout>
                   </widget>
                  </item>
-                 <item row="1" column="0">
+                 <item row="1" column="0" colspan="4">
                   <widget class="QLabel" name="LbCount">
                    <property name="maximumSize">
                     <size>
@@ -301,7 +422,7 @@
                    <property name="font">
                     <font>
                      <family>微软雅黑</family>
-                     <pointsize>19</pointsize>
+                     <pointsize>12</pointsize>
                     </font>
                    </property>
                    <property name="text">
@@ -309,71 +430,24 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="6">
-                  <widget class="QPushButton" name="BtnreFresh">
-                   <property name="minimumSize">
-                    <size>
-                     <width>200</width>
-                     <height>70</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>200</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <family>微软雅黑</family>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>刷新</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="5">
-                  <widget class="QLineEdit" name="LeSearch">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>70</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>500</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <family>微软雅黑</family>
-                    </font>
-                   </property>
-                   <property name="placeholderText">
-                    <string>请根据关键字进行搜索</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="4">
+                 <item row="0" column="7">
                   <widget class="QPushButton" name="BetnUpdate">
                    <property name="minimumSize">
                     <size>
-                     <width>200</width>
+                     <width>155</width>
                      <height>70</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>200</width>
-                     <height>16777215</height>
+                     <width>155</width>
+                     <height>70</height>
                     </size>
                    </property>
                    <property name="font">
                     <font>
                      <family>微软雅黑</family>
+                     <pointsize>12</pointsize>
                     </font>
                    </property>
                    <property name="text">
@@ -381,83 +455,29 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="3">
-                  <widget class="QPushButton" name="BtnDelete">
-                   <property name="minimumSize">
-                    <size>
-                     <width>200</width>
-                     <height>70</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>200</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <family>微软雅黑</family>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>删除</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="2">
+                 <item row="0" column="5">
                   <widget class="QPushButton" name="BtnAdd">
                    <property name="minimumSize">
                     <size>
-                     <width>200</width>
+                     <width>155</width>
                      <height>70</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>200</width>
-                     <height>16777215</height>
+                     <width>155</width>
+                     <height>70</height>
                     </size>
                    </property>
                    <property name="font">
                     <font>
                      <family>微软雅黑</family>
+                     <pointsize>12</pointsize>
                     </font>
                    </property>
                    <property name="text">
                     <string>增加</string>
                    </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="0" colspan="2">
-                  <widget class="QComboBox" name="choseCBox">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>70</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <family>微软雅黑</family>
-                     <pointsize>19</pointsize>
-                    </font>
-                   </property>
-                   <item>
-                    <property name="text">
-                     <string>会员客户</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>衣物种类</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>员工账号</string>
-                    </property>
-                   </item>
                   </widget>
                  </item>
                 </layout>

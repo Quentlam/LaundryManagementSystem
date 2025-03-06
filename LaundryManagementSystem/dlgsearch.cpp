@@ -31,7 +31,7 @@ void dlgSearch::on_treeWidget_itemActivated(QTreeWidgetItem *item, int column)
 {
     QString text = item->text(column);
     ui->stackedWidget->show();
-    if("订单基本参数" == text)//订单基本参数查询在第0页
+    if("订单参数" == text)//订单基本参数查询在第0页
     {
         dlgOrderSea.reFresh();
         ui->stackedWidget->setCurrentIndex(0);

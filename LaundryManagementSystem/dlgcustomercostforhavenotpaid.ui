@@ -22,25 +22,57 @@
     <height>480</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <family>微软雅黑</family>
+    <pointsize>12</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>客户缴费</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="1" colspan="3">
-    <widget class="QLineEdit" name="LeHaveNotPaidMoney"/>
+    <widget class="QLineEdit" name="LeHaveNotPaidMoney">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+    </widget>
    </item>
    <item row="4" column="0">
     <widget class="QLabel" name="label_2">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>客户缴费：</string>
      </property>
     </widget>
    </item>
    <item row="1" column="1" colspan="3">
-    <widget class="QLineEdit" name="LeCardMoney"/>
+    <widget class="QLineEdit" name="LeCardMoney">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+    </widget>
    </item>
    <item row="3" column="3">
     <widget class="QRadioButton" name="RaCard">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>充值卡缴费</string>
      </property>
@@ -48,6 +80,12 @@
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label_3">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>客户卡余额</string>
      </property>
@@ -55,6 +93,12 @@
    </item>
    <item row="3" column="1">
     <widget class="QRadioButton" name="RaTicket">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>用券缴费</string>
      </property>
@@ -62,6 +106,12 @@
    </item>
    <item row="0" column="0">
     <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>客户欠缴费：</string>
      </property>
@@ -69,6 +119,12 @@
    </item>
    <item row="3" column="2">
     <widget class="QRadioButton" name="RaWechat">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>微信支付缴费</string>
      </property>
@@ -76,6 +132,12 @@
    </item>
    <item row="4" column="1" colspan="3">
     <widget class="QLineEdit" name="LePay">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="placeholderText">
       <string>请输入客户要缴费多少元</string>
      </property>
@@ -83,6 +145,12 @@
    </item>
    <item row="3" column="0">
     <widget class="QRadioButton" name="RaCash">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>现金缴费</string>
      </property>
@@ -99,6 +167,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="text">
@@ -117,6 +186,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="text">

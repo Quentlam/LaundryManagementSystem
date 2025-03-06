@@ -22,7 +22,7 @@ char code128Generator::calculateChecksum(const QString &data) {
     return static_cast<char>(sum % 103 + 32);
 }
 
-std::unique_ptr<QImage> code128Generator::GenerateCode128()
+Ref<QImage> code128Generator::GenerateCode128()
 {
     Zint::QZint bc;
     Zint::QZint::AspectRatioMode ar = Zint::QZint::KeepAspectRatio;
@@ -41,7 +41,7 @@ std::unique_ptr<QImage> code128Generator::GenerateCode128()
     int targetHeightPx = static_cast<int>(targetWidthPx / 3); // 2:1 比例
 
     //绘制一维码
-    std::unique_ptr<QImage> image = std::make_unique<QImage>(QSize(targetWidthPx,targetHeightPx),QImage::Format_RGB32);
+    Ref<QImage> image = std::make_unique<QImage>(QSize(targetWidthPx,targetHeightPx),QImage::Format_RGB32);
     QPainter painter(image.get());
     bc.render(painter,image->rect(),ar);
     painter.end();

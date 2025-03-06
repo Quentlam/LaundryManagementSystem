@@ -15,7 +15,8 @@ public:
     {
         if(nullptr == Instance)
         {
-            return new clotheSql();
+            Instance = new clotheSql();
+            return Instance;
         }
         else
         {
@@ -24,12 +25,12 @@ public:
     }
 
 public:
-   std::unique_ptr<QList<clothesInfo>>          showClothesInfo(clothesInfo::WashWayType type);
-   std::unique_ptr<QList<clothesAttributeInfo>> showClothesColorInfo();
-   std::unique_ptr<QList<clothesAttributeInfo>> showClothesDefectInfo();
-   std::unique_ptr<QList<clothesAttributeInfo>> showClothesBrandInfo();
-   std::unique_ptr<QList<clothesAttributeInfo>> showClothesSpecialTreatmentInfo();
-   std::unique_ptr<QList<clothesAttributeInfo>> showClothesWashingEffectInfo();
+   Ref<QList<clothesInfo>>          showClothesInfo(clothesInfo::WashWayType type);
+   Ref<QList<clothesAttributeInfo>> showClothesColorInfo();
+   Ref<QList<clothesAttributeInfo>> showClothesDefectInfo();
+   Ref<QList<clothesAttributeInfo>> showClothesBrandInfo();
+   Ref<QList<clothesAttributeInfo>> showClothesSpecialTreatmentInfo();
+   Ref<QList<clothesAttributeInfo>> showClothesWashingEffectInfo();
 
 
    QList<SelectClothesInfo>* showCustomerAllClothesFunc(QString OrderID);//用于查询订单的所有衣服

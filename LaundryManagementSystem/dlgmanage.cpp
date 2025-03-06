@@ -29,13 +29,13 @@ void dlgManage::on_treeWidget_itemActivated(QTreeWidgetItem *item, int column)
 {
     QString text = item->text(column);
     ui->stackedWidget->show();
-    if("基本数据管理" == text)//基本数据管理在第0页
+    if("基本数据" == text)//基本数据管理在第0页
     {
         dlgadd.reFresh(dlgadd.choseMode());
         ui->stackedWidget->setCurrentIndex(0);
     }
 
-    if("店铺基本参数" == text)
+    if("店铺" == text)
     {
         dlgshop.reFresh();
         ui->stackedWidget->setCurrentIndex(1);

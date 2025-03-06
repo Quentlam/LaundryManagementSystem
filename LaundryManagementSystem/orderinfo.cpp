@@ -19,14 +19,16 @@ QList<QString> OrderInfo::orderTittle = {
                                     "折扣率",
                                     "订单折后价",
                                     "衣服总数",
-                                    "客户卡余额",
+                                    "支付后卡余额",
                                     "收银",
                                     "找零",
                                     "支付方式",
                                     "客户当时欠缴情况",
                                     "取衣日期",
                                     "客户地址",
-                                    "架号"
+                                    "架号",
+                                    "此订单未支付",
+                                    "卡上金额"
                                 };
 
 QList<QString> OrderStatus::orderStatusTittle =

@@ -13,6 +13,7 @@
   <property name="font">
    <font>
     <family>微软雅黑</family>
+    <pointsize>12</pointsize>
    </font>
   </property>
   <property name="windowTitle">
@@ -21,6 +22,12 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QLabel" name="LbID">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>ID：</string>
      </property>
@@ -33,6 +40,12 @@
        <width>0</width>
        <height>30</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>取消</string>
@@ -47,6 +60,12 @@
        <height>30</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>确认</string>
      </property>
@@ -54,6 +73,12 @@
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="LbText">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>衣服颜色：</string>
      </property>
@@ -61,6 +86,12 @@
    </item>
    <item row="2" column="1">
     <spacer name="horizontalSpacer">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -73,10 +104,24 @@
     </spacer>
    </item>
    <item row="1" column="1" colspan="2">
-    <widget class="QLineEdit" name="LeText"/>
+    <widget class="QLineEdit" name="LeText">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+    </widget>
    </item>
    <item row="0" column="1" colspan="2">
-    <widget class="QLineEdit" name="LeID"/>
+    <widget class="QLineEdit" name="LeID">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

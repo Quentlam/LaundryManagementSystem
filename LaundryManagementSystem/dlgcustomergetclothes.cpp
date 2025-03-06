@@ -11,8 +11,7 @@
 #include <QScrollArea>
 #include "dlgcustomergetclothes.h"
 #include "sqlmanager.h"
-
-
+#include "dlgcustomerpaywhengetclo.h"
 
 dlgCustomerGetClothes::dlgCustomerGetClothes(QWidget *parent) :
     QDialog(parent),
@@ -53,7 +52,7 @@ void dlgCustomerGetClothes::search(QString OrderID)
     QString scannedData = OrderID; // 获取输入的文本
     ui->LEOrderID->setText(OrderID);
     qDebug() << "Scanned Data:" << OrderID; // 打印扫描的数据
-    std::unique_ptr<OrderStatus> temp = sqlManager::createOrderSql()->selectOrderStatusByOrderID(OrderID);
+    Ref<OrderStatus> temp = sqlManager::createOrderSql()->selectOrderStatusByOrderID(OrderID);
 
     if((*temp).customerID.isNull())
     {
@@ -105,6 +104,7 @@ void dlgCustomerGetClothes::on_BtnCancel_clicked()
 
 void dlgCustomerGetClothes::on_BtnCusotmerGetClothes_clicked()
 {
+    QString OrderID = ui->LEOrderID->text();
     if(false == searchStatus)
     {
         QMessageBox::information(nullptr,"警告","请先输入订单号！");
@@ -118,72 +118,33 @@ void dlgCustomerGetClothes::on_BtnCusotmerGetClothes_clicked()
     }
     if(QMessageBox::Yes == answer)
     {
-//        auto OrderStatus = sqlPtr->exec(QString("select HaveNotPaid from OrderLog where OrderID = '%1'").arg(ui->LEOrderID->text()));
-//        if(false == OrderStatus)
-//        {
-//            QMessageBox::information(nullptr,"警告","请先输入订单号！");
-//            return;
-//        }
-        //以下功能先不开发了
-//        sqlPtr->next();
-//        QString HaveNotPaid = sqlPtr->value(0).toString();
-//        QString unKnow = HaveNotPaid.right(1);
-//        bool isNumber = false;
-//        unKnow.toInt(&isNumber);
-//        if(isNumber)
-//        {
-//            auto answer = QMessageBox::question(nullptr,"欠缴信息","此订单未缴费！客户是否当场缴费？",QMessageBox::Yes | QMessageBox::No);
-//            if(QMessageBox::Yes == answer)
-//            {
-//                sqlPtr->exec(QString("select CustomerID from OrderLog where OrderID = '%1'").arg(ui->LEOrderID->text()));//先用订单号把客户ID查出来
-//                sqlPtr->next();
-//                QString CustomerID = sqlPtr->value(0).toString();
-//                sqlPtr->exec(QString("select * from Customer where ID = '%1'").arg(CustomerID));//再用客户ID查出客户信息
-//                customerInfo customerInfoTemp;
-//                while(sqlPtr->next())
-//                {
-//                    customerInfoTemp.ID = sqlPtr->value(0).toString();
-//                    qDebug() << customerInfoTemp.ID;
-//                    customerInfoTemp.Gender = sqlPtr->value(1).toString();
-//                    qDebug() << customerInfoTemp.Gender;
-//                    customerInfoTemp.Name = sqlPtr->value(2).toString();
-//                    qDebug() << customerInfoTemp.Name;
-//                    customerInfoTemp.Phone = sqlPtr->value(3).toString();
-//                    qDebug() << customerInfoTemp.Phone;
-//                    customerInfoTemp.CardID = sqlPtr->value(4).toString();
-//                    qDebug() << customerInfoTemp.CardID;
-//                    customerInfoTemp.Spend = sqlPtr->value(5).toDouble();
-//                    qDebug() << customerInfoTemp.Spend;
-//                    customerInfoTemp.Count = sqlPtr->value(6).toDouble();
-//                    qDebug() << customerInfoTemp.Count;
-//                    customerInfoTemp.CardType = sqlPtr->value(7).toString();
-//                    qDebug() << customerInfoTemp.CardType;
-//                    customerInfoTemp.HaveNotPaid = sqlPtr->value(8).toString();
-//                    qDebug() << customerInfoTemp.HaveNotPaid;
-//                    customerInfoTemp.HaveNotPaidMoney = sqlPtr->value(9).toString();
-//                    qDebug() << customerInfoTemp.HaveNotPaidMoney;
-//                    customerInfoTemp.CardMoney = sqlPtr->value(10).toDouble();
-//                    qDebug() << customerInfoTemp.CardMoney;
-//                    customerInfoTemp.Address = sqlPtr->value(11).toString();
-//                    qDebug() << customerInfoTemp.Address;
-//                    customerInfoTemp.Credit = sqlPtr->value(12).toString();
-//                    qDebug() << customerInfoTemp.Credit;
-//                    customerInfoTemp.Notes = sqlPtr->value(13).toString();
-//                    qDebug() << customerInfoTemp.Notes;
-//                }
-//                dlgCustomerCostForHaveNotPaid dlgPayForNotPaid(nullptr,customerInfoTemp);
-//                if(QDialog::Rejected == dlgPayForNotPaid.exec())
-//                {
-//                    QMessageBox::information(nullptr,"信息","缴费失败！");
-//                    return;
-//                }
+        auto HaveNotPaidStatus = ORDER_SQL->judegOrderCustomerHaveNotPaidByOrderId(OrderID);
+       if(true == HaveNotPaidStatus)
+       {
+            Ref<QString> haveNotPayMoney = ORDER_SQL->getCustomerHaveNotPayMoneyForTheOrderByOrderId(OrderID);
+           auto answer = QMessageBox::question(nullptr,"欠缴信息","此订单未缴费！客户是否当场缴费？",QMessageBox::Yes | QMessageBox::No);
+           if(QMessageBox::Yes == answer)
+           {
+               auto CusotmerInfoTemp = CUSTOMER_SQL->selectCusotmerByOrderId(OrderID);
+               dlgCustomerPayWhenGetClo dlgPayForNotPaid(nullptr,*CusotmerInfoTemp,*haveNotPayMoney);
+               if(QDialog::Rejected == dlgPayForNotPaid.exec())
+               {
+                   QMessageBox::information(nullptr,"信息","缴费失败！");
+                   return;
+               }
+               else
+               {
+                   QMessageBox::information(nullptr,"信息","缴费成功！");
+               }
 
-//         }
-//            if(QMessageBox::No == answer)
-//            {
-//                QMessageBox::information(nullptr,"信息","该客户此订单费用已经计入数据库！");
-//            }
-//        }
+            }
+           if(QMessageBox::No == answer)
+           {
+               QMessageBox::information(nullptr,"信息","该客户此订单费用已经计入数据库！");
+           }
+       }
+
+
         QList<QCheckBox *> checkBoxes = this->findChildren<QCheckBox *>();
         QList<QString> checkedShelfs;
         QString checkedShelvesString;

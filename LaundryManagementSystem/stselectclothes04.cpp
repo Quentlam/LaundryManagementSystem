@@ -62,7 +62,7 @@ void STSelectClothes04::on_tableWidget_cellClicked(int row, int column)
 
 void STSelectClothes04::reFresh()
 {
-    std::unique_ptr<QList<clothesAttributeInfo>> clothesAttributeTempList = sqlManager::createClothesSql()->showClothesWashingEffectInfo();
+    Ref<QList<clothesAttributeInfo>> clothesAttributeTempList = sqlManager::createClothesSql()->showClothesWashingEffectInfo();
     ui->tableWidget->setRowCount(clothesAttributeTempList->size());
     ui->tableWidget->setColumnCount(clothesInfo::clothesWashEffectTittle.size());
     for(int i = 0 ; i < clothesInfo::clothesSpecialTreatmentTittle.size(); i ++)

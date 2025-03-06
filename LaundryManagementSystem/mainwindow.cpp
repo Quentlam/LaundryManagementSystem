@@ -13,14 +13,18 @@ MainWindow::MainWindow(QWidget* parent):
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::Window | Qt::WindowMinimizeButtonHint | Qt::WindowCloseButtonHint);
+    sqlManager::createSqlManager();
+    pulic::getInstance();
+    login = std::make_unique<dlgLogin>();
+    connect(login.get(),&dlgLogin::loginSuccess,this,&MainWindow::show);
+    if(false == pulic::login)
+    {
 
-    if(false == pulic::login)dlgLogin.show();
+        login->show();
+    }
 
-    connect(&dlgGetClo,&dlgGetClothes::backToMainWindow,this,&MainWindow::show);
-    connect(&dlgLogin,&dlgLogin::loginSuccess,this,&MainWindow::show);
-    connect(&dlgMana,&dlgManage::backToMainWindow,this,&MainWindow::show);
     connect(timer,&QTimer::timeout,this,&MainWindow::reFresh);
-    connect(&dlgSea,&dlgSearch::backToMainWindow,this,&MainWindow::show);
+
 
 
 
@@ -29,6 +33,7 @@ MainWindow::MainWindow(QWidget* parent):
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete Instance;
 }
 
 void MainWindow::reFresh()//获取当前用户的信息，并且填在主窗口
@@ -42,14 +47,18 @@ void MainWindow::reFresh()//获取当前用户的信息，并且填在主窗口
 void MainWindow::on_BtnAdd_clicked()
 {
     this->hide();
-    dlgMana.show();
+    dlgMana = std::make_unique<dlgManage>();
+    connect(dlgMana.get(),&dlgManage::backToMainWindow,this,&MainWindow::show);
+    dlgMana->show();
 }
 
 
 void MainWindow::on_BtnGetClothes_clicked()
 {
     this->hide();
-    dlgGetClo.show();
+    dlgGetClo = std::make_unique<dlgGetClothes>();
+    connect(dlgGetClo.get(),&dlgGetClothes::backToMainWindow,this,&MainWindow::show);
+    dlgGetClo->show();
 }
 
 void MainWindow::show()
@@ -63,14 +72,16 @@ void MainWindow::show()
 void MainWindow::on_BtnRecharge_clicked()
 {
     customerInfo chargeCustomerTemp;
-    dlgRecharge = new dlgCustomerRecharge(nullptr,chargeCustomerTemp);
+    dlgRecharge =  std::make_unique<dlgCustomerRecharge>(nullptr,chargeCustomerTemp);
     dlgRecharge->exec();
 }
 
 void MainWindow::on_BtnSearch_clicked()
 {
     this->hide();
-    dlgSea.show();
+    dlgSea = std::make_unique<dlgSearch>();
+    connect(dlgSea.get(),&dlgSearch::backToMainWindow,this,&MainWindow::show);
+    dlgSea->show();
 }
 
 void MainWindow::on_BtnCancel_clicked()

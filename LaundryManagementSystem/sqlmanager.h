@@ -27,15 +27,29 @@
    action;\
 }\
 
+
+#define CLOTHES_SQL  sqlManager::createClothesSql()
+#define ORDER_SQL    sqlManager::createOrderSql()
+#define CUSTOMER_SQL sqlManager::createCustomerSql()
+#define SHELF_SQL    sqlManager::createShelfSql()
+#define USER_SQL     sqlManager::createUserSql()
+#define NOT_OWE "未欠缴"
+#define OWE "欠缴"
 class sqlManager
 {
 public:
-    virtual ~sqlManager();
-    static sqlManager* createSqlManager()
+    sqlManager();
+    ~sqlManager();
+    static Scope<sqlManager> createSqlManager()
     {
         if(nullptr == Instance)
         {
-            Instance = new sqlManager();
+            Instance =  std::make_shared<sqlManager>();
+            createClothesSql();
+            createOrderSql();
+            createCustomerSql();
+            createUserSql();
+            createShelfSql();
             return Instance;
         }
         else
@@ -57,12 +71,14 @@ public:
     {
         return DB;
     }
+protected:
+
 private:
-    sqlManager();
-    static sqlManager* Instance;
+    static Scope<sqlManager> Instance;
     QSqlDatabase* DB;
     QSqlQuery* sql;
 
 };
+
 
 #endif // SQLMANAGER_H

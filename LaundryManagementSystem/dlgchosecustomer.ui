@@ -6,19 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
-    <height>1080</height>
+    <width>1200</width>
+    <height>1000</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1920</width>
-    <height>1080</height>
+    <width>1200</width>
+    <height>1000</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1200</width>
+    <height>1000</height>
    </size>
   </property>
   <property name="font">
    <font>
     <family>微软雅黑</family>
+    <pointsize>12</pointsize>
    </font>
   </property>
   <property name="windowTitle">
@@ -27,16 +34,28 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="0" colspan="3">
     <widget class="QTableWidget" name="TWCustomer">
-     <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>168</number>
-     </attribute>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <attribute name="horizontalHeaderMinimumSectionSize">
       <number>20</number>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>168</number>
      </attribute>
     </widget>
    </item>
    <item row="3" column="1">
     <spacer name="horizontalSpacer">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -55,6 +74,12 @@
        <width>0</width>
        <height>60</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
      </property>
      <property name="placeholderText">
       <string>请输入要搜索的会员客户的关键字</string>
@@ -75,6 +100,12 @@
        <height>16777215</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>确认</string>
      </property>
@@ -94,6 +125,12 @@
        <height>16777215</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>取消</string>
      </property>
@@ -106,6 +143,12 @@
        <width>0</width>
        <height>30</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>当前会员客户总人数：</string>

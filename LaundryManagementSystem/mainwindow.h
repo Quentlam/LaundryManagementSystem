@@ -27,7 +27,7 @@ public:
     {
         if(nullptr == Instance)
         {
-            //sqlManager::createSqlManager();//这个也要初始化，不然一切都炸
+            sqlManager::createSqlManager();
             return new MainWindow();
         }
 
@@ -41,11 +41,11 @@ public:
 
 public:
    QTimer *timer;
-   dlgLogin dlgLogin;
-   dlgManage dlgMana;//管理界面包括了添加
-   dlgGetClothes dlgGetClo;//取衣界面
-   dlgCustomerRecharge* dlgRecharge;//用户充值入口
-   dlgSearch dlgSea;//查询界面
+   Ref<dlgLogin> login;
+   Ref<dlgManage> dlgMana;//管理界面包括了添加
+   Ref<dlgGetClothes> dlgGetClo;//取衣界面
+   Ref<dlgCustomerRecharge> dlgRecharge;//用户充值入口
+   Ref<dlgSearch> dlgSea;//查询界面
 
 
 public:

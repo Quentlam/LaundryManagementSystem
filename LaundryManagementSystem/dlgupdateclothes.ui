@@ -19,6 +19,7 @@
   <property name="font">
    <font>
     <family>微软雅黑</family>
+    <pointsize>12</pointsize>
    </font>
   </property>
   <property name="windowTitle">
@@ -27,6 +28,12 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="0">
     <widget class="QLabel" name="label_3">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>价格</string>
      </property>
@@ -34,19 +41,45 @@
    </item>
    <item row="5" column="3">
     <widget class="QPushButton" name="BtnCancel">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>取消</string>
      </property>
     </widget>
    </item>
    <item row="0" column="1" colspan="3">
-    <widget class="QLineEdit" name="LeID"/>
+    <widget class="QLineEdit" name="LeID">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+    </widget>
    </item>
    <item row="2" column="1" colspan="3">
-    <widget class="QLineEdit" name="LePrice"/>
+    <widget class="QLineEdit" name="LePrice">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+    </widget>
    </item>
    <item row="0" column="0">
     <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>衣服ID</string>
      </property>
@@ -54,6 +87,12 @@
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label_2">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>衣服名称</string>
      </property>
@@ -61,6 +100,12 @@
    </item>
    <item row="3" column="0">
     <widget class="QLabel" name="label_4">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>种类</string>
      </property>
@@ -68,6 +113,12 @@
    </item>
    <item row="5" column="2">
     <spacer name="horizontalSpacer">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -81,6 +132,12 @@
    </item>
    <item row="3" column="1" colspan="3">
     <widget class="QComboBox" name="CBType">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <item>
       <property name="text">
        <string>普通</string>
@@ -100,16 +157,35 @@
    </item>
    <item row="5" column="1">
     <widget class="QPushButton" name="BtnEnter">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>确认</string>
      </property>
     </widget>
    </item>
    <item row="1" column="1" colspan="3">
-    <widget class="QLineEdit" name="LeName"/>
+    <widget class="QLineEdit" name="LeName">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+    </widget>
    </item>
    <item row="4" column="1" colspan="3">
     <widget class="QComboBox" name="CBWashWay">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <item>
       <property name="text">
        <string>水洗</string>
@@ -139,6 +215,12 @@
    </item>
    <item row="4" column="0">
     <widget class="QLabel" name="label_5">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>处理方式</string>
      </property>

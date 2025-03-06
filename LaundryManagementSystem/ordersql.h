@@ -22,7 +22,8 @@ public:
     {
         if(nullptr == Instance)
         {
-            return new orderSql();
+            Instance = new orderSql();
+            return Instance;
         }
         else
         {
@@ -31,9 +32,10 @@ public:
 
     }
 public:
-    std::unique_ptr<OrderStatus> selectOrderStatusByOrderID(QString OrderID);
-    std::unique_ptr<QList<OrderInfo>> selectAllOrder();
-    std::unique_ptr<QList<OrderStatus>> selectAllOrderStatus();
+    Ref<OrderStatus> selectOrderStatusByOrderID(QString OrderID);
+    Ref<QList<OrderInfo>> selectAllOrder();
+    Ref<QList<OrderStatus>> selectAllOrderStatus();
+    Ref<QString> getCustomerHaveNotPayMoneyForTheOrderByOrderId(QString OrderId);
     bool createNewOrder(OrderInfo& orderInfoTemp,OrderClothesAttributeMessage& clothesInfoTempList);
     bool createNewOrderStatus(OrderInfo orderStatusTemp);
     bool updateCurrentOrderID(QString OrderID);
@@ -47,6 +49,8 @@ public:
 
 
 
+    double selectOrderAfterDiscountCountMoneyByOrderId(QString id);
+    bool judegOrderCustomerHaveNotPaidByOrderId(QString id);
 private:
     orderSql();
     QSqlQuery* sql;

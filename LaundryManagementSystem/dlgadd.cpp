@@ -81,7 +81,7 @@ void dlgAdd::reFresh(int index)
     {
         ui->tableWidget->clear();
 
-        std::unique_ptr<QList<customerInfo>> customerListTemp;
+        Ref<QList<customerInfo>> customerListTemp;
         customerListTemp = sqlManager::createCustomerSql()->selectAllCustomerInfo();
 
         ui->LbCount->setText(QString("当前总客户人数:%1").arg(customerListTemp->size()));
@@ -148,7 +148,7 @@ void dlgAdd::reFresh(int index)
         if("其他" == washWay)
         type = clothesInfo::other;
 
-        std::unique_ptr<QList<clothesInfo>> clothesTempList;
+        Ref<QList<clothesInfo>> clothesTempList;
         clothesTempList = sqlManager::createClothesSql()->showClothesInfo(type);
         ui->LbCount->setText(QString("当前衣物种类总数:%1").arg(clothesTempList->size()));
         ui->tableWidget->setRowCount(clothesTempList->size());
@@ -174,7 +174,7 @@ void dlgAdd::reFresh(int index)
         if(!ui->ClothesNameAndPrice->isChecked())
         {
             ui->tableWidget->clear();
-            std::unique_ptr<QList<clothesAttributeInfo>> clothesAttributeList;
+            Ref<QList<clothesAttributeInfo>> clothesAttributeList;
             QList<QString>* tittle;
         if(ui->ClothesColor->isChecked())////////////////////////选择了衣服，如果选择了衣服的颜色
        {
@@ -225,7 +225,7 @@ void dlgAdd::reFresh(int index)
     else if(2 == currentMode && "经理" == pulic::currentUser->Authority)//如果选择的是员工账号并且有用经理特权，才能查看员工的账号密码
     {
         ui->tableWidget->clear();
-        std::unique_ptr<QList<userInfo>> userTempList;
+        Ref<QList<userInfo>> userTempList;
         userTempList = sqlManager::createUserSql()->showAllUser();
 
         ui->LbCount->setText(QString("当前总员工人数:%1").arg(userTempList->size()));//并且用标签播报出来

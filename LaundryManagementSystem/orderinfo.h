@@ -30,7 +30,8 @@ public:
     QString GetClothesDate;
     QString CustomerAddress;
     QString ShelfID;
-
+    QString thisOrderNotPaid;
+    QString customerCardMoneyBeforePay;
     static QList<QString> orderTittle;
 };
 

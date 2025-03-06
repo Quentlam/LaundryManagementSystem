@@ -9,7 +9,6 @@
 #endif
 
 
-sqlManager* sqlManager::Instance = nullptr;
 sqlManager::sqlManager():
     DB(new QSqlDatabase(QSqlDatabase::addDatabase("QSQLITE"))),
     sql(new QSqlQuery())
@@ -35,7 +34,6 @@ sqlManager::sqlManager():
 sqlManager::~sqlManager()
 {
     delete  sql;
-    delete  Instance;
 }
 
 clotheSql *sqlManager::createClothesSql()

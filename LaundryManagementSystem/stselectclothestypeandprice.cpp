@@ -51,11 +51,11 @@ bool STSelectClothesTypeAndPrice::searchClothes(QString text)
 void STSelectClothesTypeAndPrice::choseClothes(int type)
 {
     ui->tableWidget->clear();
-    std::unique_ptr<QList<clothesInfo>> dryClenClothesTempList = sqlManager::createClothesSql()->showClothesInfo(clothesInfo::WashWayType::dryClean);
-    std::unique_ptr<QList<clothesInfo>> washClothesTempList = sqlManager::createClothesSql()->showClothesInfo(clothesInfo::WashWayType::wash);
-    std::unique_ptr<QList<clothesInfo>> leatherCoatClothesTempList = sqlManager::createClothesSql()->showClothesInfo(clothesInfo::WashWayType::leatherCoat);
-    std::unique_ptr<QList<clothesInfo>> singleIroningClothesTempList = sqlManager::createClothesSql()->showClothesInfo(clothesInfo::WashWayType::singleIroning);
-    std::unique_ptr<QList<clothesInfo>> otherClothesTempList = sqlManager::createClothesSql()->showClothesInfo(clothesInfo::WashWayType::other);
+    Ref<QList<clothesInfo>> dryClenClothesTempList = sqlManager::createClothesSql()->showClothesInfo(clothesInfo::WashWayType::dryClean);
+    Ref<QList<clothesInfo>> washClothesTempList = sqlManager::createClothesSql()->showClothesInfo(clothesInfo::WashWayType::wash);
+    Ref<QList<clothesInfo>> leatherCoatClothesTempList = sqlManager::createClothesSql()->showClothesInfo(clothesInfo::WashWayType::leatherCoat);
+    Ref<QList<clothesInfo>> singleIroningClothesTempList = sqlManager::createClothesSql()->showClothesInfo(clothesInfo::WashWayType::singleIroning);
+    Ref<QList<clothesInfo>> otherClothesTempList = sqlManager::createClothesSql()->showClothesInfo(clothesInfo::WashWayType::other);
     int size = dryClenClothesTempList->size() + washClothesTempList->size() + leatherCoatClothesTempList->size() + singleIroningClothesTempList->size() + otherClothesTempList->size();
     ui->tableWidget->setColumnCount(clothesInfo::clothesTittle.size() - 1);
     ui->tableWidget->setRowCount(size + 5);

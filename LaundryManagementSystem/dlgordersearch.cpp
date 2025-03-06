@@ -58,7 +58,7 @@ void dlgOrderSearch::on_RaDateSearch_clicked()
 void dlgOrderSearch::reFresh()
 {
     ui->tableWidget->clear();
-    std::unique_ptr<QList<OrderInfo>> ordetInfoTempList = sqlManager::createOrderSql()->selectAllOrder();
+    Ref<QList<OrderInfo>> ordetInfoTempList = sqlManager::createOrderSql()->selectAllOrder();
     ui->LBCnt->setText(QString("显示订单总数为：%1").arg(ordetInfoTempList->size()));
     ui->tableWidget->setRowCount(ordetInfoTempList->size());
     ui->tableWidget->setColumnCount(OrderInfo::orderTittle.size());
@@ -94,6 +94,8 @@ void dlgOrderSearch::reFresh()
         ui->tableWidget->setItem(i,23,new QTableWidgetItem((*ordetInfoTempList)[i].GetClothesDate));
         ui->tableWidget->setItem(i,24,new QTableWidgetItem((*ordetInfoTempList)[i].CustomerAddress));
         ui->tableWidget->setItem(i,25,new QTableWidgetItem((*ordetInfoTempList)[i].ShelfID));
+        ui->tableWidget->setItem(i,26,new QTableWidgetItem((*ordetInfoTempList)[i].thisOrderNotPaid));
+        ui->tableWidget->setItem(i,27,new QTableWidgetItem((*ordetInfoTempList)[i].customerCardMoneyBeforePay));
     }
     ui->tableWidget->update();
 }

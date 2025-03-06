@@ -31,7 +31,7 @@ dlgOrderStatus::~dlgOrderStatus()
 void dlgOrderStatus::reFresh()
 {
     ui->tableWidget->clear();
-    std::unique_ptr<QList<OrderStatus>> OrdetStatusTempList = sqlManager::createOrderSql()->selectAllOrderStatus();
+    Ref<QList<OrderStatus>> OrdetStatusTempList = sqlManager::createOrderSql()->selectAllOrderStatus();
     ui->LBCnt->setText(QString("显示订单总数：%1").arg(OrdetStatusTempList->size()));
     ui->tableWidget->setRowCount(OrdetStatusTempList->size());
     ui->tableWidget->setColumnCount(OrderStatus::orderStatusTittle.size());

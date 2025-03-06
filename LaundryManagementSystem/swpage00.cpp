@@ -1,6 +1,6 @@
 ﻿#include "swpage00.h"
 #include "ui_swpage00.h"
-#include "sqlmanager.h"
+
 
 swpage00::swpage00(QWidget *parent) :
     QDialog(parent),

@@ -9,9 +9,9 @@ clotheSql::~clotheSql()
     delete  Instance;
 }
 
-std::unique_ptr<QList<clothesInfo>> clotheSql::showClothesInfo(clothesInfo::WashWayType type)
+Ref<QList<clothesInfo>> clotheSql::showClothesInfo(clothesInfo::WashWayType type)
 {
-    std::unique_ptr<QList<clothesInfo>>clothesTempList = std::make_unique<QList<clothesInfo>>();
+    Ref<QList<clothesInfo>>clothesTempList = std::make_unique<QList<clothesInfo>>();
     clothesInfo clothesTemp;
     QString typeName;
     switch (type)//挑选现在的类型
@@ -70,9 +70,9 @@ std::unique_ptr<QList<clothesInfo>> clotheSql::showClothesInfo(clothesInfo::Wash
     return clothesTempList;
 }
 
-std::unique_ptr<QList<clothesAttributeInfo> > clotheSql::showClothesColorInfo()
+Ref<QList<clothesAttributeInfo> > clotheSql::showClothesColorInfo()
 {
-    std::unique_ptr<QList<clothesAttributeInfo>> clothesColorInfoList = std::make_unique<QList<clothesAttributeInfo>>();
+    Ref<QList<clothesAttributeInfo>> clothesColorInfoList = std::make_unique<QList<clothesAttributeInfo>>();
     clothesAttributeInfo clothesColorInfoTemp;
     sql->exec(QString("select * from ClothesColor;"));
     while(sql->next())
@@ -84,9 +84,9 @@ std::unique_ptr<QList<clothesAttributeInfo> > clotheSql::showClothesColorInfo()
     return clothesColorInfoList;
 }
 
-std::unique_ptr<QList<clothesAttributeInfo> > clotheSql::showClothesDefectInfo()
+Ref<QList<clothesAttributeInfo> > clotheSql::showClothesDefectInfo()
 {
-    std::unique_ptr<QList<clothesAttributeInfo>> clothesDefectInfoList = std::make_unique<QList<clothesAttributeInfo>>();
+    Ref<QList<clothesAttributeInfo>> clothesDefectInfoList = std::make_unique<QList<clothesAttributeInfo>>();
     clothesAttributeInfo clothesDefectInfoTemp;
     sql->exec(QString("select * from ClothesDefect;"));
     while(sql->next())
@@ -99,9 +99,9 @@ std::unique_ptr<QList<clothesAttributeInfo> > clotheSql::showClothesDefectInfo()
 }
 
 
-std::unique_ptr<QList<clothesAttributeInfo> > clotheSql::showClothesBrandInfo()
+Ref<QList<clothesAttributeInfo> > clotheSql::showClothesBrandInfo()
 {
-    std::unique_ptr<QList<clothesAttributeInfo>> clothesBrandInfoList = std::make_unique<QList<clothesAttributeInfo>>();
+    Ref<QList<clothesAttributeInfo>> clothesBrandInfoList = std::make_unique<QList<clothesAttributeInfo>>();
     clothesAttributeInfo clothesBrandInfoTemp;
     sql->exec(QString("select * from ClothesBrand;"));
     while(sql->next())
@@ -114,9 +114,9 @@ std::unique_ptr<QList<clothesAttributeInfo> > clotheSql::showClothesBrandInfo()
 }
 
 
-std::unique_ptr<QList<clothesAttributeInfo> > clotheSql::showClothesSpecialTreatmentInfo()
+Ref<QList<clothesAttributeInfo> > clotheSql::showClothesSpecialTreatmentInfo()
 {
-    std::unique_ptr<QList<clothesAttributeInfo>> clothesSpecialTreatmentInfoList = std::make_unique<QList<clothesAttributeInfo>>();
+    Ref<QList<clothesAttributeInfo>> clothesSpecialTreatmentInfoList = std::make_unique<QList<clothesAttributeInfo>>();
     clothesAttributeInfo clothesSpecialTreatmentInfoTemp;
     sql->exec(QString("select * from SpecialTreatment;"));
     while(sql->next())
@@ -129,9 +129,9 @@ std::unique_ptr<QList<clothesAttributeInfo> > clotheSql::showClothesSpecialTreat
 }
 
 
-std::unique_ptr<QList<clothesAttributeInfo> > clotheSql::showClothesWashingEffectInfo()
+Ref<QList<clothesAttributeInfo> > clotheSql::showClothesWashingEffectInfo()
 {
-    std::unique_ptr<QList<clothesAttributeInfo>> clothesWashingEffectInfoList = std::make_unique<QList<clothesAttributeInfo>>();
+    Ref<QList<clothesAttributeInfo>> clothesWashingEffectInfoList = std::make_unique<QList<clothesAttributeInfo>>();
     clothesAttributeInfo clothesWashingEffectInfoTemp;
     sql->exec(QString("select * from WashingEffect;"));
     while(sql->next())

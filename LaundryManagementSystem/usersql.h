@@ -16,15 +16,16 @@ public:
     {
         if(nullptr == Instance)
         {
-            return new userSql();
+            Instance = new userSql();
+            return Instance;
         }
         else
         {
             return Instance;
         }
     }
-    std::unique_ptr<QList<userInfo>> showAllUser();
-    std::unique_ptr<ShopData> showShopData();
+    Ref<QList<userInfo>> showAllUser();
+    Ref<ShopData> showShopData();
     bool deleteUserById(QString id);
     bool updateUserById(userInfo& userInfoTemp,QString ID);
     bool selectUserByAccount(QString account);

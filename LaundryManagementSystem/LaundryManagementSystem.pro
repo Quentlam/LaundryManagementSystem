@@ -36,6 +36,7 @@ include($$PWD/zint/backend_qt/backend_qt.pro);
 CONFIG += c++17
 
 SOURCES += \
+    dlgcustomerpaywhengetclo.cpp \
         main.cpp \
         mainwindow.cpp \
     dlglogin.cpp \
@@ -92,6 +93,7 @@ SOURCES += \
     shelfinfo.cpp
 
 HEADERS += \
+    dlgcustomerpaywhengetclo.h \
         mainwindow.h \
     dlglogin.h \
     pulic.h \
@@ -147,6 +149,7 @@ HEADERS += \
     shelfinfo.h
 
 FORMS += \
+    dlgcustomerpaywhengetclo.ui \
         mainwindow.ui \
     dlglogin.ui \
     dlgadd.ui \
@@ -194,6 +197,9 @@ RESOURCES += \
 DEFINES += ZINT_VERSION="\\\"2.15.0.9\\\""
 DEFINES += ZINT_NO_PNG
 DEFINES += ENABLE_ENCODER_GENERIC
+DEFINES += Ref=std::unique_ptr
+DEFINES += Scope=std::shared_ptr
+
 
 win32: LIBS += -L$$PWD/../thirdParty/libs/ -lQZXing3
 win32: LIBS += -L$$PWD/../thirdParty/libs/ -lQtZintd

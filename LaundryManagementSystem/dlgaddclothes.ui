@@ -16,15 +16,33 @@
     <height>300</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <family>微软雅黑</family>
+    <pointsize>11</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>添加衣服种类</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
     <widget class="QWidget" name="widget_2" native="true">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="4" column="0">
        <widget class="QLabel" name="label_4">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>衣物处理</string>
         </property>
@@ -35,6 +53,12 @@
       </item>
       <item row="4" column="1">
        <widget class="QComboBox" name="CBWashWay">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
         <item>
          <property name="text">
           <string>干洗</string>
@@ -70,10 +94,22 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
        </widget>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_3">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>衣服种类</string>
         </property>
@@ -84,6 +120,12 @@
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>衣服编号</string>
         </property>
@@ -93,7 +135,14 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="LeID"/>
+       <widget class="QLineEdit" name="LeID">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+       </widget>
       </item>
       <item row="3" column="1">
        <widget class="QComboBox" name="CBType">
@@ -108,6 +157,12 @@
           <width>99999</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+         </font>
         </property>
         <item>
          <property name="text">
@@ -139,10 +194,22 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
        </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_2">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>衣服价格</string>
         </property>
@@ -159,6 +226,12 @@
           <height>0</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>衣服名称</string>
         </property>
@@ -169,6 +242,12 @@
       </item>
       <item row="1" column="2">
        <spacer name="horizontalSpacer">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -200,6 +279,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
@@ -211,6 +291,12 @@
           <height>30</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>确定</string>
         </property>
@@ -218,6 +304,12 @@
       </item>
       <item row="0" column="1">
        <spacer name="horizontalSpacer_3">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -236,6 +328,12 @@
           <width>100</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+          <pointsize>11</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>取消</string>

@@ -107,7 +107,7 @@ void dlgChoseCustomer::on_LeSearch_textChanged(const QString &arg1)
 void dlgChoseCustomer::reFresh()
 {
     ui->TWCustomer->clear();
-    std::unique_ptr<QList<customerInfo>> customerListTemp;
+    Ref<QList<customerInfo>> customerListTemp;
     customerListTemp = sqlManager::createCustomerSql()->selectAllCustomerInfo();
     customerInfo customerTemp;
 
@@ -157,7 +157,7 @@ void dlgChoseCustomer::show()
 
 void dlgChoseCustomer::updateChosenCustomerById(customerInfo& customer,QString id)
 {
-    std::unique_ptr<customerInfo>customerTemp = sqlManager::createCustomerSql()->selectCusotmerById(id);
+    Ref<customerInfo>customerTemp = sqlManager::createCustomerSql()->selectCusotmerById(id);
 
     customer.ID                 = (*customerTemp).ID;
     customer.Gender             = (*customerTemp).Gender;

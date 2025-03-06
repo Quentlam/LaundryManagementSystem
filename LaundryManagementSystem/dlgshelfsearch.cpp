@@ -26,7 +26,7 @@ dlgShelfSearch::~dlgShelfSearch()
 
 void dlgShelfSearch::reFresh()
 {
-    std::unique_ptr<QList<shelfInfo>> Shelves;
+    Ref<QList<shelfInfo>> Shelves;
     ui->tableWidget->clear();
     shelfNumber = "未选择";
     shelfSelected = false;

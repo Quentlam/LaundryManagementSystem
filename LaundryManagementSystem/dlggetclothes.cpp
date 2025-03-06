@@ -78,8 +78,8 @@ void dlgGetClothes::getMoneyFunc()
     payWay = dlgGetMon.payWay;
     if("充值卡支付" == payWay)
     {
-        ui->TWMoney->item(0,0)->setText("充值卡支付不收银");//收银多少钱
-        ui->TWMoney->item(1,0)->setText("充值卡支付不找零");//收银多少钱
+        ui->TWMoney->item(0,0)->setText("充值卡不支持收银");//收银多少钱
+        ui->TWMoney->item(1,0)->setText("充值卡不支持找零");//收银多少钱
         return;
     }
     ui->TWMoney->item(0,0)->setText(QString::number(dlgGetMon.Money));//收银多少钱
@@ -309,7 +309,7 @@ void dlgGetClothes::on_BtnEnter_clicked()//创建订单了
     currentOrder.InputMoney = "无收银";
     currentOrder.MoneyCount = "无总金额";
     currentOrder.customerID = "无客户编号";
-    currentOrder.HaveNotPaid = "此单未欠缴";
+    currentOrder.HaveNotPaid = NOT_OWE;
     currentOrder.OutputMoney = "无找零";
     currentOrder.ClothesCount = "无衣服总数";
     currentOrder.customerName = "无客户姓名";
@@ -322,8 +322,8 @@ void dlgGetClothes::on_BtnEnter_clicked()//创建订单了
     currentOrder.CustomerCardMoney = "无卡剩余余额";
     currentOrder.AfterDiscountMoneyCount = "无折后价";
     currentOrder.ShelfID = "无架号";
-
-
+    currentOrder.thisOrderNotPaid = "0";
+    currentOrder.customerCardMoneyBeforePay = "无卡支付前余额";
     if(ClothesCount <= 0)
     {
         QMessageBox::information(nullptr,"信息","请至少选择一件衣服！");
@@ -373,10 +373,11 @@ void dlgGetClothes::on_BtnEnter_clicked()//创建订单了
             currentOrder.InputMoney = QString::number(input);
             currentOrder.OutputMoney = QString::number(output);
             currentOrder.PayWay = dlgGetMon.payWay;
-            currentOrder.HaveNotPaid = "临时客户不可欠缴";
             currentOrder.GetClothesDate = ui->Time->text();
             currentOrder.CustomerCardMoney = "临时客户无卡";
             currentOrder.CustomerAddress = "临时客户无地址";
+            currentOrder.customerCardMoneyBeforePay = "临时客户无卡";
+
 
             dlgEnterOrder = new dlgNewOrder(nullptr,0,currentOrder);
             connect(dlgEnterOrder,&dlgNewOrder::CreateNewOrderSuccess,this,&dlgGetClothes::createNewOrderSuccess);
@@ -405,7 +406,7 @@ void dlgGetClothes::on_BtnEnter_clicked()//创建订单了
         currentOrder.customerCount = QString::number(dlgChoseCus.chosedCustomer.Count + 1);//消费次数要加上
         currentOrder.customerSpend = QString::number(dlgChoseCus.chosedCustomer.Spend + afterDiscountMoney);//消费额要加上这次消费了多少
         currentOrder.customerCardID = dlgChoseCus.chosedCustomer.CardID;
-
+        currentOrder.customerCardMoneyBeforePay = QString::number(dlgChoseCus.chosedCustomer.CardMoney);
 
         for(int i = 0 ; i < ClothesCount;i ++)
         {
@@ -434,7 +435,7 @@ void dlgGetClothes::on_BtnEnter_clicked()//创建订单了
         {
             currentOrder.InputMoney = QString::number(afterDiscountMoney);
             currentOrder.OutputMoney = QString::number(afterDiscountMoney);
-            currentOrder.HaveNotPaid = "此单未欠缴";
+            currentOrder.HaveNotPaid = NOT_OWE;
         }
         else if(dlgChoseCus.chosedCustomer.CardMoney < afterDiscountMoney && payWay == "充值卡支付")//如果不够
         {
@@ -452,9 +453,10 @@ void dlgGetClothes::on_BtnEnter_clicked()//创建订单了
              auto HaveNoPaid =  QMessageBox::question(nullptr,"警告！","客户是否欠缴！",QMessageBox::Yes | QMessageBox::No);
              if(HaveNoPaid == QMessageBox::Yes)
              {//如果充值卡不充钱的情况下，欠缴就是先把卡里的钱先花完，然后再加上剩余订单没给的钱，再加上客户之前欠的钱
-                currentOrder.HaveNotPaid = QString("欠缴：%1").arg(QString::number(dlgChoseCus.chosedCustomer.HaveNotPaidMoney.toDouble() + afterDiscountMoney - dlgChoseCus.chosedCustomer.CardMoney));
-                dlgChoseCus.chosedCustomer.HaveNotPaid = "欠缴";
-                dlgChoseCus.chosedCustomer.HaveNotPaidMoney = QString::number(dlgChoseCus.chosedCustomer.HaveNotPaidMoney.toDouble() + afterDiscountMoney - dlgChoseCus.chosedCustomer.CardMoney);             
+                currentOrder.HaveNotPaid = OWE;
+                dlgChoseCus.chosedCustomer.HaveNotPaid = OWE;
+                dlgChoseCus.chosedCustomer.HaveNotPaidMoney = QString::number(dlgChoseCus.chosedCustomer.HaveNotPaidMoney.toDouble() + afterDiscountMoney - dlgChoseCus.chosedCustomer.CardMoney);
+                currentOrder.thisOrderNotPaid = QString("此订单欠缴：%1").arg(afterDiscountMoney - dlgChoseCus.chosedCustomer.CardMoney);
              }
              else
              {
@@ -469,9 +471,10 @@ void dlgGetClothes::on_BtnEnter_clicked()//创建订单了
             auto HaveNoPaid =  QMessageBox::question(nullptr,"警告！","客户是否欠缴！",QMessageBox::Yes | QMessageBox::No);
             if(HaveNoPaid == QMessageBox::Yes)
             {
-                currentOrder.HaveNotPaid = QString("欠缴：%1").arg(QString::number(dlgChoseCus.chosedCustomer.HaveNotPaidMoney.toDouble() + afterDiscountMoney - currentOrder.InputMoney.toDouble()));
-                dlgChoseCus.chosedCustomer.HaveNotPaid = "欠缴";
+                currentOrder.HaveNotPaid = OWE;
+                dlgChoseCus.chosedCustomer.HaveNotPaid = OWE;
                 dlgChoseCus.chosedCustomer.HaveNotPaidMoney = QString::number(dlgChoseCus.chosedCustomer.HaveNotPaidMoney.toDouble() + afterDiscountMoney - currentOrder.InputMoney.toDouble());
+                currentOrder.thisOrderNotPaid = currentOrder.thisOrderNotPaid = QString("此订单欠缴：%1").arg(afterDiscountMoney - input);
             }
             else
             {
@@ -484,7 +487,6 @@ void dlgGetClothes::on_BtnEnter_clicked()//创建订单了
         selectClothes = true;//已经选好衣服了
         dlgEnterOrder = new dlgNewOrder(nullptr,1,currentOrder);
         connect(dlgEnterOrder,&dlgNewOrder::CreateNewOrderSuccess,this,&dlgGetClothes::createNewOrderSuccess);
-        dlgEnterOrder->HaveNotPaidSituation(dlgChoseCus.chosedCustomer.HaveNotPaidMoney);
         QMessageBox::information(nullptr,"信息",QString("记录了%1件衣服的信息！").arg(ClothesCount));
         dlgEnterOrder->exec();
         if(!dlgEnterOrder->choseShelf.shelfSelected)
@@ -499,7 +501,7 @@ void dlgGetClothes::on_BtnEnter_clicked()//创建订单了
             currentCustomerCost.cardCost(currentCustomerCost.temp,currentOrder.InputMoney.toDouble(),currentOrder.orderID);//最后才记录这个是记录谁用卡花了多少钱的，消费一个操作日志，订单一个日志
             return;
         }
-        else if("此单未欠缴" == currentOrder.HaveNotPaid && payWay != "充值卡支付" && true == dlgEnterOrder->orderFinished)//如果不是卡支付们看看欠缴没有
+        else if(currentOrder.HaveNotPaid.contains(NOT_OWE) && payWay != "充值卡支付" && true == dlgEnterOrder->orderFinished)//如果不是卡支付们看看欠缴没有
         {
             currentCustomerCost.ortherCost(currentCustomerCost.temp,currentOrder.AfterDiscountMoneyCount.toDouble(),payWay,currentOrder.orderID);//如果是充值卡以外的支付
             return;
@@ -511,7 +513,7 @@ void dlgGetClothes::on_BtnEnter_clicked()//创建订单了
            return;
         }
 
-        if("此单未欠缴" != currentOrder.HaveNotPaid && payWay != "充值卡支付" && true == dlgEnterOrder->orderFinished)//如果客户其他方式欠缴了也算欠缴了，并且必须要加到欠缴费和消费额和消费次数里，并且要先花卡里的钱
+        if(!currentOrder.HaveNotPaid.contains(NOT_OWE) && payWay != "充值卡支付" && true == dlgEnterOrder->orderFinished)//如果客户其他方式欠缴了也算欠缴了，并且必须要加到欠缴费和消费额和消费次数里，并且要先花卡里的钱
         {
            currentCustomerCost.ortherCostHaveNotPaid(currentCustomerCost.temp,currentOrder.AfterDiscountMoneyCount.toDouble(),payWay,currentOrder.orderID);//如果不用充值卡支付，并且钱不够了，那么就要加到欠缴里面去
            return;
@@ -756,52 +758,6 @@ void dlgGetClothes::keyPressEvent(QKeyEvent *event)
        ui->LESearch->setFocus();
        ui->LESearch->setText(text);
     }
-    if(Qt::Key::Key_Enter == event->key())
-    {
-        int index = ui->SW->currentIndex();
-        bool status = false;
-        //qDebug() << index;
-       if(0 == index || 6 == index)
-       {
-            status = Selectclothes.searchClothes(ui->LESearch->text());
-            if(true == status)ui->SW->setCurrentIndex(1);
-       }
-
-       if(1 == index)
-       {
-           status = selectPage00 .searchClothes(ui->LESearch->text());
-           if(true == status)ui->SW->setCurrentIndex(2);
-       }
-       if(2 == index)
-       {
-           status = selectPage01 .searchClothes(ui->LESearch->text());
-           if(true == status)ui->SW->setCurrentIndex(3);
-       }
-
-       if(3 == index)
-       {
-           status = selectPage02 .searchClothes(ui->LESearch->text());
-           if(true == status)ui->SW->setCurrentIndex(4);
-       }
-
-       if(4 == index)
-       {
-           status = selectPage03 .searchClothes(ui->LESearch->text());
-           if(true == status)ui->SW->setCurrentIndex(5);
-       }
-
-       if(5 == index)
-       {
-           status = selectPage04 .searchClothes(ui->LESearch->text());
-           if(true == status)ui->SW->setCurrentIndex(6);
-       }
-
-
-
-       ui->LESearch->clear();
-    }
-
-
 }
 
 void dlgGetClothes::on_LESearch_textChanged(const QString &arg1)
@@ -868,15 +824,52 @@ void dlgGetClothes::on_LESearch_returnPressed()
                 ui->TWCal->item(1,0)->setText(dlgChoseCus.chosedCustomer.CardType);
                 discount = true;
             }
-
-
             ui->TWCal->setItem(4,0,new QTableWidgetItem(QString::number(dlgChoseCus.chosedCustomer.CardMoney)));//表里的卡余额
             selectCustomer = true;
+            return;
         }
         if(nullptr == ptr)
         {
             QMessageBox::information(nullptr,"信息","找不到该客户！");
+            return;
         }
+    }
+    int index = ui->SW->currentIndex();
+    bool status = false;
+    //qDebug() << index;
+    if(0 == index || 6 == index)
+    {
+        status = Selectclothes.searchClothes(ui->LESearch->text());
+        if(true == status)ui->SW->setCurrentIndex(1);
+    }
+
+    if(1 == index)
+    {
+        status = selectPage00 .searchClothes(ui->LESearch->text());
+        if(true == status)ui->SW->setCurrentIndex(2);
+    }
+    if(2 == index)
+    {
+        status = selectPage01 .searchClothes(ui->LESearch->text());
+        if(true == status)ui->SW->setCurrentIndex(3);
+    }
+
+    if(3 == index)
+    {
+        status = selectPage02 .searchClothes(ui->LESearch->text());
+        if(true == status)ui->SW->setCurrentIndex(4);
+    }
+
+    if(4 == index)
+    {
+        status = selectPage03 .searchClothes(ui->LESearch->text());
+        if(true == status)ui->SW->setCurrentIndex(5);
+    }
+
+    if(5 == index)
+    {
+        status = selectPage04 .searchClothes(ui->LESearch->text());
+        if(true == status)ui->SW->setCurrentIndex(6);
     }
     ui->LESearch->clear();
 }

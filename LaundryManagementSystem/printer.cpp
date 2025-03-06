@@ -9,12 +9,11 @@
 #include <QTextCursor>
 #include "shopdata.h"
 #include <QSqlError>
-#include "QZXing.h"
 #include <QPrinterInfo>
 #include <QFont>
 #include <QTextCodec>
 #include <QThread>
-#include "printpreviewwidget.h"
+
 Printer::Printer()
 {
     mPrinter.setPrinterName("Zonerich AB-88H");
@@ -32,7 +31,7 @@ void Printer::printCustomerCurrentOrder(OrderInfo order)
 
 
     CodeGenerator = new code128Generator(order.orderID);///////////////生成条纹码
-    std::unique_ptr<QImage> beforImg = CodeGenerator->GenerateCode128();
+    Ref<QImage> beforImg = CodeGenerator->GenerateCode128();
     QImage img = beforImg->scaled(420,40, Qt::IgnoreAspectRatio);
 ////////////////////////////////////////////////////////////////////////////////////////////以下是绘画逻辑
     QPainter painter(&mPrinter); // 构造函数自动激活设备
@@ -166,15 +165,16 @@ void Printer::makeUserCurrentOrderDocument(QTextDocument& textDocument,OrderInfo
     text += "\n---------------------------------------\n";
     text += QString("合计；    衣物%1件\n").arg(order.clothesTemp.size());
     text += QString("付款方式：%1\n")      .arg(order.PayWay);
-    text += QString("总金额：%1元")   .arg(order.MoneyCount);
-    text += QString(" 折扣率：%1\n")        .arg(order.Discount);
+    text += QString("总金额：%1元\n")   .arg(order.MoneyCount);
+    text += QString("卡上金额：%1元\n")    .arg(order.customerCardMoneyBeforePay);
+    text += QString("折扣率：%1 ")        .arg(order.Discount);
     text += QString("应收金额：%1元\n") .arg(order.AfterDiscountMoneyCount);
     text += QString("充值卡号：%1\n")    .arg(order.customerCardID);
     text += QString("卡余额：%1元\n")    .arg(order.CustomerCardMoney);
     text += QString("实收金额：%1元\n")   .arg(order.InputMoney);
     text += QString("找零：%1元")      .arg(order.OutputMoney);
-    if(!order.HaveNotPaid.contains("未欠缴"))
-    text += QString("客户已经欠缴：%1元").arg(order.HaveNotPaid);
+    if(order.thisOrderNotPaid.contains("欠缴"))
+    text += QString("欠缴：%1元 欠！").arg(order.thisOrderNotPaid);
     text += "\n---------------------------------------\n";
 
 
@@ -256,15 +256,16 @@ void Printer::makeCusotmerCurrentOrderDocument(QTextDocument& textDocument,Order
     text += "\n---------------------------------------\n";
     text += QString("合计；    衣物%1件\n").arg(order.clothesTemp.size());
     text += QString("付款方式：%1\n")      .arg(order.PayWay);
-    text += QString("总金额：%1元")   .arg(order.MoneyCount);
-    text += QString(" 折扣率：%1\n")        .arg(order.Discount);
+    text += QString("总金额：%1元\n")   .arg(order.MoneyCount);
+    text += QString("卡上金额：%1元\n")    .arg(order.customerCardMoneyBeforePay);
+    text += QString("折扣率：%1 ")        .arg(order.Discount);
     text += QString("应收金额：%1元\n") .arg(order.AfterDiscountMoneyCount);
     text += QString("充值卡号：%1\n")    .arg(order.customerCardID);
     text += QString("卡余额：%1元\n")    .arg(order.CustomerCardMoney);
     text += QString("实收金额：%1元\n")   .arg(order.InputMoney);
     text += QString("找零：%1元")      .arg(order.OutputMoney);
-    if(!order.HaveNotPaid.contains("未欠缴"))
-    text += QString("客户已经欠缴：%1元").arg(order.HaveNotPaid);
+    if(order.thisOrderNotPaid.contains("欠缴"))
+    text += QString("欠缴：%1元 欠！").arg(order.thisOrderNotPaid);
     text += "\n---------------------------------------\n";
 
 

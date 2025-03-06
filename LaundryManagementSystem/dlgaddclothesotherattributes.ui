@@ -13,6 +13,7 @@
   <property name="font">
    <font>
     <family>微软雅黑</family>
+    <pointsize>11</pointsize>
    </font>
   </property>
   <property name="windowTitle">
@@ -27,6 +28,12 @@
        <height>30</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>确定</string>
      </property>
@@ -34,6 +41,12 @@
    </item>
    <item row="0" column="3">
     <widget class="QLineEdit" name="LeID">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
      <property name="placeholderText">
       <string/>
      </property>
@@ -41,6 +54,12 @@
    </item>
    <item row="4" column="3">
     <spacer name="horizontalSpacer">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -53,10 +72,23 @@
     </spacer>
    </item>
    <item row="1" column="3">
-    <widget class="QLineEdit" name="LeText"/>
+    <widget class="QLineEdit" name="LeText">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
+    </widget>
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="LBText">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>衣服颜色：</string>
      </property>
@@ -64,6 +96,12 @@
    </item>
    <item row="0" column="0">
     <widget class="QLabel" name="LBID">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>编号：</string>
      </property>
@@ -76,6 +114,12 @@
        <width>0</width>
        <height>30</height>
       </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>取消</string>

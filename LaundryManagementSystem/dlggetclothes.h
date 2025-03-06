@@ -22,6 +22,7 @@
 
 
 
+
 namespace Ui {
 class dlgGetClothes;
 }

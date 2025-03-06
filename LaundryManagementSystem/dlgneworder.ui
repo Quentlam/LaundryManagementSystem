@@ -6,25 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
+    <width>1200</width>
     <height>500</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1024</width>
+    <width>1200</width>
     <height>500</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>1024</width>
+    <width>1200</width>
     <height>500</height>
    </size>
   </property>
   <property name="font">
    <font>
     <family>微软雅黑</family>
+    <pointsize>11</pointsize>
    </font>
   </property>
   <property name="windowTitle">
@@ -36,6 +37,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -48,6 +50,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -57,6 +60,12 @@
    </item>
    <item row="23" column="6">
     <spacer name="horizontalSpacer_2">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -85,6 +94,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -97,6 +107,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -109,7 +120,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
-       <weight>75</weight>
+       <pointsize>11</pointsize>
        <italic>false</italic>
        <bold>true</bold>
       </font>
@@ -124,6 +135,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -148,6 +160,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -160,6 +173,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -172,7 +186,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
-       <weight>75</weight>
+       <pointsize>11</pointsize>
        <bold>true</bold>
       </font>
      </property>
@@ -186,6 +200,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -195,6 +210,12 @@
    </item>
    <item row="4" column="7">
     <widget class="QLabel" name="LACustomerAgoHaveNotPaid">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>客户之前欠缴</string>
      </property>
@@ -217,6 +238,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -241,6 +263,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -253,6 +276,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -265,6 +289,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -277,7 +302,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
-       <weight>75</weight>
+       <pointsize>11</pointsize>
        <bold>true</bold>
       </font>
      </property>
@@ -291,6 +316,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -300,6 +326,12 @@
    </item>
    <item row="23" column="4">
     <spacer name="horizontalSpacer">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -316,7 +348,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
-       <weight>75</weight>
+       <pointsize>11</pointsize>
        <bold>true</bold>
       </font>
      </property>
@@ -330,7 +362,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
-       <weight>75</weight>
+       <pointsize>11</pointsize>
        <bold>true</bold>
       </font>
      </property>
@@ -344,6 +376,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -356,7 +389,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
-       <weight>75</weight>
+       <pointsize>11</pointsize>
        <bold>true</bold>
       </font>
      </property>
@@ -370,6 +403,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -382,6 +416,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">
@@ -394,7 +429,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
-       <weight>75</weight>
+       <pointsize>11</pointsize>
        <bold>true</bold>
       </font>
      </property>
@@ -405,6 +440,12 @@
    </item>
    <item row="23" column="2">
     <spacer name="horizontalSpacer_3">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+      </font>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
@@ -421,6 +462,7 @@
      <property name="font">
       <font>
        <family>微软雅黑</family>
+       <pointsize>11</pointsize>
       </font>
      </property>
      <property name="text">

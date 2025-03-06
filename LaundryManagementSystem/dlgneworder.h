@@ -28,7 +28,7 @@ public:
     bool createNewOrder();
 
     void setShelfNumber();
-    void HaveNotPaidSituation(QString money);
+    void HaveNotPaidSituation();
 private slots:
     void on_BtnCancel_clicked();
 
