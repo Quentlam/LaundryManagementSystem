@@ -19,7 +19,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = LaundryManagementSystem
 TEMPLATE = app
 
-# The following define makes your compiler emit warnings if you use
+# The following define makQes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
@@ -30,16 +30,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-include($$PWD/zint/backend_qt/backend_qt.pro);
+
 
 
 CONFIG += c++17
 
 SOURCES += \
     dlgcustomerpaywhengetclo.cpp \
+    dlgprinterdata.cpp \
         main.cpp \
         mainwindow.cpp \
     dlglogin.cpp \
+    printerinfo.cpp \
+    printersql.cpp \
     pulic.cpp \
     userinfo.cpp \
     dlgaddcustomer.cpp \
@@ -94,8 +97,11 @@ SOURCES += \
 
 HEADERS += \
     dlgcustomerpaywhengetclo.h \
+    dlgprinterdata.h \
         mainwindow.h \
     dlglogin.h \
+    printerinfo.h \
+    printersql.h \
     pulic.h \
     userinfo.h \
     dlgadd.h \
@@ -150,6 +156,7 @@ HEADERS += \
 
 FORMS += \
     dlgcustomerpaywhengetclo.ui \
+    dlgprinterdata.ui \
         mainwindow.ui \
     dlglogin.ui \
     dlgadd.ui \
@@ -201,17 +208,21 @@ DEFINES += Ref=std::unique_ptr
 DEFINES += Scope=std::shared_ptr
 
 
-win32: LIBS += -L$$PWD/../thirdParty/libs/ -lQZXing3
-win32: LIBS += -L$$PWD/../thirdParty/libs/ -lQtZintd
-win32: LIBS += -L$$PWD/../thirdParty/libs/ -lzint
+#win32: LIBS += -L$$PWD/../thirdParty/libs/ -lQZXing3
+#win32: LIBS += -L$$PWD/../thirdParty/libs/ -lQtZintd
+#win32: LIBS += -L$$PWD/../thirdParty/libs/ -lzint
 
 INCLUDEPATH += $$PWD/../thirdParty/include/QZXing
 DEPENDPATH += $$PWD/../thirdParty/include/QZXing
+
+
+LIBS += -L$$PWD/../thirdParty/libs/ -lQtZint-r
+#LIBS += -L$$PWD/../thirdParty/libs/ -lQtZint-d
+
 
 INCLUDEPATH += $$PWD/../thirdParty/include/zint/backend_qt
 DEPENDPATH += $$PWD/../thirdParty/include/zint/backend_qt
 
 
-LIBS += -L$$PWD/../thirdParty/libs/ -lQtZintd
 #LIBS += -L$$PWD/../thirdParty/libs/ -lQtZint
 

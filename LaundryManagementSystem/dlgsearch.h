@@ -17,7 +17,6 @@ class dlgSearch : public QDialog
 public:
     explicit dlgSearch(QWidget *parent = nullptr);
     ~dlgSearch();
-
     dlgOrderSearch dlgOrderSea;
     dlgOrderStatus dlgOrderStatusSea;
     dlgShelfSearch dlgShelfSea;

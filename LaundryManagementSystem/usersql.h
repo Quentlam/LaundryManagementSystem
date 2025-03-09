@@ -11,12 +11,14 @@
 class userSql
 {
 public:
+    userSql();
+    static Scope<userSql> Instance;
     ~userSql();
-    static userSql* getInstance()
+    static Scope<userSql> getInstance()
     {
         if(nullptr == Instance)
         {
-            Instance = new userSql();
+            Instance = std::make_shared<userSql>();
             return Instance;
         }
         else
@@ -39,9 +41,8 @@ public:
         qDebug() << sql->lastError().text();
     }
 private:
-    userSql();
     QSqlQuery* sql;
-    static userSql* Instance;
+
 };
 
 #endif // USERSQL_H

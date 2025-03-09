@@ -1,6 +1,6 @@
 ﻿#include "clothesinfo.h"
 #include "pulic.h"
-#include <QSql>
+#include <QSql.h>
 #include <QVariant>
 
 QList<QString> clothesInfo::clothesTittle =

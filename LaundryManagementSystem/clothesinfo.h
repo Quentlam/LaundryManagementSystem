@@ -1,7 +1,6 @@
 ﻿#ifndef CLOTHESINFO_H
 #define CLOTHESINFO_H
 
-#include <QLabel>
 #include <QObject>
 
 class clothesInfo//每件衣服的固有属性

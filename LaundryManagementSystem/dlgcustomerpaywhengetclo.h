@@ -12,7 +12,7 @@ class dlgCustomerPayWhenGetClo : public QDialog
     Q_OBJECT
 
 public:
-    explicit dlgCustomerPayWhenGetClo(QWidget *parent = nullptr,customerInfo customer = customerInfo(),QString money = "0");
+    explicit dlgCustomerPayWhenGetClo(QWidget *parent,customerInfo customer = customerInfo(),QString money = "0");
     customerInfo currentCustomer;
     ~dlgCustomerPayWhenGetClo();
     QString thisOrderNotPaidMoney;

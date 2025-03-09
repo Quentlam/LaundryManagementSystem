@@ -10,12 +10,14 @@
 class shelfSql
 {
 public:
+    shelfSql();
+    static Scope<shelfSql> Instance;
     ~shelfSql();
-    static shelfSql* getInstance()
+    static Scope<shelfSql> getInstance()
     {
         if(nullptr == Instance)
         {
-            Instance = new shelfSql();
+            Instance = std::make_shared<shelfSql>();
             return Instance;
         }
         else
@@ -37,9 +39,8 @@ public:
         qDebug() << sql->lastError().text();
     }
 private:
-    shelfSql();
     QSqlQuery* sql;
-    static shelfSql* Instance;
+
 };
 
 #endif // SHELFSQL_H

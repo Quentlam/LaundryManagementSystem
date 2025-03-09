@@ -3,7 +3,6 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QSqlDatabase>
-#include "mainwindow.h"
 #include "pulic.h"
 #include <QSqlError>
 #include <QFile>

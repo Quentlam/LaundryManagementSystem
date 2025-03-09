@@ -138,6 +138,21 @@
         </item>
         <item>
          <property name="text">
+          <string>店铺</string>
+         </property>
+         <property name="font">
+          <font>
+           <family>微软雅黑</family>
+          </font>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>打印设置</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>订单管理</string>
          </property>
          <property name="font">
@@ -149,16 +164,6 @@
         <item>
          <property name="text">
           <string>架号管理</string>
-         </property>
-         <property name="font">
-          <font>
-           <family>微软雅黑</family>
-          </font>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>店铺</string>
          </property>
          <property name="font">
           <font>

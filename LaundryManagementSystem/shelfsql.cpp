@@ -1,11 +1,10 @@
 ﻿#include "shelfsql.h"
 #include <QVariant>
 
-shelfSql* shelfSql::Instance = nullptr;
+Scope<shelfSql> shelfSql::Instance = nullptr;
 shelfSql::~shelfSql()
 {
     delete  sql;
-    delete  Instance;
 }
 
 int shelfSql::selectShelfClothesCount()

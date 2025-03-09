@@ -11,11 +11,14 @@
 class customerSql
 {
 public:
-    static customerSql* getInstance()
+    customerSql();
+    static Scope<customerSql> Instance;
+    ~customerSql();
+    static Scope<customerSql> getInstance()
     {
         if(nullptr == Instance)
         {
-            Instance =  new customerSql();
+            Instance =  std::make_shared<customerSql>();
             return Instance;
         }
         else
@@ -39,9 +42,7 @@ public:
         qDebug() << sql->lastError().text();
     }
 private:
-    customerSql();
     QSqlQuery* sql;
-    static customerSql* Instance;
 };
 
 #endif // CUSTOMERSQL_H

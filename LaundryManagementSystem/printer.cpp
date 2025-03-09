@@ -13,14 +13,23 @@
 #include <QFont>
 #include <QTextCodec>
 #include <QThread>
+#include <memory>
+
+Scope<QPrinter> Printer::mPrinter = nullptr;
 
 Printer::Printer()
 {
-    mPrinter.setPrinterName("Zonerich AB-88H");
+    mPrinter = std::make_shared<QPrinter>();
+    mPrinter->setResolution(204);
+    mPrinter->setPrinterName("导出为WPS PDF");
 }
 
 void Printer::printCustomerCurrentOrder(OrderInfo order)
 {
+    if (!mPrinter->isValid()) {
+        qDebug() << "打印机无效，请检查打印机设置。";
+        return;
+    }
     QTextDocument tittleDocument;
     makeCurrentOrderTittleDocument(tittleDocument,order);//先创建标题的Document
 
@@ -34,8 +43,8 @@ void Printer::printCustomerCurrentOrder(OrderInfo order)
     Ref<QImage> beforImg = CodeGenerator->GenerateCode128();
     QImage img = beforImg->scaled(420,40, Qt::IgnoreAspectRatio);
 ////////////////////////////////////////////////////////////////////////////////////////////以下是绘画逻辑
-    QPainter painter(&mPrinter); // 构造函数自动激活设备
-    painter.setRenderHint(QPainter::HighQualityAntialiasing,  true); // 启用抗锯齿
+    QPainter painter(std::static_pointer_cast<QPaintDevice>(mPrinter).get()); // 构造函数自动激活设备
+    painter.setRenderHint(QPainter::HighQualityAntialiasing,true); // 启用抗锯齿
 
     painter.save();
     tittleDocument.drawContents(&painter);//这个是先写标头
@@ -79,7 +88,7 @@ void Printer::printUserCurrentOrder(OrderInfo order)
 
     set80mmPaperPrinter(tittleDocument.size(),textDocument.size());//这是设置纸张大小
 ////////////////////////////////////////////////////////////////////////////////////////////以下是绘画逻辑
-    QPainter painter(&mPrinter); // 构造函数自动激活设备
+    QPainter painter(mPrinter.get()); // 构造函数自动激活设备
     painter.setRenderHint(QPainter::HighQualityAntialiasing,  true); // 启用抗锯齿
     // 定义绘制位置
     int margin = 20;  // 边距
@@ -184,7 +193,7 @@ void Printer::makeUserCurrentOrderDocument(QTextDocument& textDocument,OrderInfo
     text += QString("取衣日期：%1\n").arg(order.GetClothesDate);
     text += "\n---------------------------------------\n";
 
-    textDocument.setTextWidth(mPrinter.pageRect().width()); // 减去一定的边距
+    textDocument.setTextWidth(mPrinter->pageRect().width()); // 减去一定的边距
     QFont font("SimHei",10);  // 获取默认字体
     font.setStyleStrategy(QFont::PreferAntialias);  // 优先使用抗锯齿
     font.setHintingPreference(QFont::PreferFullHinting);  // 优先使用全提示
@@ -290,7 +299,7 @@ void Printer::makeCusotmerCurrentOrderDocument(QTextDocument& textDocument,Order
     text += "          \n";
     text += "\n---------------------------------------\n";
 
-    textDocument.setTextWidth(mPrinter.pageRect().width()); // 减去一定的边距
+    textDocument.setTextWidth(mPrinter->pageRect().width()); // 减去一定的边距
     QFont font("SimHei",10);  // 获取默认字体
     font.setStyleStrategy(QFont::PreferAntialias);  // 优先使用抗锯齿
     font.setHintingPreference(QFont::PreferFullHinting);  // 优先使用全提示
@@ -304,7 +313,7 @@ void Printer::makeCurrentOrderTittleDocument(QTextDocument& tittleDocument,Order
     tittle = +"        " + *pulic::getInstance()->currentAddress + "服务点（洗衣单）";
     tittle += "\n   ---------------------------------   \n";
     tittle += QString("           流水号：%1").arg(order.orderID);
-    tittleDocument.setTextWidth(mPrinter.pageRect().width()); // 减去一定的边距
+    tittleDocument.setTextWidth(mPrinter->pageRect().width()); // 减去一定的边距
     QFont font("SimHei",10);  // 获取默认字体
     font.setStyleStrategy(QFont::PreferAntialias);  // 优先使用抗锯齿
     font.setHintingPreference(QFont::PreferFullHinting);  // 优先使用全提示
@@ -312,37 +321,51 @@ void Printer::makeCurrentOrderTittleDocument(QTextDocument& tittleDocument,Order
     tittleDocument.setPlainText(tittle);
 }
 
-
-void Printer::printTest()
+void Printer::makeSelectOrderTittleDocument(QTextDocument& tittleDocument,Ref<QList<OrderInfo>> order)
 {
-    QString text = "Hello, Thermal Printer!\n这是打印的内容。\n加上一些额外的内容来测试动态高度。\n";
-    CodeGenerator = new code128Generator("12345678");//这里只是测试
-    CodeGenerator->GenerateCode128();
-    // 创建 QTextDocument 文档并设置内容
-    QTextDocument textDocument;
-    textDocument.setPlainText(text);
+    QString tittle;
+    tittle = +"        " + *pulic::getInstance()->currentAddress + "服务点";
+    tittle = + "        " + QString("储值卡消费清单");
+    tittle += "\n   ---------------------------------   \n";
+    tittle += QString("充值卡号%1").arg((*order)[0].customerCardID);
+    tittle += QString("义务名称   颜色   实收额   日期");
+    tittle += "\n---------------------------------------\n";
 
-    // 计算文本的宽高
-    QSizeF textSize = textDocument.size();
-
-    // 创建 QPrinter 对象，指定使用高分辨率模式
-    QPrinter printer(QPrinter::HighResolution);
-    printer.setResolution(300);
-    // 设置纸张宽度为 80mm，高度为根据文本高度动态计算
-    qreal paperWidth = 80; // 80mm
-    qreal paperHeight = textSize.height() + 20; // 额外加上一定的边距，比如 20mm
-    printer.setPaperSize(QSizeF(paperWidth, paperHeight), QPrinter::Millimeter);
-
-    // 设置其他打印参数
-    printer.setOutputFormat(QPrinter::NativeFormat); // 设置输出格式
-    printer.setOrientation(QPrinter::Portrait); // 设置打印方向为纵向
-
-    // 打印内容
-    QPainter painter(&printer);
-    textDocument.drawContents(&painter);
-    painter.end();
-
+    tittleDocument.setTextWidth(mPrinter->pageRect().width()); // 减去一定的边距
+    QFont font("SimHei",10);  // 获取默认字体
+    font.setStyleStrategy(QFont::PreferAntialias);  // 优先使用抗锯齿
+    font.setHintingPreference(QFont::PreferFullHinting);  // 优先使用全提示
+    tittleDocument.setDefaultFont(font);  // 更新默认字体
+    tittleDocument.setPlainText(tittle);
 }
+
+void Printer::makeSelectOrderTextDocument(QTextDocument& textDocument,Ref<QList<OrderInfo>> order)
+{
+    QString text;
+    QString clothesName;
+    QString clothesColor;
+    QString afterDiscountMoney;
+    QString orderDate;
+
+
+    for(int i = 0; i < order->size() ; i++)
+    {
+        clothesName = (*order)[i].clothesTemp[i].Name;
+        clothesColor = (*order)[i].clothesTemp[i].Color;
+        afterDiscountMoney = (*order)[i].AfterDiscountMoneyCount;
+        orderDate = (*order)[i].OrderCreateDate;
+        text += clothesName + " " + clothesColor + " " + afterDiscountMoney + " " + orderDate;
+    }
+    text += "\n---------------------------------------\n";
+    text += QString("总件数：%1件").arg(order->size());
+    textDocument.setTextWidth(mPrinter->pageRect().width()); // 减去一定的边距
+    QFont font("SimHei",10);  // 获取默认字体
+    font.setStyleStrategy(QFont::PreferAntialias);  // 优先使用抗锯齿
+    font.setHintingPreference(QFont::PreferFullHinting);  // 优先使用全提示
+    textDocument.setDefaultFont(font);  // 更新默认字体
+    textDocument.setPlainText(text);
+}
+
 
 QString Printer::incrementPrefix(const QString& input)
 {
@@ -421,7 +444,7 @@ void Printer::set80mmPaperPrinter(QSizeF tittleDocumentSize,QSizeF textDocumentS
     // 额外加上边距，比如 20mm
     qreal paperHeight = heightInMM; // 20mm边距
     QPageSize customPageSize(QSizeF(80, paperHeight), QPageSize::Millimeter);
-    mPrinter.setPageSize(customPageSize);
+    mPrinter->setPageSize(customPageSize);
 }
 
 

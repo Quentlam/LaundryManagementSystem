@@ -10,7 +10,6 @@ class dlgLogin;
 class dlgLogin : public QDialog
 {
     Q_OBJECT
-
 public:
     explicit dlgLogin(QWidget *parent = nullptr);
     ~dlgLogin();

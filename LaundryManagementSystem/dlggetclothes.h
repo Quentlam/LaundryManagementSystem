@@ -84,8 +84,8 @@ private slots:
 private:
     dlgGetMoney dlgGetMon;
     dlgChoseCustomer dlgChoseCus;
-    dlgCustomerRecharge* customerReCharge;
-    dlgNewOrder* dlgEnterOrder;
+    Ref<dlgCustomerRecharge> customerReCharge;
+    Ref<dlgNewOrder> dlgEnterOrder;
     SelectClothesInfo selectClothesTemp;
     customerInfo customerTemp;//暂时把客户给存下来，不然可能点太多次确定，会影响到dlgChoseCus
     double money;//衣服总价格

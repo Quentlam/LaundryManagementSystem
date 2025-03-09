@@ -28,7 +28,8 @@ QList<QString> OrderInfo::orderTittle = {
                                     "客户地址",
                                     "架号",
                                     "此订单未支付",
-                                    "卡上金额"
+                                    "卡上金额",
+                                    "订单创建日期"
                                 };
 
 QList<QString> OrderStatus::orderStatusTittle =

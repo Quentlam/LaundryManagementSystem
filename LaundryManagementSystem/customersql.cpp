@@ -3,7 +3,7 @@
 #include <QVariant>
 
 
-customerSql* customerSql::Instance = nullptr;
+Scope<customerSql> customerSql::Instance = nullptr;
 
 Ref<QList<customerInfo>> customerSql::selectAllCustomerInfo()
 {
@@ -108,7 +108,7 @@ Ref<customerInfo> customerSql::selectCusotmerByOrderId(QString OrderID)
 
 bool customerSql::deleteCustomerByID(QString id)
 {
-    return sql->exec(QString("delete from Customer where ID = '%1'").arg(id));
+    return sql->exec(QString("delete from Customer where ID = '%1';").arg(id));
 }
 
 bool customerSql::addCustomer(customerInfo customerInfoTemp)
@@ -149,4 +149,9 @@ customerSql::customerSql():
     sql(new QSqlQuery())
 {
 
+}
+
+customerSql::~customerSql()
+{
+    delete sql;
 }

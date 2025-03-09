@@ -10,11 +10,10 @@ class swpage00;
 class swpage00 : public QDialog
 {
     Q_OBJECT
-
 public:
     explicit swpage00(QWidget *parent = nullptr);
     ~swpage00();
-    int type = 0;
+    int type;
 private slots:
 
     void on_BtnOther_clicked();

@@ -70,6 +70,7 @@ dlgGetClothes::dlgGetClothes(QWidget *parent) :
 
 dlgGetClothes::~dlgGetClothes()
 {
+    //qDebug() << "收衣服窗口被释放了";
     delete ui;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////以下是收银了之后
@@ -324,6 +325,7 @@ void dlgGetClothes::on_BtnEnter_clicked()//创建订单了
     currentOrder.ShelfID = "无架号";
     currentOrder.thisOrderNotPaid = "0";
     currentOrder.customerCardMoneyBeforePay = "无卡支付前余额";
+    currentOrder.OrderCreateDate = QDate::currentDate().toString("yyyy-M-dd");
     if(ClothesCount <= 0)
     {
         QMessageBox::information(nullptr,"信息","请至少选择一件衣服！");
@@ -379,8 +381,8 @@ void dlgGetClothes::on_BtnEnter_clicked()//创建订单了
             currentOrder.customerCardMoneyBeforePay = "临时客户无卡";
 
 
-            dlgEnterOrder = new dlgNewOrder(nullptr,0,currentOrder);
-            connect(dlgEnterOrder,&dlgNewOrder::CreateNewOrderSuccess,this,&dlgGetClothes::createNewOrderSuccess);
+            dlgEnterOrder = std::make_unique<dlgNewOrder>(nullptr,0,currentOrder);
+            connect(dlgEnterOrder.get(),&dlgNewOrder::CreateNewOrderSuccess,this,&dlgGetClothes::createNewOrderSuccess);
             QMessageBox::information(nullptr,"信息",QString("记录了%1件衣服的信息！").arg(ClothesCount));
             dlgEnterOrder->exec();
             if(true == dlgEnterOrder->orderFinished)
@@ -442,8 +444,8 @@ void dlgGetClothes::on_BtnEnter_clicked()//创建订单了
             auto ReChargeStatus = QMessageBox::question(nullptr,"警告！","客户卡上金额不够！是否充值！",QMessageBox::Yes | QMessageBox::No);
             if(ReChargeStatus == QMessageBox::Yes)
             {
-                customerReCharge = new dlgCustomerRecharge(nullptr,dlgChoseCus.chosedCustomer);
-                connect(customerReCharge,&dlgCustomerRecharge::rechargeSuccess,this,&dlgGetClothes::rechargeSuccessFuc);
+                customerReCharge = std::make_unique<dlgCustomerRecharge>(nullptr,dlgChoseCus.chosedCustomer);
+                connect(customerReCharge.get(),&dlgCustomerRecharge::rechargeSuccess,this,&dlgGetClothes::rechargeSuccessFuc);
                 customerReCharge->exec();
                 return;
             }
@@ -485,8 +487,8 @@ void dlgGetClothes::on_BtnEnter_clicked()//创建订单了
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////以下是做订单的最后准备
         currentOrder.CustomerCardMoney = QString::number(dlgChoseCus.chosedCustomer.CardMoney);//这个是为了在结算之后，再写入订单里，防止钱不一样
         selectClothes = true;//已经选好衣服了
-        dlgEnterOrder = new dlgNewOrder(nullptr,1,currentOrder);
-        connect(dlgEnterOrder,&dlgNewOrder::CreateNewOrderSuccess,this,&dlgGetClothes::createNewOrderSuccess);
+        dlgEnterOrder = std::make_unique<dlgNewOrder>(nullptr,1,currentOrder);
+        connect(dlgEnterOrder.get(),&dlgNewOrder::CreateNewOrderSuccess,this,&dlgGetClothes::createNewOrderSuccess);
         QMessageBox::information(nullptr,"信息",QString("记录了%1件衣服的信息！").arg(ClothesCount));
         dlgEnterOrder->exec();
         if(!dlgEnterOrder->choseShelf.shelfSelected)

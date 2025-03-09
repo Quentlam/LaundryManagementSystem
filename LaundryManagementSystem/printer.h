@@ -4,12 +4,15 @@
 #include "code128generator.h"
 #include <QTextDocument>
 #include <QPrinter>
+#include <QWidget>
+#include <QPen>
+#include <QPainter>
 
-class Printer
+
+class Printer: public QWidget
 {
 public:
     Printer();
-    void printTest();
     void printUserCurrentOrder(OrderInfo order);
     void printSelectedOrder(QList<OrderInfo> order);
     void printCustomerCurrentOrder(OrderInfo order);
@@ -23,8 +26,11 @@ public:
     void makeUserCurrentOrderDocument(QTextDocument& textDocument, OrderInfo order);
     void makeCusotmerCurrentOrderDocument(QTextDocument& textDocument, OrderInfo order);
     void set80mmPaperPrinter(QSizeF tittleDocumentSize, QSizeF textDocument);
+
+    void makeSelectOrderTittleDocument(QTextDocument &tittleDocument, std::unique_ptr<QList<OrderInfo> > order);
+    void makeSelectOrderTextDocument(QTextDocument &textDocument, std::unique_ptr<QList<OrderInfo> > order);
 private:
-    QPrinter mPrinter;
+    static Scope<QPrinter> mPrinter;
 
 };
 

@@ -4,6 +4,7 @@
 
 swpage00::swpage00(QWidget *parent) :
     QDialog(parent),
+    type(0),
     ui(new Ui::swpage00)
 {
     ui->setupUi(this);

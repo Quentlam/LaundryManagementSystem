@@ -5,6 +5,7 @@
 #include "dlgadd.h"
 #include <QTreeWidgetItem>
 #include "dlgshopdata.h"
+#include "dlgprinterdata.h"
 namespace Ui {
 class dlgManage;
 }
@@ -18,6 +19,7 @@ public:
     ~dlgManage();
     dlgAdd dlgadd;
     dlgShopData dlgshop;
+    Ref<dlgPrinterData> dlgPinter;
     void show();
 signals:
     void backToMainWindow();

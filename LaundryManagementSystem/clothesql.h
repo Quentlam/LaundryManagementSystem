@@ -10,12 +10,14 @@
 class clotheSql
 {
 public:
+    clotheSql();
+    static Scope<clotheSql> Instance;
     ~clotheSql();
-    static clotheSql* getInstance()
+    static Scope<clotheSql> getInstance()
     {
         if(nullptr == Instance)
         {
-            Instance = new clotheSql();
+            Instance = std::make_shared<clotheSql>();
             return Instance;
         }
         else
@@ -54,9 +56,8 @@ public:
    }
 
 private:
-    clotheSql();
     QSqlQuery* sql;
-    static clotheSql* Instance;
+
 };
 
 #endif // CLOTHESQL_H

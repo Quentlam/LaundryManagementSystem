@@ -17,12 +17,14 @@
 class orderSql
 {
 public:
+    static Scope<orderSql> Instance;
+    orderSql();
     ~orderSql();
-    static orderSql* getInstance()
+    static Scope<orderSql> getInstance()
     {
         if(nullptr == Instance)
         {
-            Instance = new orderSql();
+            Instance = std::make_shared<orderSql>();
             return Instance;
         }
         else
@@ -35,6 +37,11 @@ public:
     Ref<OrderStatus> selectOrderStatusByOrderID(QString OrderID);
     Ref<QList<OrderInfo>> selectAllOrder();
     Ref<QList<OrderStatus>> selectAllOrderStatus();
+    Ref<QList<OrderInfo>> selectAllOrderForOneCustomerByCustomerIdAndDate(QString startDate,QString endDate,QString CustomerId);
+    Ref<QList<OrderStatus>> selectAllOrderStatusForOneCustomerByCustomerIdAndDate(QString startDate,QString endDate,QString CustomerId);
+    Ref<QList<OrderInfo>> selectAllOrderBetweenDate(QString startDate,QString endDate);
+    Ref<QList<OrderStatus>> selectAllOrderStatusBetweenDate(QString startDate,QString endDate);
+
     Ref<QString> getCustomerHaveNotPayMoneyForTheOrderByOrderId(QString OrderId);
     bool createNewOrder(OrderInfo& orderInfoTemp,OrderClothesAttributeMessage& clothesInfoTempList);
     bool createNewOrderStatus(OrderInfo orderStatusTemp);
@@ -51,10 +58,9 @@ public:
 
     double selectOrderAfterDiscountCountMoneyByOrderId(QString id);
     bool judegOrderCustomerHaveNotPaidByOrderId(QString id);
+
 private:
-    orderSql();
     QSqlQuery* sql;
-    static orderSql* Instance;
 };
 
 #endif // ORDERSQL_H

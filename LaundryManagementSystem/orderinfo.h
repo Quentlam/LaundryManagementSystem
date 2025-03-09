@@ -32,6 +32,7 @@ public:
     QString ShelfID;
     QString thisOrderNotPaid;
     QString customerCardMoneyBeforePay;
+    QString OrderCreateDate;
     static QList<QString> orderTittle;
 };
 

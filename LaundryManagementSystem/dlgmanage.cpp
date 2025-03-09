@@ -10,6 +10,7 @@ dlgManage::dlgManage(QWidget *parent) :
     ui->stackedWidget->hide();
     ui->stackedWidget->addWidget(&dlgadd);
     ui->stackedWidget->addWidget(&dlgshop);
+
 }
 
 dlgManage::~dlgManage()
@@ -39,6 +40,14 @@ void dlgManage::on_treeWidget_itemActivated(QTreeWidgetItem *item, int column)
     {
         dlgshop.reFresh();
         ui->stackedWidget->setCurrentIndex(1);
+    }
+
+    if("打印设置" == text)
+    {
+        dlgPinter = std::make_unique<dlgPrinterData>();
+        ui->stackedWidget->insertWidget(2,dlgPinter.get());
+        dlgPinter->reFresh();
+        ui->stackedWidget->setCurrentIndex(2);
     }
 
 

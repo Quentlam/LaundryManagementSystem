@@ -10,13 +10,22 @@
 
 dlgOrderStatus::dlgOrderStatus(QWidget *parent) :
     QDialog(parent),
+    selectCustomer(false),
     currentOrderID("未选择"),
     ui(new Ui::dlgOrderStatus)
 {
     ui->setupUi(this);
     ui->DateStart->hide();
     ui->DateEnd->hide();
-    ui->tableWidget->setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
+    connect(&dlgChoseCus,&dlgChoseCustomer::chosedSuccess,this,[this](){this->selectCustomer = true;
+    ui->LBCurrentCustomerName->setText(QString("现在选择的客户：%1").arg(dlgChoseCus.chosedCustomer.Name));
+    ui->LeSearch->setText(dlgChoseCus.chosedCustomer.ID);
+    ui->LBCurrentOrderID->clear();
+    ui->LBCnt->clear();
+    });
+
+    ui->DateEnd->setDate(QDate::currentDate());
+    ui->DateStart->setDate(QDate::currentDate().addDays(-7));
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     reFresh();
@@ -66,9 +75,13 @@ void dlgOrderStatus::reFresh()
 
 void dlgOrderStatus::on_tableWidget_cellClicked(int row, int column)
 {
-    currentOrderID = ui->tableWidget->item(row,0)->text().right(10);
-    ui->LBCurrentOrderID->setText(QString("选中的订单流水号：%1").arg(currentOrderID));
-    ui->LBCurrentCustomerName->setText(QString("选中的客户姓名：%2").arg(ui->tableWidget->item(row,4)->text()));
+    if(false == selectCustomer)
+    {
+        currentOrderID = ui->tableWidget->item(row,0)->text().right(10);
+        ui->LBCurrentOrderID->setText(QString("选中的订单流水号：%1").arg(currentOrderID));
+        ui->LBCurrentCustomerName->setText(QString("选中的客户姓名：%2").arg(ui->tableWidget->item(row,4)->text()));
+    }
+
 }
 
 void dlgOrderStatus::on_LeSearch_textChanged(const QString &arg1)
@@ -272,3 +285,78 @@ void dlgOrderStatus::on_comboBox_currentIndexChanged(int index)
 
 
 }
+
+void dlgOrderStatus::on_BtnDateSearch_clicked()
+{
+    if(!ui->RaDateSearch->isChecked())
+    {
+        QMessageBox::information(nullptr,"信息","请启用查询功能！");
+        return;
+    }
+    QDate startDate = ui->DateStart->date();
+    QString startDateString = startDate.toString("yyyy-M-dd");
+
+    QDate EndDate = ui->DateEnd->date();
+    QString EndDateString = EndDate.toString("yyyy-M-dd");
+
+
+    ui->LeSearch->clear();
+
+    Ref<QList<OrderStatus>> OrdetStatusTempList;
+    if(true == selectCustomer)
+    OrdetStatusTempList = ORDER_SQL->selectAllOrderStatusForOneCustomerByCustomerIdAndDate(startDateString,EndDateString,dlgChoseCus.chosedCustomer.ID);
+
+    if(false == selectCustomer)
+    OrdetStatusTempList = ORDER_SQL->selectAllOrderStatusBetweenDate(startDateString,EndDateString);
+
+
+    ui->LBCnt->setText(QString("显示订单总数：%1").arg(OrdetStatusTempList->size()));
+    ui->tableWidget->setRowCount(OrdetStatusTempList->size());
+    ui->tableWidget->setColumnCount(OrderStatus::orderStatusTittle.size());
+    for(int i = 0 ; i < OrderStatus::orderStatusTittle.size(); i ++)
+        ui->tableWidget->setHorizontalHeaderItem(i,new QTableWidgetItem(OrderStatus::orderStatusTittle[i]));
+
+
+    for(int i = 0 ; i < OrdetStatusTempList->size(); i ++)
+    {
+        ui->tableWidget->setItem(i,0 ,new QTableWidgetItem((*OrdetStatusTempList)[i].orderID));
+        ui->tableWidget->setItem(i,1 ,new QTableWidgetItem((*OrdetStatusTempList)[i].orderStatus));
+        if(ORDER_NOT_FINISHED_STATUS == (*OrdetStatusTempList)[i].orderStatus)
+        {
+            ui->tableWidget->item(i,1)->setForeground(QBrush(QColor("Red")));
+        }
+
+        ui->tableWidget->setItem(i,2 ,new QTableWidgetItem((*OrdetStatusTempList)[i].ClothesSendStatus));
+
+        if(CLOTHES_NOT_SEND == (*OrdetStatusTempList)[i].ClothesSendStatus)
+        {
+            ui->tableWidget->item(i,2)->setForeground(QBrush(QColor("Red")));
+        }
+
+        ui->tableWidget->setItem(i,3 ,new QTableWidgetItem((*OrdetStatusTempList)[i].customerID));
+        ui->tableWidget->setItem(i,4 ,new QTableWidgetItem((*OrdetStatusTempList)[i].customerName));
+        ui->tableWidget->setItem(i,5 ,new QTableWidgetItem((*OrdetStatusTempList)[i].shelfID));
+    }
+
+    ui->tableWidget->update();
+}
+
+
+void dlgOrderStatus::on_BtnChoseCustomer_clicked()
+{
+    dlgChoseCus.exec();
+}
+
+
+void dlgOrderStatus::on_BtnCancel_clicked()
+{
+    selectCustomer = false;
+    reFresh();
+}
+
+
+void dlgOrderStatus::on_BtnSelectAll_clicked()
+{
+    ui->tableWidget->selectAll();
+}
+

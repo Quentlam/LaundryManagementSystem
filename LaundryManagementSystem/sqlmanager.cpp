@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QMessageBox>
 
-#define test
+#define release
 #ifdef test
 #define Path "Z:\\study-z\\C++\\QtTest\\LaundryManagementSystem\\LaundryManagementSystem.db"
 #endif
@@ -21,7 +21,7 @@ sqlManager::sqlManager():
     qDebug() << applicationPath;
 
     #ifdef release
-        DB.setDatabaseName(applicationPath);
+        DB->setDatabaseName(applicationPath);
     #endif
 
     if (!DB->open())//判断是不是打开了
@@ -36,28 +36,33 @@ sqlManager::~sqlManager()
     delete  sql;
 }
 
-clotheSql *sqlManager::createClothesSql()
+Scope<clotheSql> sqlManager::createClothesSql()
 {
     return clotheSql::getInstance();
 }
 
-orderSql *sqlManager::createOrderSql()
+Scope<orderSql> sqlManager::createOrderSql()
 {
     return orderSql::getInstance();
 }
 
-customerSql *sqlManager::createCustomerSql()
+Scope<customerSql> sqlManager::createCustomerSql()
 {
     return customerSql::getInstance();
 }
 
-userSql *sqlManager::createUserSql()
+Scope<userSql> sqlManager::createUserSql()
 {
     return userSql::getInstance();
 }
 
-shelfSql *sqlManager::createShelfSql()
+Scope<shelfSql> sqlManager::createShelfSql()
 {
     return shelfSql::getInstance();
+}
+
+std::shared_ptr<printerSql> sqlManager::createPrinterSql()
+{
+    return printerSql::getInstance();
 }
 

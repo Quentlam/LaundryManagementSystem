@@ -3,12 +3,11 @@
 #include "pulic.h"
 
 
-userSql* userSql::Instance = nullptr;
+Scope<userSql> userSql::Instance = nullptr;
 
 userSql::~userSql()
 {
     delete  sql;
-    delete  Instance;
 }
 
 Ref<QList<userInfo> > userSql::showAllUser()

@@ -2,14 +2,13 @@
 #include <QMessageBox>
 #include "pulic.h"
 
-orderSql* orderSql::Instance = nullptr;
+Scope<orderSql> orderSql::Instance = nullptr;
 
 
 
 orderSql::~orderSql()
 {
     delete  sql;
-    delete  Instance;
 }
 
 Ref<OrderStatus> orderSql::selectOrderStatusByOrderID(QString OrderID)
@@ -65,6 +64,7 @@ Ref<QList<OrderInfo> > orderSql::selectAllOrder()
         orderTemp.ShelfID                           = sql->value(25).toString();
         orderTemp.thisOrderNotPaid                  = sql->value(26).toString();
         orderTemp.customerCardMoneyBeforePay        = sql->value(27).toString();
+        orderTemp.OrderCreateDate                   = sql->value(28).toString();
         orderInfoTempList->push_back(orderTemp);
     }
     return orderInfoTempList;
@@ -76,6 +76,129 @@ Ref<QList<OrderStatus>> orderSql::selectAllOrderStatus()
     Ref<QList<OrderStatus>> orderStatusTempList = std::make_unique<QList<OrderStatus>>();
     OrderStatus temp;
     sql->exec("select * from OrderStatus");
+    while(sql->next())
+    {
+        temp.orderID                = sql->value(0).toString();
+        temp.orderStatus            = sql->value(1).toString();
+        temp.ClothesSendStatus      = sql->value(2).toString();
+        temp.customerID             = sql->value(3).toString();
+        temp.customerName           = sql->value(4).toString();
+        temp.shelfID                = sql->value(5).toString();
+        orderStatusTempList->push_back(temp);
+    }
+    return orderStatusTempList;
+}
+
+std::unique_ptr<QList<OrderInfo> > orderSql::selectAllOrderForOneCustomerByCustomerIdAndDate(QString startDate, QString endDate, QString CustomerId)
+{
+    Ref<QList<OrderInfo>> orderInfoTempList = std::make_unique<QList<OrderInfo>>();
+    sql->exec(QString("select * from OrderLog where OrderCreateDate BETWEEN '%1' AND '%2' AND CustomerID = '%3';").arg(startDate).arg(endDate).arg(CustomerId));
+    SelectClothesInfo temp;
+    OrderInfo orderTemp;
+    while(sql->next())
+    {
+        orderTemp.orderID                           = sql->value(0).toString();
+        orderTemp.customerID                        = sql->value(1).toString();
+        orderTemp.customerName                      = sql->value(2).toString();
+        orderTemp.customerPhone                     = sql->value(3).toString();
+        orderTemp.customerCount                     = sql->value(4).toString();
+        orderTemp.customerSpend                     = sql->value(5).toString();
+        orderTemp.customerCardID                    = sql->value(6).toString();
+        temp.Name                                   = sql->value(7).toString();
+        temp.Color                                  = sql->value(8).toString();
+        temp.Defect                                 = sql->value(9).toString();
+        temp.Brand                                  = sql->value(10).toString();
+        temp.Treament                               = sql->value(11).toString();
+        temp.Effect                                 = sql->value(12).toString();
+        temp.Price                                  = sql->value(13).toString();
+        orderTemp.clothesTemp.push_back(temp);
+        orderTemp.MoneyCount                        = sql->value(14).toString();
+        orderTemp.Discount                          = sql->value(15).toString();
+        orderTemp.AfterDiscountMoneyCount           = sql->value(16).toString();
+        orderTemp.ClothesCount                      = sql->value(17).toString();
+        orderTemp.CustomerCardMoney                 = sql->value(18).toString();
+        orderTemp.InputMoney                        = sql->value(19).toString();
+        orderTemp.OutputMoney                       = sql->value(20).toString();
+        orderTemp.PayWay                            = sql->value(21).toString();
+        orderTemp.HaveNotPaid                       = sql->value(22).toString();
+        orderTemp.GetClothesDate                    = sql->value(23).toString();
+        orderTemp.CustomerAddress                   = sql->value(24).toString();
+        orderTemp.ShelfID                           = sql->value(25).toString();
+        orderTemp.thisOrderNotPaid                  = sql->value(26).toString();
+        orderTemp.customerCardMoneyBeforePay        = sql->value(27).toString();
+        orderTemp.OrderCreateDate                   = sql->value(28).toString();
+        orderInfoTempList->push_back(orderTemp);
+    }
+    return orderInfoTempList;
+}
+
+std::unique_ptr<QList<OrderStatus> > orderSql::selectAllOrderStatusForOneCustomerByCustomerIdAndDate(QString startDate, QString endDate, QString CustomerId)
+{
+    Ref<QList<OrderStatus>> orderStatusTempList = std::make_unique<QList<OrderStatus>>();
+    OrderStatus temp;
+    sql->exec(QString("SELECT * FROM OrderStatus INNER JOIN OrderLog  ON OrderLog.OrderID = OrderStatus.OrderID WHERE OrderLog.OrderCreateDate BETWEEN '%1' AND '%2' AND OrderLog.CustomerID = '%3';").arg(startDate).arg(endDate).arg(CustomerId));
+    while(sql->next())
+    {
+        temp.orderID                = sql->value(0).toString();
+        temp.orderStatus            = sql->value(1).toString();
+        temp.ClothesSendStatus      = sql->value(2).toString();
+        temp.customerID             = sql->value(3).toString();
+        temp.customerName           = sql->value(4).toString();
+        temp.shelfID                = sql->value(5).toString();
+        orderStatusTempList->push_back(temp);
+    }
+    return orderStatusTempList;
+}
+
+
+std::unique_ptr<QList<OrderInfo> > orderSql::selectAllOrderBetweenDate(QString startDate, QString endDate)
+{
+    Ref<QList<OrderInfo>> orderInfoTempList = std::make_unique<QList<OrderInfo>>();
+    sql->exec(QString("select * from OrderLog where OrderCreateDate BETWEEN '%1' AND '%2';").arg(startDate).arg(endDate));
+    SelectClothesInfo temp;
+    OrderInfo orderTemp;
+    while(sql->next())
+    {
+        orderTemp.orderID                           = sql->value(0).toString();
+        orderTemp.customerID                        = sql->value(1).toString();
+        orderTemp.customerName                      = sql->value(2).toString();
+        orderTemp.customerPhone                     = sql->value(3).toString();
+        orderTemp.customerCount                     = sql->value(4).toString();
+        orderTemp.customerSpend                     = sql->value(5).toString();
+        orderTemp.customerCardID                    = sql->value(6).toString();
+        temp.Name                                   = sql->value(7).toString();
+        temp.Color                                  = sql->value(8).toString();
+        temp.Defect                                 = sql->value(9).toString();
+        temp.Brand                                  = sql->value(10).toString();
+        temp.Treament                               = sql->value(11).toString();
+        temp.Effect                                 = sql->value(12).toString();
+        temp.Price                                  = sql->value(13).toString();
+        orderTemp.clothesTemp.push_back(temp);
+        orderTemp.MoneyCount                        = sql->value(14).toString();
+        orderTemp.Discount                          = sql->value(15).toString();
+        orderTemp.AfterDiscountMoneyCount           = sql->value(16).toString();
+        orderTemp.ClothesCount                      = sql->value(17).toString();
+        orderTemp.CustomerCardMoney                 = sql->value(18).toString();
+        orderTemp.InputMoney                        = sql->value(19).toString();
+        orderTemp.OutputMoney                       = sql->value(20).toString();
+        orderTemp.PayWay                            = sql->value(21).toString();
+        orderTemp.HaveNotPaid                       = sql->value(22).toString();
+        orderTemp.GetClothesDate                    = sql->value(23).toString();
+        orderTemp.CustomerAddress                   = sql->value(24).toString();
+        orderTemp.ShelfID                           = sql->value(25).toString();
+        orderTemp.thisOrderNotPaid                  = sql->value(26).toString();
+        orderTemp.customerCardMoneyBeforePay        = sql->value(27).toString();
+        orderTemp.OrderCreateDate                   = sql->value(28).toString();
+        orderInfoTempList->push_back(orderTemp);
+    }
+    return orderInfoTempList;
+}
+
+std::unique_ptr<QList<OrderStatus> > orderSql::selectAllOrderStatusBetweenDate(QString startDate, QString endDate)
+{
+    Ref<QList<OrderStatus>> orderStatusTempList = std::make_unique<QList<OrderStatus>>();
+    OrderStatus temp;
+    sql->exec(QString("SELECT * FROM OrderStatus INNER JOIN OrderLog  ON OrderLog.OrderID = OrderStatus.OrderID WHERE OrderLog.OrderCreateDate BETWEEN '%1' AND '%2';").arg(startDate).arg(endDate));
     while(sql->next())
     {
         temp.orderID                = sql->value(0).toString();
@@ -118,14 +241,14 @@ bool orderSql::judegOrderCustomerHaveNotPaidByOrderId(QString id)
 
 bool orderSql::createNewOrder(OrderInfo &orderInfoTemp,OrderClothesAttributeMessage& orderClothesAttributeMessageTempList)
 {
-    return sql->exec(QString("insert into OrderLog values ('%1','%2','%3','%4','%5','%6','%7','%8','%9','%10','%11','%12','%13','%14','%15','%16','%17','%18','%19','%20','%21','%22','%23','%24','%25','%26','%27','%28');")
+    return sql->exec(QString("insert into OrderLog values ('%1','%2','%3','%4','%5','%6','%7','%8','%9','%10','%11','%12','%13','%14','%15','%16','%17','%18','%19','%20','%21','%22','%23','%24','%25','%26','%27','%28','%29');")
                  .arg(orderInfoTemp.orderID).arg(orderInfoTemp.customerID).arg(orderInfoTemp.customerName).arg(orderInfoTemp.customerPhone)
                  .arg(orderInfoTemp.customerCount).arg(orderInfoTemp.customerSpend).arg(orderInfoTemp.customerCardID).arg(orderClothesAttributeMessageTempList.ClothesNameMessage)
                  .arg(orderClothesAttributeMessageTempList.ClothesColorMessage).arg(orderClothesAttributeMessageTempList.ClothesDefectMessage).arg(orderClothesAttributeMessageTempList.ClothesBrandMessage).arg(orderClothesAttributeMessageTempList.ClothesTreatmentMessage)
                  .arg(orderClothesAttributeMessageTempList.ClothesEffectMessage).arg(orderClothesAttributeMessageTempList.ClothesPriceMessage).arg(orderInfoTemp.MoneyCount).arg(orderInfoTemp.Discount)
                  .arg(orderInfoTemp.AfterDiscountMoneyCount).arg(orderInfoTemp.ClothesCount).arg(orderInfoTemp.CustomerCardMoney).arg(orderInfoTemp.InputMoney)
                  .arg(orderInfoTemp.OutputMoney).arg(orderInfoTemp.PayWay).arg(orderInfoTemp.HaveNotPaid).arg(orderInfoTemp.GetClothesDate)
-                         .arg(orderInfoTemp.CustomerAddress).arg(orderInfoTemp.ShelfID).arg(orderInfoTemp.thisOrderNotPaid).arg(orderInfoTemp.customerCardMoneyBeforePay)
+                         .arg(orderInfoTemp.CustomerAddress).arg(orderInfoTemp.ShelfID).arg(orderInfoTemp.thisOrderNotPaid).arg(orderInfoTemp.customerCardMoneyBeforePay).arg(orderInfoTemp.OrderCreateDate)
                      );
 }
 

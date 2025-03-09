@@ -9,7 +9,7 @@
 #include "customersql.h"
 #include "usersql.h"
 #include "shelfsql.h"
-
+#include "printersql.h"
 #define GET_SQL_POINTER sqlManager::createSqlManager()->getSqlPointer()
 #define NUMBER_KEY_EVENT(action)     if(Qt::Key::Key_0 == event->key()\
 ||Qt::Key::Key_1 == event->key()\
@@ -50,6 +50,7 @@ public:
             createCustomerSql();
             createUserSql();
             createShelfSql();
+            createPrinterSql();
             return Instance;
         }
         else
@@ -57,11 +58,14 @@ public:
             return Instance;
         }
     }
-    static clotheSql*   createClothesSql();
-    static orderSql*    createOrderSql();
-    static customerSql* createCustomerSql();
-    static userSql*     createUserSql();
-    static shelfSql*    createShelfSql();
+    static Scope<clotheSql>        createClothesSql();
+    static Scope<orderSql>         createOrderSql();
+    static Scope<customerSql>      createCustomerSql();
+    static Scope<userSql>          createUserSql();
+    static Scope<shelfSql>         createShelfSql();
+    static Scope<printerSql>       createPrinterSql();
+
+
     QSqlQuery* getSqlPointer()
     {
         return sql;
